@@ -1,0 +1,24 @@
+{
+  "status": 0,
+  "result": {
+    "records": [
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v65.0/sobjects/PermissionSetAssignment/0Pag5000004qlLaCAI"
+        },
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v65.0/sobjects/PermissionSet/0PSg5000003jVkHGAU"
+          },
+          "Name": "Elco_Run_Flows",
+          "PermissionsRunFlow": true
+        }
+      }
+    ],
+    "totalSize": 1,
+    "done": true
+  },
+  "warnings": []
+}

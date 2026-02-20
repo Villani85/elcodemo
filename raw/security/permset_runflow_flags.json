@@ -1,0 +1,60 @@
+{
+  "status": 0,
+  "result": {
+    "records": [
+      {
+        "attributes": {
+          "type": "PermissionSet",
+          "url": "/services/data/v65.0/sobjects/PermissionSet/0PSg5000003jSzJGAU"
+        },
+        "Id": "0PSg5000003jSzJGAU",
+        "Name": "CRIF_MOCK_Access",
+        "Label": "CRIF Mock Access",
+        "PermissionsRunFlow": false
+      },
+      {
+        "attributes": {
+          "type": "PermissionSet",
+          "url": "/services/data/v65.0/sobjects/PermissionSet/0PSg5000003jSuTGAU"
+        },
+        "Id": "0PSg5000003jSuTGAU",
+        "Name": "Quote_Operator",
+        "Label": "Quote Operator",
+        "PermissionsRunFlow": false
+      },
+      {
+        "attributes": {
+          "type": "PermissionSet",
+          "url": "/services/data/v65.0/sobjects/PermissionSet/0PSg5000003jSuUGAU"
+        },
+        "Id": "0PSg5000003jSuUGAU",
+        "Name": "Setup_Admin_Elco",
+        "Label": "Setup Admin Elco",
+        "PermissionsRunFlow": false
+      },
+      {
+        "attributes": {
+          "type": "PermissionSet",
+          "url": "/services/data/v65.0/sobjects/PermissionSet/0PSg5000003jSuVGAU"
+        },
+        "Id": "0PSg5000003jSuVGAU",
+        "Name": "TechSpec_Operator",
+        "Label": "TechSpec Operator",
+        "PermissionsRunFlow": false
+      },
+      {
+        "attributes": {
+          "type": "PermissionSet",
+          "url": "/services/data/v65.0/sobjects/PermissionSet/0PSg5000003jSuWGAU"
+        },
+        "Id": "0PSg5000003jSuWGAU",
+        "Name": "Visit_Operator",
+        "Label": "Visit Operator",
+        "PermissionsRunFlow": false
+      }
+    ],
+    "totalSize": 5,
+    "done": true
+  },
+  "warnings": []
+}

@@ -1,0 +1,16 @@
+{
+  "TechSpec_Operator": [
+    "Account_Tech_Spec__c.Category__c",
+    "Account_Tech_Spec__c.Parameter__c",
+    "Account_Tech_Spec__c.Value__c",
+    "Account_Tech_Spec__c.Account__c"
+  ],
+  "Visit_Operator": [
+    "Visit_Attendee__c.Contact__c",
+    "Visit_Attendee__c.Visit_Report__c",
+    "Visit_Report__c.Account__c",
+    "Visit_Report__c.Subject__c",
+    "Visit_Report__c.Visit_DateTime__c",
+    "Visit_Report__c.Visit_Type__c"
+  ]
+}

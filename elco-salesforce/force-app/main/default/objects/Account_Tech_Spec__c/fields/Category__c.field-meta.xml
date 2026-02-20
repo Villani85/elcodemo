@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+  <fullName>Category__c</fullName>
+  <label>Categoria</label>
+  <type>Picklist</type>
+  <required>true</required>
+  <valueSet>
+    <restricted>true</restricted>
+    <valueSetDefinition>
+      <sorted>false</sorted>
+      <value><fullName>Materiali</fullName><default>false</default><label>Materiali</label></value>
+      <value><fullName>Dimensioni &amp; Tolleranze</fullName><default>false</default><label>Dimensioni &amp; Tolleranze</label></value>
+      <value><fullName>Confezionamento / Imballo</fullName><default>false</default><label>Confezionamento / Imballo</label></value>
+      <value><fullName>Etichettatura</fullName><default>false</default><label>Etichettatura</label></value>
+      <value><fullName>Documentazione</fullName><default>false</default><label>Documentazione</label></value>
+      <value><fullName>Qualità &amp; Certificazioni</fullName><default>false</default><label>Qualità &amp; Certificazioni</label></value>
+      <value><fullName>Note Commerciali / Preferenze</fullName><default>false</default><label>Note Commerciali / Preferenze</label></value>
+    </valueSetDefinition>
+  </valueSet>
+</CustomField>
+

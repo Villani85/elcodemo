@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+  <fullName>ERP_Customer_Code__c</fullName>
+  <label>ERP Customer Code</label>
+  <type>Text</type>
+  <length>80</length>
+</CustomField>

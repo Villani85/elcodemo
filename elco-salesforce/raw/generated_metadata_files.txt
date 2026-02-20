@@ -1,0 +1,57 @@
+﻿
+FullName                                                                                                               
+--------                                                                                                               
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Account\fields\ERP_Customer_Code__c.field-meta.xml         
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Account\fields\Finish_Default__c.field-meta.xml            
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Account\fields\Prerequisiti_Note__c.field-meta.xml         
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Account\fields\Silkscreen_Default__c.field-meta.xml        
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Account\fields\Solder_Default__c.field-meta.xml            
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Account\fields\Spessore_Default__c.field-meta.xml          
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Account\fields\Tolleranze_Default__c.field-meta.xml        
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Account_Tech_Spec__c\Account_Tech_Spec__c.object-meta.xml  
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Account_Tech_Spec__c\fields\Account__c.field-meta.xml      
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Account_Tech_Spec__c\fields\Category__c.field-meta.xml     
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Account_Tech_Spec__c\fields\Is_Active__c.field-meta.xml    
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Account_Tech_Spec__c\fields\Notes__c.field-meta.xml        
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Account_Tech_Spec__c\fields\Parameter__c.field-meta.xml    
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Account_Tech_Spec__c\fields\Source__c.field-meta.xml       
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Account_Tech_Spec__c\fields\UoM__c.field-meta.xml          
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Account_Tech_Spec__c\fields\Value__c.field-meta.xml        
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Quote\fields\Anagrafica_Contatto__c.field-meta.xml         
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Quote\fields\Customer_Code_Snapshot__c.field-meta.xml      
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Quote\fields\Giorni_Consegna__c.field-meta.xml             
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Quote\fields\Inside_Sales__c.field-meta.xml                
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Quote\fields\Note_Special_Needs__c.field-meta.xml          
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Quote\fields\Num_Circuiti__c.field-meta.xml                
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Quote\fields\Purchase_Order__c.field-meta.xml              
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Quote\fields\Servizio_90_10__c.field-meta.xml              
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Quote\fields\Servizio__c.field-meta.xml                    
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Quote\fields\Trasporto__c.field-meta.xml                   
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\QuoteLineItem\fields\Customer_Circuit_Code__c.field-meta...
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\QuoteLineItem\fields\Dimensioni_Array__c.field-meta.xml    
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\QuoteLineItem\fields\Finish__c.field-meta.xml              
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\QuoteLineItem\fields\Internal_Circuit_Code__c.field-meta...
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\QuoteLineItem\fields\Materiale_Custom_Value__c.field-met...
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\QuoteLineItem\fields\Materiale__c.field-meta.xml           
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\QuoteLineItem\fields\Rame_Custom_Value__c.field-meta.xml   
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\QuoteLineItem\fields\Silkscreen_Specifico__c.field-meta.xml
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\QuoteLineItem\fields\Solder_Specifico__c.field-meta.xml    
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\QuoteLineItem\fields\Spessore_Complessivo__c.field-meta.xml
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\QuoteLineItem\fields\Spessore_Custom_Value__c.field-meta...
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\QuoteLineItem\fields\Spessore_Rame_Esterni__c.field-meta...
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\QuoteLineItem\fields\Tipologia_Prodotto__c.field-meta.xml  
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Visit_Attendee__c\Visit_Attendee__c.object-meta.xml        
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Visit_Attendee__c\fields\Contact__c.field-meta.xml         
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Visit_Attendee__c\fields\Email_Sent__c.field-meta.xml      
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Visit_Attendee__c\fields\Visit_Report__c.field-meta.xml    
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Visit_Report__c\Visit_Report__c.object-meta.xml            
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Visit_Report__c\fields\Account__c.field-meta.xml           
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Visit_Report__c\fields\FollowUp_Sent_On__c.field-meta.xml  
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Visit_Report__c\fields\FollowUp_Sent__c.field-meta.xml     
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Visit_Report__c\fields\Next_Steps__c.field-meta.xml        
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Visit_Report__c\fields\Subject__c.field-meta.xml           
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Visit_Report__c\fields\Summary__c.field-meta.xml           
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Visit_Report__c\fields\Visit_DateTime__c.field-meta.xml    
+D:\Elco Demo\elco-salesforce\force-app\main\default\objects\Visit_Report__c\fields\Visit_Type__c.field-meta.xml        
+
+

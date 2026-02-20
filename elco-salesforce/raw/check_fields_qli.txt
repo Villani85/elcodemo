@@ -1,0 +1,13 @@
+﻿Tipologia_Prodotto__c=False
+Materiale__c=False
+Materiale_Custom_Value__c=False
+Spessore_Complessivo__c=False
+Spessore_Custom_Value__c=False
+Spessore_Rame_Esterni__c=False
+Rame_Custom_Value__c=False
+Finish__c=False
+Solder_Specifico__c=False
+Silkscreen_Specifico__c=False
+Dimensioni_Array__c=False
+Internal_Circuit_Code__c=False
+Customer_Circuit_Code__c=False

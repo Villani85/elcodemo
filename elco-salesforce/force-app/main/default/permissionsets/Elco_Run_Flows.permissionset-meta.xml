@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+  <label>Elco - Run Flows</label>
+  <hasActivationRequired>false</hasActivationRequired>
+  <userPermissions>
+    <name>RunFlow</name>
+    <enabled>true</enabled>
+  </userPermissions>
+</PermissionSet>

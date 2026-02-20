@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+  <label>Setup Admin Elco</label>
+  <hasActivationRequired>false</hasActivationRequired>
+
+  <userPermissions>
+    <name>ViewSetup</name>
+    <enabled>true</enabled>
+  </userPermissions>
+
+  <userPermissions>
+    <name>ViewRoles</name>
+    <enabled>true</enabled>
+  </userPermissions>
+
+  <userPermissions>
+    <name>CustomizeApplication</name>
+    <enabled>true</enabled>
+  </userPermissions>
+
+  <userPermissions>
+    <name>ManageCustomPermissions</name>
+    <enabled>true</enabled>
+  </userPermissions>
+
+  <userPermissions>
+    <name>ManageTranslation</name>
+    <enabled>true</enabled>
+  </userPermissions>
+</PermissionSet>

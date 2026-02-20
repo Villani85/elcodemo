@@ -1,0 +1,26 @@
+{
+  "Quote_Operator": {
+    "expected_count": 30,
+    "current_count": 30,
+    "missing_count": 0,
+    "extra_count": 0,
+    "missing_fields": [],
+    "extra_fields": []
+  },
+  "Visit_Operator": {
+    "expected_count": 5,
+    "current_count": 5,
+    "missing_count": 0,
+    "extra_count": 0,
+    "missing_fields": [],
+    "extra_fields": []
+  },
+  "TechSpec_Operator": {
+    "expected_count": 4,
+    "current_count": 4,
+    "missing_count": 0,
+    "extra_count": 0,
+    "missing_fields": [],
+    "extra_fields": []
+  }
+}

@@ -1,0 +1,1 @@
+﻿FeatureLicense query failed with exit code 1

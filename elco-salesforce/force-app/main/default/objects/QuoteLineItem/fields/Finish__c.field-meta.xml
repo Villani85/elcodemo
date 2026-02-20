@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+  <fullName>Finish__c</fullName>
+  <label>Finish</label>
+  <type>Picklist</type>
+  <valueSet>
+    <restricted>true</restricted>
+    <valueSetDefinition>
+      <sorted>false</sorted>
+      <value><fullName>HASL</fullName><default>false</default><label>HASL</label></value>
+      <value><fullName>HASL Lead Free</fullName><default>false</default><label>HASL Lead Free</label></value>
+      <value><fullName>ENIG</fullName><default>false</default><label>ENIG</label></value>
+      <value><fullName>ENEPIG</fullName><default>false</default><label>ENEPIG</label></value>
+      <value><fullName>OSP</fullName><default>false</default><label>OSP</label></value>
+      <value><fullName>Immersion Silver</fullName><default>false</default><label>Immersion Silver</label></value>
+      <value><fullName>Immersion Tin</fullName><default>false</default><label>Immersion Tin</label></value>
+      <value><fullName>Hard Gold</fullName><default>false</default><label>Hard Gold</label></value>
+      <value><fullName>Custom</fullName><default>false</default><label>Custom</label></value>
+    </valueSetDefinition>
+  </valueSet>
+</CustomField>
+

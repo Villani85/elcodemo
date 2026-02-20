@@ -1,0 +1,172 @@
+================================================================================
+REQUIRED FIELDS FLS - AUDIT DETERMINISTICO COMPLETATO
+================================================================================
+
+ORG: elco-dev
+DATA: 2026-02-20
+STATO: ✅ CHIUSO - NESSUNA AZIONE RICHIESTA
+
+================================================================================
+DOMANDA INIZIALE
+================================================================================
+
+La mancanza di FieldPermissions su campi required (Visit/TechSpec) è:
+  A) Solo un limite di deploy (Metadata API)
+  B) Un problema reale che blocca gli operatori
+
+================================================================================
+RISPOSTA (VERIFICATA CON TEST DETERMINISTICI)
+================================================================================
+
+✅ OPZIONE A: È SOLO UN LIMITE DI DEPLOY (METADATA API)
+
+Gli operatori con Permission Sets appropriati POSSONO creare/modificare record
+con campi required, anche senza FieldPermissions esplicite.
+
+================================================================================
+TEST ESEGUITI
+================================================================================
+
+Test User:
+  - Username: elco.operator.test.20260220163243@example.com
+  - Profile: Standard User
+  - Permission Sets: Visit_Operator, TechSpec_Operator, Elco_Run_Flows
+
+Test Method:
+  - Security.stripInaccessible(AccessType.CREATABLE, ...) + DML
+  - System.runAs(testUser) per simulare operatore non-admin
+  - Test Apex class: RequiredFlsSecurityTest.cls (Deploy ID: 0Afg5000004EgzZCAS)
+
+Test Results:
+┌─────────────────────┬──────────────────────────────┬─────────┬──────────────┐
+│ Oggetto             │ Campi Required Testati       │ Insert  │ Campi Rimossi│
+├─────────────────────┼──────────────────────────────┼─────────┼──────────────┤
+│ Visit_Report__c     │ Account__c, Subject__c,      │ ✅ SÌ   │ NESSUNO      │
+│                     │ Visit_DateTime__c,           │         │              │
+│                     │ Visit_Type__c (4)            │         │              │
+├─────────────────────┼──────────────────────────────┼─────────┼──────────────┤
+│ Visit_Attendee__c   │ Visit_Report__c,             │ ✅ SÌ   │ NESSUNO      │
+│                     │ Contact__c (2)               │         │              │
+├─────────────────────┼──────────────────────────────┼─────────┼──────────────┤
+│ Account_Tech_Spec__c│ Account__c, Category__c,     │ ✅ SÌ   │ NESSUNO      │
+│                     │ Parameter__c, Value__c (4)   │         │              │
+└─────────────────────┴──────────────────────────────┴─────────┴──────────────┘
+
+TOTALE: 3/3 test passed (100% success rate)
+CAMPI REQUIRED BLOCCATI DA FLS: 0/10
+
+================================================================================
+SOLUZIONE APPLICATA (DETERMINISTICA)
+================================================================================
+
+1. ✅ Aggiornato scripts/expected_fields.py
+   - Aggiunto exclude_required=True per filtrare campi required da audit FLS
+   - Logic: escludi campi con <required>true</required> o type=MasterDetail
+
+2. ✅ Rigenerato FLS diff
+   - Quote_Operator: 30/30 campi (100%) ✅
+   - Visit_Operator: 5/5 campi (100%) ✅ (era 5/11 → esclusi 6 required)
+   - TechSpec_Operator: 4/4 campi (100%) ✅ (era 4/8 → esclusi 4 required)
+
+3. ✅ Documentazione aggiornata
+   - org_state.md: Audit 3 aggiunto (Required Fields FLS - Verifica Reale)
+   - struttura.md: Security baseline aggiornato (100% coverage finale)
+   - raw/security_required_fls/remediation_summary.md: analisi completa
+
+================================================================================
+FLS COVERAGE FINALE (CAMPI DEPLOYABILI)
+================================================================================
+
+┌────────────────────┬──────────┬──────────┬──────────┐
+│ Permission Set     │ Expected │ Deployed │ Coverage │
+├────────────────────┼──────────┼──────────┼──────────┤
+│ Quote_Operator     │    30    │    30    │  100% ✅ │
+│ Visit_Operator     │     5    │     5    │  100% ✅ │
+│ TechSpec_Operator  │     4    │     4    │  100% ✅ │
+└────────────────────┴──────────┴──────────┴──────────┘
+
+================================================================================
+CAMPI REQUIRED ESCLUSI DA AUDIT (MA VERIFICATI OPERATIVI)
+================================================================================
+
+Visit_Report__c (4):
+  - Account__c (Lookup required)
+  - Subject__c (Text required)
+  - Visit_DateTime__c (DateTime required)
+  - Visit_Type__c (Picklist required)
+
+Visit_Attendee__c (2):
+  - Visit_Report__c (MasterDetail)
+  - Contact__c (Lookup required)
+
+Account_Tech_Spec__c (4):
+  - Account__c (Lookup required)
+  - Category__c (Picklist required)
+  - Parameter__c (Picklist required)
+  - Value__c (Text required)
+
+TOTALE: 10 campi required esclusi da expected FLS, ma verificati OK via test.
+
+================================================================================
+FILE CREATI
+================================================================================
+
+Test artifacts:
+  - raw/security_required_fls/org_display.json
+  - raw/security_required_fls/create_user.json
+  - raw/security_required_fls/create_account.json
+  - raw/security_required_fls/create_contact.json
+  - raw/security_required_fls/psa_visit.json
+  - raw/security_required_fls/psa_techspec.json
+  - raw/security_required_fls/psa_runflows.json
+  - raw/security_required_fls/required_fls_security_test.log
+  - raw/security_required_fls/test_results_full.json
+  - raw/security_required_fls/required_fls_report.json
+
+Audit updates:
+  - raw/security_required_fls/expected_fields_regenerated.log
+  - raw/security_required_fls/fls_diff_clean.log
+  - raw/security_required_fls/remediation_summary.md
+
+Test class deployata:
+  - elco-salesforce/force-app/main/default/classes/RequiredFlsSecurityTest.cls
+  - elco-salesforce/force-app/main/default/classes/RequiredFlsSecurityTest.cls-meta.xml
+
+Docs aggiornati:
+  - org_state.md (Audit 3 aggiunto, P1 status aggiornato)
+  - struttura.md (Security baseline aggiornato a 100% coverage)
+
+Script aggiornati:
+  - scripts/expected_fields.py (exclude_required=True)
+
+================================================================================
+RACCOMANDAZIONI FINALI
+================================================================================
+
+1. ✅ ACCETTARE STATO CORRENTE
+   I campi required non necessitano di FieldPermissions esplicite nei Permission Sets.
+   Test deterministici hanno verificato che gli operatori POSSONO creare/modificare
+   record con campi required.
+
+2. ✅ MANTENERE AUDIT SCRIPTS AGGIORNATI
+   Usare exclude_required=True in future FLS audits per evitare falsi negativi.
+
+3. ✅ DOCUMENTARE PER RIFERIMENTO FUTURO
+   Salvare raw/security_required_fls/remediation_summary.md per future security reviews.
+
+4. ⚠️  MONITORARE RELEASE FUTURE
+   Se Salesforce cambia questo comportamento, ri-testare con RequiredFlsSecurityTest.cls.
+
+================================================================================
+STATO FINALE
+================================================================================
+
+Security Baseline P1: ✅ COMPLETATO
+  - RunFlow permission: ✅ OK (Elco_Run_Flows)
+  - FLS coverage: ✅ 100% (campi deployabili)
+  - Required fields: ✅ VERIFICATI OPERATIVI (test deterministici 100% pass rate)
+  - Operator access: ✅ CONFERMATO (Visit, TechSpec objects)
+
+NESSUNA AZIONE AGGIUNTIVA RICHIESTA.
+
+================================================================================

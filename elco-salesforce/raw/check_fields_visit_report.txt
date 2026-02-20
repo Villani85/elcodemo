@@ -1,0 +1,8 @@
+﻿Account__c=True
+Subject__c=True
+Visit_DateTime__c=True
+Visit_Type__c=True
+Summary__c=False
+Next_Steps__c=False
+FollowUp_Sent__c=False
+FollowUp_Sent_On__c=False

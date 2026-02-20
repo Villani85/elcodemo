@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+  <label>CRIF Mock Access</label>
+  <hasActivationRequired>false</hasActivationRequired>
+
+  <externalCredentialPrincipalAccesses>
+    <enabled>true</enabled>
+    <!-- formato: ExternalCredentialName-ExternalCredentialParameterName -->
+    <externalCredentialPrincipal>CRIF_MOCK_EXT-NamedPrincipal</externalCredentialPrincipal>
+  </externalCredentialPrincipalAccesses>
+
+  <objectPermissions>
+    <object>UserExternalCredential</object>
+    <allowRead>true</allowRead>
+    <viewAllRecords>true</viewAllRecords>
+    <allowCreate>false</allowCreate>
+    <allowEdit>false</allowEdit>
+    <allowDelete>false</allowDelete>
+    <modifyAllRecords>false</modifyAllRecords>
+  </objectPermissions>
+</PermissionSet>

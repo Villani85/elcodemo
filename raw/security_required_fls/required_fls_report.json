@@ -1,0 +1,61 @@
+{
+  "testDate": "2026-02-20",
+  "testUser": "elco.operator.test@example.com",
+  "testUserProfile": "Standard User",
+  "permissionSetsAssigned": [
+    "Visit_Operator",
+    "TechSpec_Operator",
+    "Elco_Run_Flows"
+  ],
+  "testResults": [
+    {
+      "objectName": "Visit_Report__c",
+      "requiredFields": [
+        "Account__c",
+        "Subject__c",
+        "Visit_DateTime__c",
+        "Visit_Type__c"
+      ],
+      "requiredFieldsCount": 4,
+      "insertSuccess": true,
+      "removedFieldsByStripInaccessible": [],
+      "error": null,
+      "conclusion": "Required fields WITHOUT FieldPermissions - INSERT SUCCEEDED"
+    },
+    {
+      "objectName": "Visit_Attendee__c",
+      "requiredFields": [
+        "Visit_Report__c",
+        "Contact__c"
+      ],
+      "requiredFieldsCount": 2,
+      "insertSuccess": true,
+      "removedFieldsByStripInaccessible": [],
+      "error": null,
+      "conclusion": "Required fields WITHOUT FieldPermissions - INSERT SUCCEEDED"
+    },
+    {
+      "objectName": "Account_Tech_Spec__c",
+      "requiredFields": [
+        "Account__c",
+        "Category__c",
+        "Parameter__c",
+        "Value__c"
+      ],
+      "requiredFieldsCount": 4,
+      "insertSuccess": true,
+      "removedFieldsByStripInaccessible": [],
+      "error": null,
+      "conclusion": "Required fields WITHOUT FieldPermissions - INSERT SUCCEEDED"
+    }
+  ],
+  "summary": {
+    "totalTests": 3,
+    "successCount": 3,
+    "failureCount": 0,
+    "totalRequiredFieldsTested": 10,
+    "fieldsRemovedCount": 0,
+    "conclusion": "NO_IMPACT",
+    "finding": "The absence of FieldPermissions on required fields is a METADATA DEPLOY LIMITATION, not a runtime security issue. Operators with appropriate Permission Sets CAN create/edit records with required fields successfully."
+  }
+}

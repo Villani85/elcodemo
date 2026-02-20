@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sf org list:*)",
+      "Bash(sf org display:*)",
+      "Bash(sf project deploy:*)",
+      "Bash(sf org assign permset:*)",
+      "Bash(sf data query:*)",
+      "Bash(sf api request:*)",
+      "Bash(sf org open:*)",
+      "Bash(sf apex run test:*)",
+      "Bash(sf apex run:*)",
+      "Bash(python:*)",
+      "Bash(tee:*)",
+      "Bash(sf project retrieve start:*)"
+    ]
+  }
+}

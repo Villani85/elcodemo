@@ -1,0 +1,203 @@
+{
+  "Quote_Operator": [
+    {
+      "field": "Account.ERP_Customer_Code__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "Account.Finish_Default__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "Account.Prerequisiti_Note__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "Account.Silkscreen_Default__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "Account.Solder_Default__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "Account.Spessore_Default__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "Account.Tolleranze_Default__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "Quote.Anagrafica_Contatto__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "Quote.Customer_Code_Snapshot__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "Quote.Giorni_Consegna__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "Quote.Inside_Sales__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "Quote.Note_Special_Needs__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "Quote.Num_Circuiti__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "Quote.Purchase_Order__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "Quote.Servizio_90_10__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "Quote.Servizio__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "Quote.Trasporto__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "QuoteLineItem.Customer_Circuit_Code__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "QuoteLineItem.Dimensioni_Array__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "QuoteLineItem.Finish__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "QuoteLineItem.Internal_Circuit_Code__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "QuoteLineItem.Materiale_Custom_Value__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "QuoteLineItem.Materiale__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "QuoteLineItem.Rame_Custom_Value__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "QuoteLineItem.Silkscreen_Specifico__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "QuoteLineItem.Solder_Specifico__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "QuoteLineItem.Spessore_Complessivo__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "QuoteLineItem.Spessore_Custom_Value__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "QuoteLineItem.Spessore_Rame_Esterni__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "QuoteLineItem.Tipologia_Prodotto__c",
+      "readable": true,
+      "editable": true
+    }
+  ],
+  "Visit_Operator": [
+    {
+      "field": "Visit_Attendee__c.Email_Sent__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "Visit_Report__c.FollowUp_Sent_On__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "Visit_Report__c.FollowUp_Sent__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "Visit_Report__c.Next_Steps__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "Visit_Report__c.Summary__c",
+      "readable": true,
+      "editable": true
+    }
+  ],
+  "TechSpec_Operator": [
+    {
+      "field": "Account_Tech_Spec__c.Is_Active__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "Account_Tech_Spec__c.Notes__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "Account_Tech_Spec__c.Source__c",
+      "readable": true,
+      "editable": true
+    },
+    {
+      "field": "Account_Tech_Spec__c.UoM__c",
+      "readable": true,
+      "editable": true
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+﻿HAS_QUOTE=True
+HAS_QLI=True

@@ -1,0 +1,7 @@
+﻿Tolleranze_Default__c=False
+Solder_Default__c=False
+Silkscreen_Default__c=False
+Finish_Default__c=False
+Spessore_Default__c=False
+Prerequisiti_Note__c=False
+ERP_Customer_Code__c=False

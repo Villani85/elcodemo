@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+  <fullName>Trasporto__c</fullName>
+  <label>Trasporto</label>
+  <type>Picklist</type>
+  <valueSet>
+    <restricted>true</restricted>
+    <valueSetDefinition>
+      <sorted>false</sorted>
+      <value><fullName>A carico ELCO</fullName><default>false</default><label>A carico ELCO</label></value>
+      <value><fullName>A carico Cliente</fullName><default>false</default><label>A carico Cliente</label></value>
+      <value><fullName>Ritiro in sede</fullName><default>false</default><label>Ritiro in sede</label></value>
+      <value><fullName>Altro</fullName><default>false</default><label>Altro</label></value>
+    </valueSetDefinition>
+  </valueSet>
+</CustomField>
+

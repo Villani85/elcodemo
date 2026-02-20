@@ -1,0 +1,80 @@
+{
+  "status": 0,
+  "result": {
+    "records": [
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v65.0/sobjects/PermissionSetAssignment/0Pag5000004q1dhCAA"
+        },
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v65.0/sobjects/PermissionSet/0PSg5000003jSzJGAU"
+          },
+          "Name": "CRIF_MOCK_Access",
+          "PermissionsRunFlow": false
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v65.0/sobjects/PermissionSetAssignment/0Pag5000004qjV4CAI"
+        },
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v65.0/sobjects/PermissionSet/0PSg5000003jSuTGAU"
+          },
+          "Name": "Quote_Operator",
+          "PermissionsRunFlow": false
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v65.0/sobjects/PermissionSetAssignment/0Pag5000004qpx4CAA"
+        },
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v65.0/sobjects/PermissionSet/0PSg5000003jSuUGAU"
+          },
+          "Name": "Setup_Admin_Elco",
+          "PermissionsRunFlow": false
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v65.0/sobjects/PermissionSetAssignment/0Pag5000004qpx3CAA"
+        },
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v65.0/sobjects/PermissionSet/0PSg5000003jSuVGAU"
+          },
+          "Name": "TechSpec_Operator",
+          "PermissionsRunFlow": false
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v65.0/sobjects/PermissionSetAssignment/0Pag5000004qydiCAA"
+        },
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v65.0/sobjects/PermissionSet/0PSg5000003jSuWGAU"
+          },
+          "Name": "Visit_Operator",
+          "PermissionsRunFlow": false
+        }
+      }
+    ],
+    "totalSize": 5,
+    "done": true
+  },
+  "warnings": []
+}

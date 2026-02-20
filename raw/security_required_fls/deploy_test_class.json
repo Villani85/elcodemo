@@ -1,0 +1,12 @@
+{
+  "name": "InvalidProjectWorkspaceError",
+  "message": "D:\\Elco Demo does not contain a valid Salesforce DX project.",
+  "exitCode": 1,
+  "context": "DeployMetadata",
+  "stack": "InvalidProjectWorkspaceError: D:\\Elco Demo does not contain a valid Salesforce DX project.\n    at SfCommandError.from (file:///C:/Users/servi/AppData/Roaming/npm/node_modules/@salesforce/cli/node_modules/@salesforce/sf-plugins-core/lib/SfCommandError.js:48:16)\n    at DeployMetadata.catch (file:///C:/Users/servi/AppData/Roaming/npm/node_modules/@salesforce/cli/node_modules/@salesforce/sf-plugins-core/lib/sfCommand.js:332:47)\n    at DeployMetadata.catch (file:///C:/Users/servi/AppData/Roaming/npm/node_modules/@salesforce/cli/node_modules/@salesforce/plugin-deploy-retrieve/lib/commands/project/deploy/start.js:291:27)\n    at DeployMetadata._run (C:\\Users\\servi\\AppData\\Roaming\\npm\\node_modules\\@salesforce\\cli\\node_modules\\@oclif\\core\\lib\\command.js:186:29)\n    at async Config.runCommand (C:\\Users\\servi\\AppData\\Roaming\\npm\\node_modules\\@salesforce\\cli\\node_modules\\@oclif\\core\\lib\\config\\config.js:456:25)\n    at async run (C:\\Users\\servi\\AppData\\Roaming\\npm\\node_modules\\@salesforce\\cli\\node_modules\\@oclif\\core\\lib\\main.js:97:16)\n    at async file:///C:/Users/servi/AppData/Roaming/npm/node_modules/@salesforce/cli/bin/run.js:15:1",
+  "cause": "undefined",
+  "warnings": [],
+  "code": "InvalidProjectWorkspaceError",
+  "status": 1,
+  "commandName": "DeployMetadata"
+}

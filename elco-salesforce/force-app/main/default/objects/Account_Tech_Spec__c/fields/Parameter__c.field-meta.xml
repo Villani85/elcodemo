@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+  <fullName>Parameter__c</fullName>
+  <label>Parametro</label>
+  <type>Picklist</type>
+  <required>true</required>
+  <valueSet>
+    <controllingField>Category__c</controllingField>
+    <restricted>true</restricted>
+    <valueSetDefinition>
+      <sorted>false</sorted>
+      <value><fullName>Materiale principale</fullName><default>false</default><label>Materiale principale</label></value>
+      <value><fullName>Materiale alternativo</fullName><default>false</default><label>Materiale alternativo</label></value>
+      <value><fullName>Tg richiesto</fullName><default>false</default><label>Tg richiesto</label></value>
+      <value><fullName>Halogen free</fullName><default>false</default><label>Halogen free</label></value>
+      <value><fullName>UL requirement</fullName><default>false</default><label>UL requirement</label></value>
+      <value><fullName>Dimensione max (mm)</fullName><default>false</default><label>Dimensione max (mm)</label></value>
+      <value><fullName>Dimensione min (mm)</fullName><default>false</default><label>Dimensione min (mm)</label></value>
+      <value><fullName>Tolleranza dimensionale</fullName><default>false</default><label>Tolleranza dimensionale</label></value>
+      <value><fullName>Spessore target</fullName><default>false</default><label>Spessore target</label></value>
+      <value><fullName>Tolleranza spessore</fullName><default>false</default><label>Tolleranza spessore</label></value>
+      <value><fullName>Peso max</fullName><default>false</default><label>Peso max</label></value>
+      <value><fullName>Confezione primaria</fullName><default>false</default><label>Confezione primaria</label></value>
+      <value><fullName>Confezione secondaria</fullName><default>false</default><label>Confezione secondaria</label></value>
+      <value><fullName>Materiale busta</fullName><default>false</default><label>Materiale busta</label></value>
+      <value><fullName>Materiale scatola</fullName><default>false</default><label>Materiale scatola</label></value>
+      <value><fullName>Numero pezzi per busta</fullName><default>false</default><label>Numero pezzi per busta</label></value>
+      <value><fullName>Numero pezzi per scatola</fullName><default>false</default><label>Numero pezzi per scatola</label></value>
+      <value><fullName>Riempitivo</fullName><default>false</default><label>Riempitivo</label></value>
+      <value><fullName>Separazione pezzi</fullName><default>false</default><label>Separazione pezzi</label></value>
+      <value><fullName>Palletizzazione</fullName><default>false</default><label>Palletizzazione</label></value>
+      <value><fullName>Filmatura</fullName><default>false</default><label>Filmatura</label></value>
+      <value><fullName>Etichetta interna</fullName><default>false</default><label>Etichetta interna</label></value>
+      <value><fullName>Etichetta esterna</fullName><default>false</default><label>Etichetta esterna</label></value>
+      <value><fullName>Barcode</fullName><default>false</default><label>Barcode</label></value>
+      <value><fullName>QR code</fullName><default>false</default><label>QR code</label></value>
+      <value><fullName>Etichetta cliente</fullName><default>false</default><label>Etichetta cliente</label></value>
+      <value><fullName>Packing list</fullName><default>false</default><label>Packing list</label></value>
+      <value><fullName>Certificato conformità</fullName><default>false</default><label>Certificato conformità</label></value>
+      <value><fullName>Certificato materiali</fullName><default>false</default><label>Certificato materiali</label></value>
+      <value><fullName>Report test</fullName><default>false</default><label>Report test</label></value>
+      <value><fullName>Altro documento</fullName><default>false</default><label>Altro documento</label></value>
+      <value><fullName>ISO richiesto</fullName><default>false</default><label>ISO richiesto</label></value>
+      <value><fullName>RoHS</fullName><default>false</default><label>RoHS</label></value>
+      <value><fullName>REACH</fullName><default>false</default><label>REACH</label></value>
+      <value><fullName>ITAR</fullName><default>false</default><label>ITAR</label></value>
+      <value><fullName>Altro requisito qualità</fullName><default>false</default><label>Altro requisito qualità</label></value>
+      <value><fullName>Lotto minimo</fullName><default>false</default><label>Lotto minimo</label></value>
+      <value><fullName>Lead time preferito</fullName><default>false</default><label>Lead time preferito</label></value>
+      <value><fullName>Incoterm</fullName><default>false</default><label>Incoterm</label></value>
+      <value><fullName>Trasporto preferito</fullName><default>false</default><label>Trasporto preferito</label></value>
+      <value><fullName>Note aggiuntive</fullName><default>false</default><label>Note aggiuntive</label></value>
+    </valueSetDefinition>
+    <valueSettings><controllingFieldValue>Materiali</controllingFieldValue><valueName>Materiale principale</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Materiali</controllingFieldValue><valueName>Materiale alternativo</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Materiali</controllingFieldValue><valueName>Tg richiesto</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Materiali</controllingFieldValue><valueName>Halogen free</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Materiali</controllingFieldValue><valueName>UL requirement</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Dimensioni &amp; Tolleranze</controllingFieldValue><valueName>Dimensione max (mm)</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Dimensioni &amp; Tolleranze</controllingFieldValue><valueName>Dimensione min (mm)</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Dimensioni &amp; Tolleranze</controllingFieldValue><valueName>Tolleranza dimensionale</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Dimensioni &amp; Tolleranze</controllingFieldValue><valueName>Spessore target</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Dimensioni &amp; Tolleranze</controllingFieldValue><valueName>Tolleranza spessore</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Dimensioni &amp; Tolleranze</controllingFieldValue><valueName>Peso max</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Confezionamento / Imballo</controllingFieldValue><valueName>Confezione primaria</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Confezionamento / Imballo</controllingFieldValue><valueName>Confezione secondaria</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Confezionamento / Imballo</controllingFieldValue><valueName>Materiale busta</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Confezionamento / Imballo</controllingFieldValue><valueName>Materiale scatola</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Confezionamento / Imballo</controllingFieldValue><valueName>Numero pezzi per busta</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Confezionamento / Imballo</controllingFieldValue><valueName>Numero pezzi per scatola</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Confezionamento / Imballo</controllingFieldValue><valueName>Riempitivo</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Confezionamento / Imballo</controllingFieldValue><valueName>Separazione pezzi</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Confezionamento / Imballo</controllingFieldValue><valueName>Palletizzazione</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Confezionamento / Imballo</controllingFieldValue><valueName>Filmatura</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Etichettatura</controllingFieldValue><valueName>Etichetta interna</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Etichettatura</controllingFieldValue><valueName>Etichetta esterna</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Etichettatura</controllingFieldValue><valueName>Barcode</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Etichettatura</controllingFieldValue><valueName>QR code</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Etichettatura</controllingFieldValue><valueName>Etichetta cliente</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Documentazione</controllingFieldValue><valueName>Packing list</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Documentazione</controllingFieldValue><valueName>Certificato conformità</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Documentazione</controllingFieldValue><valueName>Certificato materiali</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Documentazione</controllingFieldValue><valueName>Report test</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Documentazione</controllingFieldValue><valueName>Altro documento</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Qualità &amp; Certificazioni</controllingFieldValue><valueName>ISO richiesto</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Qualità &amp; Certificazioni</controllingFieldValue><valueName>RoHS</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Qualità &amp; Certificazioni</controllingFieldValue><valueName>REACH</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Qualità &amp; Certificazioni</controllingFieldValue><valueName>ITAR</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Qualità &amp; Certificazioni</controllingFieldValue><valueName>Altro requisito qualità</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Note Commerciali / Preferenze</controllingFieldValue><valueName>Lotto minimo</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Note Commerciali / Preferenze</controllingFieldValue><valueName>Lead time preferito</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Note Commerciali / Preferenze</controllingFieldValue><valueName>Incoterm</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Note Commerciali / Preferenze</controllingFieldValue><valueName>Trasporto preferito</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Note Commerciali / Preferenze</controllingFieldValue><valueName>Note aggiuntive</valueName></valueSettings>
+  </valueSet>
+</CustomField>
+

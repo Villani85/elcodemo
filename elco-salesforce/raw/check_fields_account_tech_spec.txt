@@ -1,0 +1,8 @@
+﻿Account__c=True
+Category__c=True
+Parameter__c=True
+Value__c=True
+UoM__c=False
+Source__c=False
+Notes__c=False
+Is_Active__c=False

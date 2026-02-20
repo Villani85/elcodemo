@@ -1,0 +1,3 @@
+﻿Visit_Report__c=True
+Contact__c=True
+Email_Sent__c=False

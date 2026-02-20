@@ -1,0 +1,7 @@
+﻿FOUND|Account
+FOUND|Contact
+FOUND|Opportunity
+MISSING|Quote
+MISSING|QuoteLineItem
+FOUND|Pricebook2
+FOUND|Product2

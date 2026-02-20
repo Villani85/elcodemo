@@ -1,0 +1,47 @@
+{
+  "Quote_Operator": [
+    "Account.ERP_Customer_Code__c",
+    "Account.Finish_Default__c",
+    "Account.Prerequisiti_Note__c",
+    "Account.Silkscreen_Default__c",
+    "Account.Solder_Default__c",
+    "Account.Spessore_Default__c",
+    "Account.Tolleranze_Default__c",
+    "Quote.Anagrafica_Contatto__c",
+    "Quote.Customer_Code_Snapshot__c",
+    "Quote.Giorni_Consegna__c",
+    "Quote.Inside_Sales__c",
+    "Quote.Note_Special_Needs__c",
+    "Quote.Num_Circuiti__c",
+    "Quote.Purchase_Order__c",
+    "Quote.Servizio_90_10__c",
+    "Quote.Servizio__c",
+    "Quote.Trasporto__c",
+    "QuoteLineItem.Customer_Circuit_Code__c",
+    "QuoteLineItem.Dimensioni_Array__c",
+    "QuoteLineItem.Finish__c",
+    "QuoteLineItem.Internal_Circuit_Code__c",
+    "QuoteLineItem.Materiale_Custom_Value__c",
+    "QuoteLineItem.Materiale__c",
+    "QuoteLineItem.Rame_Custom_Value__c",
+    "QuoteLineItem.Silkscreen_Specifico__c",
+    "QuoteLineItem.Solder_Specifico__c",
+    "QuoteLineItem.Spessore_Complessivo__c",
+    "QuoteLineItem.Spessore_Custom_Value__c",
+    "QuoteLineItem.Spessore_Rame_Esterni__c",
+    "QuoteLineItem.Tipologia_Prodotto__c"
+  ],
+  "Visit_Operator": [
+    "Visit_Attendee__c.Email_Sent__c",
+    "Visit_Report__c.FollowUp_Sent_On__c",
+    "Visit_Report__c.FollowUp_Sent__c",
+    "Visit_Report__c.Next_Steps__c",
+    "Visit_Report__c.Summary__c"
+  ],
+  "TechSpec_Operator": [
+    "Account_Tech_Spec__c.Is_Active__c",
+    "Account_Tech_Spec__c.Notes__c",
+    "Account_Tech_Spec__c.Source__c",
+    "Account_Tech_Spec__c.UoM__c"
+  ]
+}

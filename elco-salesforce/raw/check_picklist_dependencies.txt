@@ -1,0 +1,3 @@
+﻿QLI.Materiale__c.controllingFieldDefinitionId=QuoteLineItem.00Ng500000AAB0B
+QLI.Spessore_Complessivo__c.controllingFieldDefinitionId=QuoteLineItem.00Ng500000AAB0O
+TechSpec.Parameter__c.controllingFieldDefinitionId=01Ig5000001ONsX.00Ng500000AAAzl

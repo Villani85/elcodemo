@@ -1,0 +1,10 @@
+﻿Inside_Sales__c=False
+Num_Circuiti__c=False
+Giorni_Consegna__c=False
+Servizio__c=False
+Servizio_90_10__c=False
+Note_Special_Needs__c=False
+Trasporto__c=False
+Anagrafica_Contatto__c=False
+Purchase_Order__c=False
+Customer_Code_Snapshot__c=False
