@@ -1,0 +1,15 @@
+{
+  "status": 0,
+  "result": {
+    "id": "00Dg5000005Sp7zEAC",
+    "apiVersion": "65.0",
+    "accessToken": "00Dg5000005Sp7z!AQEAQEShSYL9FVZCwsJ_RA_YN0UwCzeddXEJOZdA_SvUtuxQtO6syhzTy.2n.7BF0rECs2B79Rdkv5aqKHLoFviMpbi.8Squ",
+    "instanceUrl": "https://orgfarm-ebbb80388b-dev-ed.develop.my.salesforce.com",
+    "username": "giuseppe.villani101020.b5bd075bbc5f@agentforce.com",
+    "clientId": "PlatformCLI",
+    "connectedStatus": "Connected",
+    "alias": "elco-dev"
+  },
+  "warnings": [
+  ]
+}

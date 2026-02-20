@@ -1,0 +1,47 @@
+{
+  "fields": [
+    { "api": "Partita_IVA__c", "label": "Partita IVA", "type": "Text", "length": 20, "createOnlyIfMissingInOrg": true },
+
+    { "api": "CRIF_Stato_Attivita__c", "label": "Stato attività (CRIF)", "type": "Picklist", "restricted": true,
+      "values": ["Attiva","Cessata","Inattiva/Sospesa","In Liquidazione","In Procedura (Concorsuale/Insolvenza)","Sconosciuto/Non disponibile"]
+    },
+    { "api": "CRIF_Fatturato__c", "label": "Fatturato (CRIF)", "type": "Currency", "precision": 18, "scale": 2 },
+    { "api": "CRIF_Fatturato_Anno__c", "label": "Anno fatturato (CRIF)", "type": "Number", "precision": 4, "scale": 0 },
+    { "api": "CRIF_Numero_Dipendenti__c", "label": "Numero dipendenti (CRIF)", "type": "Number", "precision": 10, "scale": 0 },
+    { "api": "CRIF_EBITDA__c", "label": "EBITDA (CRIF)", "type": "Currency", "precision": 18, "scale": 2 },
+    { "api": "CRIF_Valore_Credito__c", "label": "Valore del Credito (Fido)", "type": "Currency", "precision": 18, "scale": 2 },
+
+    { "api": "CRIF_Last_Status__c", "label": "CRIF - Esito ultimo refresh", "type": "Picklist", "restricted": true,
+      "values": ["Success","Warning","Error","NotFound"]
+    },
+    { "api": "CRIF_Last_Refresh__c", "label": "CRIF - Ultimo aggiornamento", "type": "DateTime" },
+
+    { "api": "CRIF_VAT_Normalized__c", "label": "CRIF - VAT Normalized", "type": "Text", "length": 20 },
+    { "api": "CRIF_Company_Id__c", "label": "CRIF - Company Id", "type": "Text", "length": 100 },
+
+    { "api": "CRIF_Real_Estate_Lease_Score__c", "label": "CRIF - Real Estate Lease Score", "type": "Number", "precision": 6, "scale": 2 },
+    { "api": "CRIF_Factoring_Score__c", "label": "CRIF - Factoring Score", "type": "Number", "precision": 6, "scale": 2 },
+    { "api": "CRIF_DnB_Rating__c", "label": "CRIF - DnB Rating", "type": "Text", "length": 40 },
+
+    { "api": "CRIF_Has_Delinquency_Notices__c", "label": "CRIF - Presenza Protesti", "type": "Checkbox", "default": false },
+    { "api": "CRIF_Has_Negative_Notices__c", "label": "CRIF - Presenza Pregiudizievoli", "type": "Checkbox", "default": false },
+    { "api": "CRIF_Has_Bankruptcy_Notices__c", "label": "CRIF - Presenza Procedure concorsuali", "type": "Checkbox", "default": false },
+
+    { "api": "CRIF_Last_Http_Status__c", "label": "CRIF - HTTP status ultimo callout", "type": "Number", "precision": 3, "scale": 0 },
+    { "api": "CRIF_Correlation_Id__c", "label": "CRIF - Correlation Id", "type": "Text", "length": 120 },
+    { "api": "CRIF_Last_Error__c", "label": "CRIF - Messaggio errore ultimo callout", "type": "LongTextArea", "length": 32768, "visibleLines": 3 },
+    { "api": "CRIF_Last_Request_Timestamp__c", "label": "CRIF - Request timestamp", "type": "DateTime" },
+    { "api": "CRIF_Last_Response_Timestamp__c", "label": "CRIF - Response timestamp", "type": "DateTime" },
+    { "api": "CRIF_Last_Duration_ms__c", "label": "CRIF - Durata (ms)", "type": "Number", "precision": 10, "scale": 0 },
+    { "api": "CRIF_Last_Raw_JSON__c", "label": "CRIF - Raw JSON ultima risposta", "type": "LongTextArea", "length": 131072, "visibleLines": 3 },
+
+    { "api": "Admin_Fatturato_Effettivo__c", "label": "Fatturato effettivo", "type": "Currency", "precision": 18, "scale": 2 },
+    { "api": "Admin_Last_Status__c", "label": "Esito ultimo refresh amministrazione", "type": "Picklist", "restricted": true,
+      "values": ["Success","Warning","Error"]
+    },
+    { "api": "Admin_Last_Refresh__c", "label": "Ultimo aggiornamento amministrazione", "type": "DateTime" },
+
+    { "api": "Tableau_Customer_Key__c", "label": "Chiave filtro Tableau (cliente)", "type": "Text", "length": 80 },
+    { "api": "Tableau_Last_Data_Refresh__c", "label": "Ultimo refresh dati BI", "type": "DateTime" }
+  ]
+}

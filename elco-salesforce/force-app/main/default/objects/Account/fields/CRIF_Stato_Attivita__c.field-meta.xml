@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CRIF_Stato_Attivita__c</fullName>
+    <label>Stato attivitÃ  (CRIF)</label>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <value>
+                <fullName>Attiva</fullName>
+                <default>false</default>
+                <label>Attiva</label>
+            </value>
+            <value>
+                <fullName>Cessata</fullName>
+                <default>false</default>
+                <label>Cessata</label>
+            </value>
+            <value>
+                <fullName>Inattiva/Sospesa</fullName>
+                <default>false</default>
+                <label>Inattiva/Sospesa</label>
+            </value>
+            <value>
+                <fullName>In Liquidazione</fullName>
+                <default>false</default>
+                <label>In Liquidazione</label>
+            </value>
+            <value>
+                <fullName>In Procedura (Concorsuale/Insolvenza)</fullName>
+                <default>false</default>
+                <label>In Procedura (Concorsuale/Insolvenza)</label>
+            </value>
+            <value>
+                <fullName>Sconosciuto/Non disponibile</fullName>
+                <default>false</default>
+                <label>Sconosciuto/Non disponibile</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

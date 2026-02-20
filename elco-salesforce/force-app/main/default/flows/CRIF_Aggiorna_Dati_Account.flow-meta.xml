@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <description>CRIF P2 - Screen flow for Account quick action to refresh CRIF data</description>
+    <label>CRIF - Aggiorna Dati Account</label>
+    <interviewLabel>CRIF - Aggiorna Dati Account {!$Flow.CurrentDateTime}</interviewLabel>
+
+    <!-- ACTION CALLS -->
+    <actionCalls>
+        <name>Call_Core_Refresh</name>
+        <label>Call Core Refresh</label>
+        <locationX>176</locationX>
+        <locationY>350</locationY>
+        <actionName>CrifCoreRefreshInvocable</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Check_Refresh_Success</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>accountId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+
+    <!-- DECISIONS -->
+    <decisions>
+        <name>Check_Refresh_Success</name>
+        <label>Check Refresh Success</label>
+        <locationX>176</locationX>
+        <locationY>458</locationY>
+        <defaultConnector>
+            <targetReference>Screen_Error</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Failed</defaultConnectorLabel>
+        <rules>
+            <name>Success</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Call_Core_Refresh.success</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_Success</targetReference>
+            </connector>
+            <label>Success</label>
+        </rules>
+    </decisions>
+
+    <!-- SCREENS -->
+    <screens>
+        <name>Screen_Confirm</name>
+        <label>Screen Confirm</label>
+        <locationX>176</locationX>
+        <locationY>242</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Call_Core_Refresh</targetReference>
+        </connector>
+        <fields>
+            <name>Display_Message</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Aggiorna dati CRIF&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Questa azione aggiornerà i dati CRIF per questo Account utilizzando la Partita IVA.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Clicca su &lt;b&gt;Avanti&lt;/b&gt; per continuare.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Screen_Success</name>
+        <label>Screen Success</label>
+        <locationX>50</locationX>
+        <locationY>566</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Success_Message</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px; color: rgb(11, 122, 11);&quot;&gt;✓ Dati CRIF aggiornati con successo&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;I dati CRIF sono stati aggiornati. Ricarica la pagina per vedere le modifiche.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Screen_Error</name>
+        <label>Screen Error</label>
+        <locationX>308</locationX>
+        <locationY>566</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Error_Message</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px; color: rgb(194, 30, 30);&quot;&gt;✗ Errore durante l&apos;aggiornamento&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!Call_Core_Refresh.errorMessage}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+
+    <!-- START -->
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Screen_Confirm</targetReference>
+        </connector>
+    </start>
+
+    <!-- STATUS -->
+    <status>Active</status>
+
+    <!-- VARIABLES -->
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varSuccess</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varErrorMessage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

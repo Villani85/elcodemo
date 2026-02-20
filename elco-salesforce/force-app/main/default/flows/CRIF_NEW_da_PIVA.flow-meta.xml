@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <description>CRIF P2 - Global action screen flow to create new Account from P.IVA</description>
+    <label>CRIF - Crea Account da P.IVA</label>
+    <interviewLabel>CRIF - Crea Account da P.IVA {!$Flow.CurrentDateTime}</interviewLabel>
+
+    <!-- ACTION CALLS -->
+    <actionCalls>
+        <name>Call_Core_Refresh</name>
+        <label>Call Core Refresh</label>
+        <locationX>176</locationX>
+        <locationY>458</locationY>
+        <actionName>CrifCoreRefreshInvocable</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Check_Refresh_Success</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>accountId</name>
+            <value>
+                <elementReference>varNewAccountId</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+
+    <!-- DECISIONS -->
+    <decisions>
+        <name>Check_Refresh_Success</name>
+        <label>Check Refresh Success</label>
+        <locationX>176</locationX>
+        <locationY>566</locationY>
+        <defaultConnector>
+            <targetReference>Screen_Error</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Failed</defaultConnectorLabel>
+        <rules>
+            <name>Success</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Call_Core_Refresh.success</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_Success</targetReference>
+            </connector>
+            <label>Success</label>
+        </rules>
+    </decisions>
+
+    <!-- RECORD CREATES -->
+    <recordCreates>
+        <name>Create_Account</name>
+        <label>Create Account</label>
+        <locationX>176</locationX>
+        <locationY>350</locationY>
+        <assignRecordIdToReference>varNewAccountId</assignRecordIdToReference>
+        <connector>
+            <targetReference>Call_Core_Refresh</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>varAccountName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Partita_IVA__c</field>
+            <value>
+                <elementReference>varPIVA</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Account</object>
+    </recordCreates>
+
+    <!-- SCREENS -->
+    <screens>
+        <name>Screen_Input</name>
+        <label>Screen Input</label>
+        <locationX>176</locationX>
+        <locationY>242</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Create_Account</targetReference>
+        </connector>
+        <fields>
+            <name>Header_Text</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Crea nuovo Account da Partita IVA&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Inserisci la Partita IVA e il nome dell&apos;Account. I dati CRIF verranno recuperati automaticamente.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Input_PIVA</name>
+            <dataType>String</dataType>
+            <fieldText>Partita IVA</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+            <validationRule>
+                <errorMessage>Inserisci una Partita IVA valida (11 cifre o formato IT01234567890)</errorMessage>
+                <formulaExpression>OR(
+  LEN({!Input_PIVA}) = 11,
+  AND(
+    LEN({!Input_PIVA}) = 13,
+    LEFT({!Input_PIVA}, 2) = &quot;IT&quot;
+  )
+)</formulaExpression>
+            </validationRule>
+        </fields>
+        <fields>
+            <name>Input_Account_Name</name>
+            <dataType>String</dataType>
+            <fieldText>Nome Account</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Screen_Success</name>
+        <label>Screen Success</label>
+        <locationX>50</locationX>
+        <locationY>674</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Success_Message</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px; color: rgb(11, 122, 11);&quot;&gt;✓ Account creato con successo&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;L&apos;Account &lt;b&gt;{!varAccountName}&lt;/b&gt; è stato creato e i dati CRIF sono stati caricati.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Screen_Error</name>
+        <label>Screen Error</label>
+        <locationX>308</locationX>
+        <locationY>674</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Error_Message</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px; color: rgb(194, 30, 30);&quot;&gt;✗ Errore durante la creazione&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!Call_Core_Refresh.errorMessage}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+
+    <!-- ASSIGNMENTS -->
+    <assignments>
+        <name>Set_Variables</name>
+        <label>Set Variables</label>
+        <locationX>176</locationX>
+        <locationY>134</locationY>
+        <assignmentItems>
+            <assignToReference>varPIVA</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Input_PIVA</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varAccountName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Input_Account_Name</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Screen_Input</targetReference>
+        </connector>
+    </assignments>
+
+    <!-- START -->
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Set_Variables</targetReference>
+        </connector>
+    </start>
+
+    <!-- STATUS -->
+    <status>Active</status>
+
+    <!-- VARIABLES -->
+    <variables>
+        <name>varPIVA</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varAccountName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varNewAccountId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varSuccess</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varErrorMessage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

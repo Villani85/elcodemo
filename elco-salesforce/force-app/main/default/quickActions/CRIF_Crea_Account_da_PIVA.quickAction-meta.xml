@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Crea un nuovo Account partendo dalla Partita IVA e carica automaticamente i dati CRIF</description>
+    <flowDefinition>CRIF_NEW_da_PIVA</flowDefinition>
+    <label>Crea Account da P.IVA (CRIF)</label>
+    <optionsCreateFeedItem>false</optionsCreateFeedItem>
+    <type>Flow</type>
+</QuickAction>

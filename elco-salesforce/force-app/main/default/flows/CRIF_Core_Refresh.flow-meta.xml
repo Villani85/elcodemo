@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <description>CRIF P2 - Core logic to refresh Account with CRIF data. Autolaunched, reusable, testable.</description>
+    <label>CRIF - Core Refresh</label>
+
+    <!-- ACTION CALLS -->
+    <actionCalls>
+        <name>Call_CRIF_Mock_Search</name>
+        <label>Call CRIF Mock Search</label>
+        <locationX>50</locationX>
+        <locationY>350</locationY>
+        <actionName>CrifMockSearchInvocable</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Check_CRIF_Success</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>piva</name>
+            <value>
+                <elementReference>Get_Account.Partita_IVA__c</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>Call_JSON_Mapper</name>
+        <label>Call JSON Mapper</label>
+        <locationX>50</locationX>
+        <locationY>566</locationY>
+        <actionName>CrifSearchJsonMapper</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Update_Account_Fields</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>searchJson</name>
+            <value>
+                <elementReference>Call_CRIF_Mock_Search.searchJson</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>httpStatus</name>
+            <value>
+                <elementReference>Call_CRIF_Mock_Search.searchHttpStatus</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>vat11</name>
+            <value>
+                <elementReference>Call_CRIF_Mock_Search.vat11</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+
+    <!-- ASSIGNMENTS -->
+    <assignments>
+        <name>Set_Success</name>
+        <label>Set Success</label>
+        <locationX>50</locationX>
+        <locationY>782</locationY>
+        <assignmentItems>
+            <assignToReference>success</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Set_Error_No_PIVA</name>
+        <label>Set Error - No PIVA</label>
+        <locationX>308</locationX>
+        <locationY>350</locationY>
+        <assignmentItems>
+            <assignToReference>success</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>errorMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Account does not have Partita IVA</stringValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Set_Error_CRIF_Failed</name>
+        <label>Set Error - CRIF Failed</label>
+        <locationX>176</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>success</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>errorMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Call_CRIF_Mock_Search.error</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+
+    <!-- DECISIONS -->
+    <decisions>
+        <name>Check_PIVA_Present</name>
+        <label>Check PIVA Present</label>
+        <locationX>176</locationX>
+        <locationY>242</locationY>
+        <defaultConnector>
+            <targetReference>Set_Error_No_PIVA</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No PIVA</defaultConnectorLabel>
+        <rules>
+            <name>PIVA_Present</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Account.Partita_IVA__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Call_CRIF_Mock_Search</targetReference>
+            </connector>
+            <label>PIVA Present</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_CRIF_Success</name>
+        <label>Check CRIF Success</label>
+        <locationX>50</locationX>
+        <locationY>458</locationY>
+        <defaultConnector>
+            <targetReference>Set_Error_CRIF_Failed</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>CRIF Failed</defaultConnectorLabel>
+        <rules>
+            <name>CRIF_Success</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Call_CRIF_Mock_Search.searchHttpStatus</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>200.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Call_JSON_Mapper</targetReference>
+            </connector>
+            <label>CRIF Success</label>
+        </rules>
+    </decisions>
+
+    <!-- RECORD LOOKUPS -->
+    <recordLookups>
+        <name>Get_Account</name>
+        <label>Get Account</label>
+        <locationX>176</locationX>
+        <locationY>134</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_PIVA_Present</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Account</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+
+    <!-- RECORD UPDATES -->
+    <recordUpdates>
+        <name>Update_Account_Fields</name>
+        <label>Update Account Fields</label>
+        <locationX>50</locationX>
+        <locationY>674</locationY>
+        <connector>
+            <targetReference>Set_Success</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>CRIF_Company_Id__c</field>
+            <value>
+                <elementReference>Call_JSON_Mapper.companyId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>CRIF_DnB_Rating__c</field>
+            <value>
+                <elementReference>Call_JSON_Mapper.dnbRating</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>CRIF_EBITDA__c</field>
+            <value>
+                <elementReference>Call_JSON_Mapper.ebitda</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>CRIF_Factoring_Score__c</field>
+            <value>
+                <elementReference>Call_JSON_Mapper.factoringScore</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>CRIF_Fatturato__c</field>
+            <value>
+                <elementReference>Call_JSON_Mapper.fatturato</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>CRIF_Has_Bankruptcy_Notices__c</field>
+            <value>
+                <elementReference>Call_JSON_Mapper.hasBankruptcyNotices</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>CRIF_Has_Delinquency_Notices__c</field>
+            <value>
+                <elementReference>Call_JSON_Mapper.hasDelinquencyNotices</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>CRIF_Has_Negative_Notices__c</field>
+            <value>
+                <elementReference>Call_JSON_Mapper.hasNegativeNotices</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>CRIF_Last_Http_Status__c</field>
+            <value>
+                <elementReference>Call_CRIF_Mock_Search.searchHttpStatus</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>CRIF_Last_Raw_JSON__c</field>
+            <value>
+                <elementReference>Call_CRIF_Mock_Search.searchJson</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>CRIF_Last_Refresh__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>CRIF_Last_Status__c</field>
+            <value>
+                <elementReference>Call_JSON_Mapper.lastStatus</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>CRIF_Numero_Dipendenti__c</field>
+            <value>
+                <elementReference>Call_JSON_Mapper.numeroDipendenti</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>CRIF_Real_Estate_Lease_Score__c</field>
+            <value>
+                <elementReference>Call_JSON_Mapper.realEstateLeaseScore</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>CRIF_Stato_Attivita__c</field>
+            <value>
+                <elementReference>Call_JSON_Mapper.statoAttivita</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>CRIF_VAT_Normalized__c</field>
+            <value>
+                <elementReference>Call_CRIF_Mock_Search.vat11</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>CRIF_Valore_Credito__c</field>
+            <value>
+                <elementReference>Call_JSON_Mapper.valoreCredito</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Account</object>
+    </recordUpdates>
+
+    <!-- START -->
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Account</targetReference>
+        </connector>
+    </start>
+
+    <!-- STATUS -->
+    <status>Active</status>
+
+    <!-- VARIABLES -->
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>success</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <name>errorMessage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+</Flow>

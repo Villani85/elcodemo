@@ -1,0 +1,2 @@
+ »   Warning: schema sobject describe is not a sf command.
+ »   Error: Run sf help schema for a list of available commands.

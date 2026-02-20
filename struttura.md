@@ -90,7 +90,9 @@ Raw evidenze: `elco-salesforce/raw/`
 - `Visit_Operator` -> `Visit_Report__c`/`Visit_Attendee__c` + FLS campi visita deployabili (5/5 campi, **100%** coverage - campi required esclusi da audit, verificati OK via test).
 - `TechSpec_Operator` -> `Account_Tech_Spec__c` + FLS campi tech spec deployabili (4/4 campi, **100%** coverage - campi required esclusi da audit, verificati OK via test).
 - `Setup_Admin_Elco` -> permessi setup minimi per admin operativo.
-- `CRIF_MOCK_Access` -> External Credential Principal Access per integrazione CRIF Mock.
+- `CRIF_MOCK_Access` -> External Credential Principal Access per integrazione CRIF Mock (base).
+- `CRIF_Operator` -> Account Read/Edit + FLS campi CRIF business/scores/notices (NO raw JSON). External Credential Principal Access `CRIF_MOCK_EXT-NamedPrincipal`. Deploy ID: `0Afg5000004F389CAC`.
+- `CRIF_Admin` -> Come CRIF_Operator + FLS `CRIF_Last_Raw_JSON__c` + Admin fields editabili. External Credential Principal Access `CRIF_MOCK_EXT-NamedPrincipal`. Deploy ID: `0Afg5000004F389CAC`.
 - `Elco_Run_Flows` -> RunFlow permission per esecuzione Flows.
 - **Security Audit (2026-02-20 17:15)**: RunFlow permission missing ✅ risolto con `Elco_Run_Flows`.
 - **Required Fields FLS Verification (2026-02-20 17:45)**: ✅ Verificato con test deterministici che campi required FUNZIONANO senza FieldPermissions esplicite (limite Metadata API, non runtime security). Test class: `RequiredFlsSecurityTest.cls` (3/3 passed, 100% success rate).
@@ -103,7 +105,7 @@ Raw evidenze: `elco-salesforce/raw/`
 - **External Credential**: `CRIF_MOCK_EXT` (DeveloperName)
   - Label: "CRIF Mock External Credential"
   - Protocol: Custom
-  - Principal: `NamedPrincipal` (da popolare via UI con Username/Password)
+  - Principal: `NamedPrincipal` ✅ **CONFIGURATO E OPERATIVO** (smoketest 200/200)
 - **Named Credential**: `CRIF_MOCK` (DeveloperName)
   - Label: "CRIF Mock"
   - Type: SecuredEndpoint
@@ -169,11 +171,11 @@ Raw evidenze: `elco-salesforce/raw/`
 
 ### Gestione credenziali
 - **Metadata**: ExternalCredential + NamedCredential deployati via sf CLI
-- **Valori segreti (Username/Password)**: NON deployabili via CLI/API
-  - **FALLBACK UI obbligatorio**: vedi `scripts/CRIF_CREDENTIALS_UI_FALLBACK.md` per step click-by-click
-  - Endpoint Connect/REST API non disponibili in API v60-v65 per popolare principals
-  - Tentati 4+ endpoint diversi (tutti 404 o non supportati)
-- **Credenziali demo**:
+- **Valori segreti (Username/Password)**: ✅ **CONFIGURATI E OPERATIVI**
+  - **Smoketest End-to-End**: Token HTTP 200, Search HTTP 200 (vedi `raw/crif_p1/crif_invocable_smoketest_result.json`)
+  - Credenziali configurate su Principal `CRIF_MOCK_EXT-NamedPrincipal`
+  - Fallback UI disponibile: `scripts/CRIF_CREDENTIALS_UI_FALLBACK.md` (se necessario riconfigurare)
+- **Credenziali demo usate**:
   - Username: `test-user`
   - Password: `test-pass`
 
@@ -193,6 +195,73 @@ Raw evidenze: `elco-salesforce/raw/`
 
 ### Test results
 - Unit tests: 6/6 passed (100% pass rate)
-- Smoke test: fallito come previsto (credenziali non configurate via UI)
-  - Errore atteso: `"Field CRIF_MOCK_EXT.Username does not exist"`
-- Smoke test script: `scripts/crif_mock_smoketest.apex`
+- **Smoke test END-TO-END (P1)**: ✅ **PASS** (2026-02-20 20:09)
+  - Token HTTP Status: 200
+  - Search HTTP Status: 200
+  - VAT Normalized: 01234567890
+  - Error: null
+  - Script: `scripts/apex/crif_invocable_smoketest.apex`
+  - Log: `raw/crif_p1/crif_invocable_smoketest.log`
+  - Result JSON: `raw/crif_p1/crif_invocable_smoketest_result.json`
+
+---
+
+## CRIF P1 - Account Fields (2026-02-20 20:09)
+
+**29 campi custom** creati su Account per supportare integrazione CRIF + Admin/Zucchetti + Tableau/BI.
+
+**Deploy ID**: `0Afg5000004F2s1CAC` (Status: Succeeded)
+
+### Campi CRIF (23 fields)
+
+**Core Business**:
+- `Partita_IVA__c` (Text 20) - P.IVA italiana
+- `CRIF_Stato_Attivita__c` (Picklist) - Stato attività azienda
+- `CRIF_Fatturato__c` (Currency) - Fatturato CRIF
+- `CRIF_Fatturato_Anno__c` (Number 4,0) - Anno fatturato
+- `CRIF_Numero_Dipendenti__c` (Number 10,0) - Numero dipendenti
+- `CRIF_EBITDA__c` (Currency) - EBITDA
+- `CRIF_Valore_Credito__c` (Currency) - Valore del Credito (Fido consigliato)
+
+**ID e Normalizzazione**:
+- `CRIF_VAT_Normalized__c` (Text 20) - VAT normalizzata a 11 cifre
+- `CRIF_Company_Id__c` (Text 100) - Company ID CRIF
+
+**Scores e Rating**:
+- `CRIF_Real_Estate_Lease_Score__c` (Number 6,2) - Real Estate Lease Score
+- `CRIF_Factoring_Score__c` (Number 6,2) - Factoring Score
+- `CRIF_DnB_Rating__c` (Text 40) - DnB Rating
+
+**Notices (Checkbox)**:
+- `CRIF_Has_Delinquency_Notices__c` - Presenza Protesti
+- `CRIF_Has_Negative_Notices__c` - Presenza Pregiudizievoli
+- `CRIF_Has_Bankruptcy_Notices__c` - Presenza Procedure concorsuali
+
+**Status e Refresh**:
+- `CRIF_Last_Status__c` (Picklist) - Success/Warning/Error/NotFound
+- `CRIF_Last_Refresh__c` (DateTime) - Timestamp ultimo aggiornamento
+
+**Technical/Audit (visibili solo a CRIF_Admin o read-only per CRIF_Operator)**:
+- `CRIF_Last_Http_Status__c` (Number 3,0) - HTTP status ultimo callout
+- `CRIF_Correlation_Id__c` (Text 120) - Correlation ID
+- `CRIF_Last_Error__c` (LongTextArea 32k) - Messaggio errore ultimo callout
+- `CRIF_Last_Request_Timestamp__c` (DateTime) - Request timestamp
+- `CRIF_Last_Response_Timestamp__c` (DateTime) - Response timestamp
+- `CRIF_Last_Duration_ms__c` (Number 10,0) - Durata callout (ms)
+- `CRIF_Last_Raw_JSON__c` (LongTextArea 131k) - Raw JSON ultima risposta (solo CRIF_Admin)
+
+### Campi Amministrazione/Zucchetti (3 fields)
+- `Admin_Fatturato_Effettivo__c` (Currency) - Fatturato effettivo amministrazione
+- `Admin_Last_Status__c` (Picklist) - Success/Warning/Error
+- `Admin_Last_Refresh__c` (DateTime) - Ultimo refresh amministrazione
+
+### Campi Tableau/BI (2 fields)
+- `Tableau_Customer_Key__c` (Text 80) - Chiave filtro Tableau cliente
+- `Tableau_Last_Data_Refresh__c` (DateTime) - Ultimo refresh dati BI
+
+### Note implementative
+- Tutti i campi: `required=false` a livello metadata (obbligatorietà gestita da Flow/UX/Validation Rules)
+- Evita problemi FLS deploy e visibilità dinamica
+- Permission Sets: CRIF_Operator (NO raw JSON), CRIF_Admin (FULL access incluso raw JSON)
+
+---
