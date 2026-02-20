@@ -1,0 +1,5 @@
+Account=Account-Account Layout
+Opportunity=Opportunity-Opportunity Layout
+Quote=Quote-Quote Layout
+QuoteLineItem=QuoteLineItem-Quote Line Item Layout
+Visit_Report__c=Visit_Report__c-Report Visita Layout

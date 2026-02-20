@@ -1,0 +1,70 @@
+# P5 - Section G: Documentation Updates - COMPLETE
+
+**Date**: 2026-02-20
+**Status**: ✅ Complete
+
+---
+
+## Files Created
+
+### org_state.md
+**Location**: `./org_state.md`
+**Purpose**: Track Salesforce org state, deployment history, and metadata inventory
+
+**Content**:
+- Org connection details (elco-dev, API v65.0)
+- P5 deployment history
+  - Layouts enhanced (5 layouts)
+  - Quick Actions added (8 total, 2 deployed successfully)
+  - Field sections (61 fields, all pre-existing)
+  - FlexiPage Account_360 (manual setup required)
+- Custom objects (Account_Tech_Spec__c, Visit_Report__c)
+- Outstanding items and notes
+
+### struttura.md
+**Location**: `./struttura.md`
+**Purpose**: Document project structure, scripts, and implementation phases
+
+**Content**:
+- Directory structure tree
+- Metadata types inventory:
+  - FlexiPages (Account_360 with 4-tab structure)
+  - Layouts (5 enhanced layouts)
+  - Quick Actions (8 actions across 4 objects)
+- P5 implementation scripts documentation:
+  - select_layouts.py (deterministic selection logic)
+  - patch_layout_actions.py (platformActionList patching)
+  - patch_layout_fields.py (layoutSections patching)
+- Custom objects documentation
+- Technical notes (API version, XML namespace, platformActionList structure)
+- Known issues and workarounds
+- Future enhancements
+
+---
+
+## /mnt/data Check
+
+**Result**: Directory does not exist
+**Action**: No files copied to /mnt/data (per spec: "if exists")
+
+---
+
+## Summary
+
+Section G completed successfully. Both documentation files created in project root with comprehensive P5 implementation details, including:
+- Deployment results (3/5 layouts succeeded, 2 failed with duplicate detection)
+- FlexiPage manual setup requirement
+- All custom field sections already present in org
+- Script documentation and technical notes
+- Outstanding items and recommendations
+
+**Files Created**: 2
+- ./org_state.md (107 lines)
+- ./struttura.md (245 lines)
+
+**Total Documentation**: 352 lines of comprehensive project and org state documentation
+
+---
+
+**Section G Status**: ✅ COMPLETE
+**Next Section**: H (Git Operations - Optional)

@@ -1,0 +1,44 @@
+# P5 - Layout Deployment Status
+
+## Deployment Summary
+- **Deploy ID**: 0Afg5000004FJ3GCAW
+- **Status**: Partial Success (3/5 layouts)
+- **Timestamp**: $(date)
+
+## Successful Deployments
+✓ Quote-Quote Layout
+✓ QuoteLineItem-Quote Line Item Layout  
+✓ Visit_Report__c-Report Visita Layout
+
+## Failed Deployments
+✗ Account-Account Layout
+  Error: duplicate value found: PlatformActionListId duplicates value on record with id: 0Jog50000040ZoiCAE
+  
+✗ Opportunity-Opportunity Layout
+  Error: duplicate value found: PlatformActionListId duplicates value on record with id: 0Jog50000040Zp2CAE
+
+## Analysis
+The Quick Actions appear to already exist in the org's Account and Opportunity layouts,
+possibly from a previous deployment attempt. The org is rejecting duplicate PlatformActionListItem records.
+
+## Actions Added (Intended)
+Account Layout:
+- Account.CRIF_Aggiorna_Dati
+- Account.CRIF_Storico
+- Account.Storico_Offerte
+- Account.Gestisci_Specifiche_Tecniche
+- Account.Crea_Report_Visita
+
+Opportunity Layout:
+- Opportunity.Crea_Offerta
+
+Quote Layout:
+- Quote.Aggiungi_Riga_Offerta ✓ Deployed
+
+Visit_Report__c Layout:
+- Visit_Report__c.Invia_Followup ✓ Deployed
+
+## Next Steps
+Need to verify if Account and Opportunity Quick Actions are already present in org via UI.
+If yes, deployment is effectively complete.
+If no, need alternative approach to add these actions.
