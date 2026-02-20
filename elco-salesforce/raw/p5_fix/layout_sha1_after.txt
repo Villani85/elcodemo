@@ -1,0 +1,2 @@
+Account-Account Layout.layout-meta.xml sha1=f3b8f1ed97549d04fccdf395dc16993fcc5e7d2d bytes=17424
+Opportunity-Opportunity Layout.layout-meta.xml sha1=d37265d928f8af06026c7bfdd384ee1210a748e4 bytes=13948

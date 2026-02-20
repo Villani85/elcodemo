@@ -1,0 +1,9 @@
+Component Failures [2]
+┌────────┬────────────────────────────────┬──────────────────────────────────────────┬─────────────┐
+│ Type   │ Name                           │ Problem                                  │ Line:Column │
+├────────┼────────────────────────────────┼──────────────────────────────────────────┼─────────────┤
+│ Layout │ Account-Account Layout         │ Required fields are missing: [SortOrder] │             │
+│ Layout │ Opportunity-Opportunity Layout │ Required fields are missing: [SortOrder] │             │
+└────────┴────────────────────────────────┴──────────────────────────────────────────┴─────────────┘
+
+

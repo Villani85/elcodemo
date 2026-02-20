@@ -1,0 +1,26 @@
+MISSING Account.CRIF_Aggiorna_Dati
+MISSING Account.CRIF_Storico
+MISSING Account.Storico_Offerte
+MISSING Account.Gestisci_Specifiche_Tecniche
+MISSING Account.Crea_Report_Visita
+MISSING Opportunity.Crea_Offerta
+
+## Verification Summary
+
+All 6 required Quick Actions are MISSING from the org layouts:
+- Account.CRIF_Aggiorna_Dati ❌
+- Account.CRIF_Storico ❌
+- Account.Storico_Offerte ❌
+- Account.Gestisci_Specifiche_Tecniche ❌
+- Account.Crea_Report_Visita ❌
+- Opportunity.Crea_Offerta ❌
+
+This confirms that deployment failure is NOT due to actions already existing.
+The "duplicate PlatformActionListId" error appears to be a Salesforce metadata API limitation or bug.
+
+## Conclusion
+
+Cannot deploy Account and Opportunity layouts with Quick Actions via metadata API.
+Layouts must be updated manually via UI (Lightning App Builder) as a workaround.
+
+See raw/p6/deploy_errors.txt for detailed analysis.

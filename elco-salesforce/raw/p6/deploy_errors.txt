@@ -1,0 +1,50 @@
+# Layout Deployment Errors (P6)
+
+## Deployment Attempts
+
+### Attempt 1 (Initial)
+- Deploy ID: 0Afg5000004FPNCCA4
+- Result: FAILED  
+- Account Layout Error: duplicate value found: PlatformActionListId duplicates value on record with id: 0Jog50000040ZyOCAU
+- Opportunity Layout Error: duplicate value found: PlatformActionListId duplicates value on record with id: 0Jog50000040ZyiCAE
+
+### Attempt 2 (After normalization - removed SendEmail duplicate)
+- Deploy ID: 0Afg5000004FMKUCA4
+- Result: FAILED
+- Account Layout Error: duplicate value found: PlatformActionListId duplicates value on record with id: 0Jog50000040a5aCAA
+- Opportunity Layout Error: duplicate value found: PlatformActionListId duplicates value on record with id: 0Jog50000040a5tCAA
+
+## Analysis
+
+### Root Cause
+The Quick Actions we're trying to add to the layouts (Account.CRIF_Aggiorna_Dati, Account.CRIF_Storico, Account.Storico_Offerte, Account.Gestisci_Specifiche_Tecniche, Account.Crea_Report_Visita, Opportunity.Crea_Offerta) appear to already be associated with these layouts in the Salesforce org, but they do NOT appear in the metadata XML when layouts are retrieved via `sf project retrieve`.
+
+### Evidence
+1. Quick Actions are deployed to org (verified via quickActions deploy - all showed "Unchanged")
+2. Retrieved layout XML does NOT contain these custom Quick Actions in platformActionList
+3. When we add these actions to platformActionList and attempt deployment, Salesforce rejects with "duplicate PlatformActionListId" errors
+4. Error IDs (0Jog...) are different each attempt, suggesting Salesforce tries to create new records
+5. Unmodified layout (without our custom actions) deploys successfully
+6. Cannot query PlatformActionListItem via SOQL/Tooling API (not supported)
+
+### Hypothesis
+The Quick Actions are already assigned to the layouts through a mechanism not reflected in the standard metadata retrieve operation. Possible causes:
+- Actions added via UI previously
+- Actions deployed in earlier iteration but not committed to source control
+- Salesforce metadata API limitation in retrieving certain platformActionListItems
+- Internal Salesforce record tracking prevents duplicate action assignments
+
+### Attempted Solutions
+1. ✗ Normalize layouts - removed duplicate SendEmail items
+2. ✗ Deploy with explicit namespace handling  
+3. ✗ Re-retrieve fresh layouts from org
+4. ✗ Deploy Quick Actions first to ensure they exist
+5. ✗ Query for existing PlatformActionListItem records (not supported)
+
+## Conclusion
+
+Unable to deploy Account and Opportunity layouts via metadata API due to Salesforce detecting duplicate PlatformActionListId values. The actions appear to already exist on the layouts in the org despite not showing in retrieved metadata.
+
+## Recommendation
+
+Proceed with verification (Section F) to check if actions are actually present in the org UI/runtime, even though deployment fails. If actions are present and functional, deployment failure can be accepted as the desired state is already achieved.

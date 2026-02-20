@@ -1,0 +1,2 @@
+force-app/main/default/layouts/Account-Account Layout.layout-meta.xml | bytes=16300 | sha1=7b91704c34d69fa269951211cb73c4a33188746a
+force-app/main/default/layouts/Opportunity-Opportunity Layout.layout-meta.xml | bytes=13446 | sha1=915c921b8375a93322d7c156dc658d10bf948b93

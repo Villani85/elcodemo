@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
     <excludeButtons>Submit</excludeButtons>
     <layoutSections>
@@ -176,8 +176,8 @@
                 <customLink>Billing</customLink>
             </layoutItems>
         </layoutColumns>
-        <layoutColumns/>
-        <layoutColumns/>
+        <layoutColumns />
+        <layoutColumns />
         <style>CustomLinks</style>
     </layoutSections>
     <platformActionList>
@@ -322,7 +322,7 @@
             <actionType>ProductivityAction</actionType>
             <sortOrder>27</sortOrder>
         </platformActionListItems>
-    </platformActionList>
+    <platformActionListItems><actionName>Account.CRIF_Aggiorna_Dati</actionName><actionType>QuickAction</actionType><sortOrder>28</sortOrder></platformActionListItems><platformActionListItems><actionName>Account.CRIF_Storico</actionName><actionType>QuickAction</actionType><sortOrder>29</sortOrder></platformActionListItems><platformActionListItems><actionName>Account.Storico_Offerte</actionName><actionType>QuickAction</actionType><sortOrder>30</sortOrder></platformActionListItems><platformActionListItems><actionName>Account.Gestisci_Specifiche_Tecniche</actionName><actionType>QuickAction</actionType><sortOrder>31</sortOrder></platformActionListItems><platformActionListItems><actionName>Account.Crea_Report_Visita</actionName><actionType>QuickAction</actionType><sortOrder>32</sortOrder></platformActionListItems></platformActionList>
     <quickActionList>
         <quickActionListItems>
             <quickActionName>FeedItem.TextPost</quickActionName>

@@ -513,3 +513,305 @@ Implementazione completa dei flussi applicativi per l'integrazione CRIF, inclusi
 
 ---
 
+## OFFERTA P3 - Quote Management Flows & Actions (2026-02-20) - ✅ COMPLETED
+
+### Objective
+Implementazione completa dei flussi applicativi per la gestione Quote, inclusi creazione offerta, aggiunta righe con loop multi-riga, e storico offerte searchable.
+
+### Components Deployed
+
+#### 1. Flows (3)
+
+**Screen Flow - Quote Creation:**
+- **Quote_Crea_Offerta** (`force-app/main/default/flows/Quote_Crea_Offerta.flow-meta.xml`)
+  - Flow per Quick Action su Opportunity
+  - Prerequisite gating: Verifica campi default Account (Tolleranze, Solder, Silkscreen, Finish, Spessore)
+  - UI: Blocco con errore se prerequisiti mancanti → Screen raccolta dati Quote → Success
+  - Pricebook determination: Usa Pricebook2Id di Opportunity se presente, altrimenti Standard Price Book (01sg50000028RoIAAU)
+  - Quote fields collected: Inside_Sales, Num_Circuiti, Giorni_Consegna, Servizio, Servizio_90_10, Trasporto, Anagrafica_Contatto, Purchase_Order, Note_Special_Needs, Customer_Code_Snapshot
+  - Quote name format: "Offerta - {Opp.Name} - {CurrentDate}"
+  - Deploy ID: **0Afg5000004FCmXCAW**
+  - Status: **Active**, deployed
+
+**Screen Flow - Add Quote Line Items:**
+- **Quote_Aggiungi_Riga_Offerta** (`force-app/main/default/flows\Quote_Aggiungi_Riga_Offerta.flow-meta.xml`)
+  - Flow per Quick Action su Quote
+  - Multi-row loop capability: Checkbox "Aggiungi un'altra riga dopo questa"
+  - UI: Screen input QLI fields → Create QLI → Loop if checkbox → Success (con count)
+  - QuoteLineItem fields: Quantity (required), Tipologia_Prodotto (required), Dimensioni_Array, Customer_Circuit_Code
+  - Hardcoded PricebookEntryId: 01ug5000000mmbpAAA (PCB Custom, UnitPrice=0)
+  - Picklists inline: Tipologia_Prodotto (Rigido/Flessibile/Rigido-Flessibile)
+  - Deploy ID: **0Afg5000004FD2fCAG**
+  - Status: **Active**, deployed
+
+**Screen Flow - Quote Search/History:**
+- **Quote_Storico_Offerte** (`force-app/main/default/flows/Quote_Storico_Offerte.flow-meta.xml`)
+  - Flow per Global Action + Account Quick Action
+  - Search criteria: Purchase Order o Customer Code (radio buttons)
+  - UI: Input search type + value → Query Quotes → Results/No Results screen
+  - Query logic: Contains match on Purchase_Order__c or Customer_Code_Snapshot__c
+  - Results ordered by CreatedDate DESC
+  - Deploy ID: **0Afg5000004FEYDCA4**
+  - Status: **Active**, deployed
+
+#### 2. Quick Actions (4)
+
+**Opportunity Quick Action:**
+- **Opportunity.Crea_Offerta** (`force-app/main/default/quickActions/Opportunity.Crea_Offerta.quickAction-meta.xml`)
+  - Label: "Crea Offerta"
+  - Invoca flow: Quote_Crea_Offerta
+  - Type: Flow
+  - Status: **Deployed**
+
+**Quote Quick Action:**
+- **Quote.Aggiungi_Riga_Offerta** (`force-app/main/default/quickActions/Quote.Aggiungi_Riga_Offerta.quickAction-meta.xml`)
+  - Label: "Aggiungi Riga Offerta"
+  - Invoca flow: Quote_Aggiungi_Riga_Offerta
+  - Type: Flow
+  - Status: **Deployed**
+
+**Account Quick Action:**
+- **Account.Storico_Offerte** (`force-app/main/default/quickActions/Account.Storico_Offerte.quickAction-meta.xml`)
+  - Label: "Storico Offerte"
+  - Invoca flow: Quote_Storico_Offerte
+  - Type: Flow
+  - Status: **Deployed**
+
+**Global Quick Action:**
+- **Storico_Offerte** (`force-app/main/default/quickActions/Storico_Offerte.quickAction-meta.xml`)
+  - Label: "Storico Offerte"
+  - Invoca flow: Quote_Storico_Offerte
+  - Type: Flow
+  - Status: **Deployed**
+
+### Deployment Log
+
+| Section | Component | Deploy ID | Status | Timestamp |
+|---------|-----------|-----------|--------|-----------|
+| C | Quote_Crea_Offerta | 0Afg5000004FCmXCAW | ✅ Succeeded | 2026-02-20 |
+| D | Quote_Aggiungi_Riga_Offerta | 0Afg5000004FD2fCAG | ✅ Succeeded | 2026-02-20 |
+| E | Quote_Storico_Offerte | 0Afg5000004FEYDCA4 | ✅ Succeeded | 2026-02-20 |
+| F | 4 Quick Actions | 0Afg5000004FEbRCAW | ✅ Succeeded | 2026-02-20 |
+
+### Smoketest ✅ PASS
+- **Script**: `scripts/apex/offerta_p3_smoketest.apex`
+- **Execution Time**: 537ms
+- **Status**: **PASSED** ✓
+- **Records Created**:
+  - Account: 001g500000CBugaAAD (with prerequisites: Tolleranze=Standard, Solder=Verde, Silkscreen=Bianco, Finish=HASL, Spessore=1.6 mm)
+  - Opportunity: 006g5000001qTOjAAM (linked to Account, Pricebook2Id=01sg50000028RoIAAU)
+  - Quote: 0Q0g50000004kU5CAI (QuoteNumber: 00000003, PO=PO-TEST-1771618984902)
+  - QuoteLineItem: 0QLg500000079HtGAI (Quantity=100, Tipologia=Rigido, Dimensioni=100x150)
+- **Validation**: All records queried back successfully with correct field values
+- **E2E JSON**: Complete data structure serialized and validated
+
+### Artifacts & Logs
+- `raw/offerta_p3/org_display.json` - Org info
+- `raw/offerta_p3/standard_pricebook.json` - Standard Price Book verification (01sg50000028RoIAAU)
+- `raw/offerta_p3/pcb_product.json` - PCB Custom product verification (01tg50000031n1lAAA)
+- `raw/offerta_p3/pcb_pbe.json` - PricebookEntry verification (01ug5000000mmbpAAA, UnitPrice=0)
+- `raw/offerta_p3/pbid.txt`, `pbeid.txt`, `prodid.txt` - Reference IDs
+- `raw/offerta_p3/deploy_flow_quote_create.log` - Quote creation flow deployment
+- `raw/offerta_p3/deploy_flow_quote_addline_v3.log` - Add line flow deployment (final)
+- `raw/offerta_p3/deploy_flow_quote_storico.log` - Storico flow deployment
+- `raw/offerta_p3/deploy_actions.log` - All actions deployment
+- `raw/offerta_p3/smoketest_results_final.log` - Smoketest execution log
+
+### Key Design Decisions
+
+1. **Prerequisite Gating**: Quote_Crea_Offerta verifica che Account abbia tutti i 5 campi default popolati prima di permettere la creazione Quote. Questo previene errori downstream.
+
+2. **Hardcoded IDs**: Pricebook2Id (01sg50000028RoIAAU) e PricebookEntryId (01ug5000000mmbpAAA) sono hardcoded per garantire determinismo e idempotenza. Questi IDs sono stabili nell'org.
+
+3. **Multi-row Loop Pattern**: Quote_Aggiungi_Riga_Offerta usa un checkbox "Aggiungi un'altra riga" con loop back allo screen, permettendo input di N righe in una singola sessione flow senza dover riaprire il flow.
+
+4. **Simplified Search**: Quote_Storico_Offerte cerca solo su campi Quote-level (Purchase_Order, Customer_Code_Snapshot) per evitare complessità di query su QuoteLineItem. Future enhancement potrebbe aggiungere search su circuit codes via subquery.
+
+5. **Picklist Values**: Tutti i picklists usano valori reali dall'org (es. "Verde" non "Green", "1.6 mm" non "1.6", "Rigido" non "Standard").
+
+### Next Steps (User Actions Required)
+
+1. **Add Quick Actions to Page Layouts**:
+   - Opportunity page layout: Add "Crea Offerta" quick action
+   - Quote page layout: Add "Aggiungi Riga Offerta" quick action
+   - Account page layout: Add "Storico Offerte" quick action
+   - Global actions: Add "Storico Offerte" to utility bar
+
+2. **Add Quote Fields to Layouts**:
+   - Quote layout: Add custom fields (Inside_Sales, Num_Circuiti, Giorni_Consegna, Servizio, Trasporto, Purchase_Order, Customer_Code_Snapshot, etc.)
+   - QuoteLineItem layout: Add custom fields (Tipologia_Prodotto, Dimensioni_Array, Customer_Circuit_Code, etc.)
+
+3. **Test Complete Flow via UI**:
+   - Navigate to Opportunity → Click "Crea Offerta" → Complete flow
+   - Navigate to created Quote → Click "Aggiungi Riga Offerta" → Add multiple rows
+   - Use "Storico Offerte" global action to search quotes
+
+4. **Training**: Train users on new Quote management functionality and flows
+
+### Known Limitations
+
+- **Dependent Picklists**: Materiale__c, Spessore_Complessivo__c, and other dependent fields excluded from Quote_Aggiungi_Riga_Offerta to avoid validation errors. Users can edit these via standard Quote Line Item edit.
+- **Search Scope**: Quote_Storico_Offerte only searches Quote-level fields, not circuit codes in QuoteLineItems.
+- **Datatable Component**: flowruntime:datatable component not used in results screen due to type mapping requirements; users see basic success message instead.
+
+---
+
+## P4 - TechSpec + Visite + Follow-up (2026-02-20) - ✅ COMPLETED
+
+### Objective
+Implementazione completa dei flussi applicativi per la gestione delle specifiche tecniche Account, report di visita, e follow-up email post-visita.
+
+### Components Deployed
+
+#### 1. Apex Invocable - Email Follow-up
+- **VisitFollowupEmailInvocable** (`force-app/main/default/classes/VisitFollowupEmailInvocable.cls`)
+  - Invocable per invio follow-up email ai partecipanti visita
+  - Input: visitReportId, subject, bodyText
+  - Output: recipientsTotal, recipientsWithEmail, sentCount, skippedNoEmailCount, errorMessage
+  - Security features:
+    - Preview destinatari prima dell'invio
+    - Invio solo a contatti con Email valorizzata
+    - Tracking su Visit_Report__c (FollowUp_Sent__c, FollowUp_Sent_On__c)
+    - Tracking su Visit_Attendee__c (Email_Sent__c)
+  - Test coverage: **100%** (2 test methods)
+  - Test class: `VisitFollowupEmailInvocableTest.cls`
+  - Deploy ID: **0Afg5000004FGi5CAG**
+
+#### 2. Screen Flows (3)
+
+**TechSpec Management:**
+- **Gestisci_Specifiche_Tecniche** (`force-app/main/default/flows/Gestisci_Specifiche_Tecniche.flow-meta.xml`)
+  - Flow per Quick Action su Account
+  - Actions: Create nuova specifica, List specifiche attive
+  - UI: Radio buttons scelta azione → Branch (Create/List) → Success
+  - Create path: Input Category + Value + Notes → Create Account_Tech_Spec__c (Is_Active=true)
+  - List path: Info screen con link a Related List
+  - Deploy ID: **0Afg5000004FH4fCAG**
+  - Status: **Active**, deployed
+
+**Visit Report Creation:**
+- **Crea_Report_Visita** (`force-app/main/default/flows/Crea_Report_Visita.flow-meta.xml`)
+  - Flow per Quick Action su Account
+  - UI: Input visit data → Create Visit_Report__c → Success (con ID report)
+  - Fields collected: Subject, Visit_DateTime, Visit_Type, Summary, Next_Steps
+  - Visit_Type picklist values: Visita, Teams, Attività, Altro
+  - Note: Attendee selection via Related List (post-creazione report)
+  - Deploy ID: **0Afg5000004FD7WCAW**
+  - Status: **Active**, deployed
+
+**Visit Follow-up Email:**
+- **Invia_Followup_Visita** (`force-app/main/default/flows/Invia_Followup_Visita.flow-meta.xml`)
+  - Flow per Quick Action su Visit_Report__c
+  - UI: Preview screen con formulas per default subject/body → Apex call → Success/Error screen
+  - Default formulas:
+    - Subject: "Follow-up visita - {Visit_DateTime}"
+    - Body: Italian template con Summary e Next_Steps
+  - Action call: VisitFollowupEmailInvocable
+  - Error handling: Decision Check_Error con 2 paths (Success/Error screens)
+  - Success screen mostra: sentCount, skippedNoEmailCount
+  - Deploy ID: **0Afg5000004FHMPCA4**
+  - Status: **Active**, deployed
+
+#### 3. Quick Actions (3)
+
+**Account Quick Actions (2):**
+- **Account.Gestisci_Specifiche_Tecniche** (`force-app/main/default/quickActions/Account.Gestisci_Specifiche_Tecniche.quickAction-meta.xml`)
+  - Label: "Gestisci Specifiche Tecniche"
+  - Invoca flow: Gestisci_Specifiche_Tecniche
+  - Type: Flow
+  - Deploy ID: **0Afg5000004FHPdCAO**
+  - Status: **Deployed**
+
+- **Account.Crea_Report_Visita** (`force-app/main/default/quickActions/Account.Crea_Report_Visita.quickAction-meta.xml`)
+  - Label: "Crea Report Visita"
+  - Invoca flow: Crea_Report_Visita
+  - Type: Flow
+  - Deploy ID: **0Afg5000004FHRFCA4**
+  - Status: **Deployed**
+
+**Visit_Report__c Quick Action (1):**
+- **Visit_Report__c.Invia_Followup** (`force-app/main/default/quickActions/Visit_Report__c.Invia_Followup.quickAction-meta.xml`)
+  - Label: "Invia Follow-up"
+  - Invoca flow: Invia_Followup_Visita
+  - Type: Flow
+  - Deploy ID: **0Afg5000004FHUTCA4**
+  - Status: **Deployed**
+
+#### 4. Permission Set Update
+- **Visit_Operator** (`force-app/main/default/permissionsets/Visit_Operator.permissionset-meta.xml`)
+  - Added user permissions:
+    - `EditTask` (required dependency)
+    - `EmailSingle` (send individual emails from Apex)
+  - Deploy ID: **0Afg5000004FIQXCA4**
+  - Status: **Changed** (from P1 baseline)
+
+### Deployment Log
+
+| Section | Component | Deploy ID | Status | Timestamp |
+|---------|-----------|-----------|--------|-----------|
+| B | VisitFollowupEmailInvocable + Test | 0Afg5000004FGi5CAG | ✅ Succeeded | 2026-02-20 |
+| C | Gestisci_Specifiche_Tecniche Flow | 0Afg5000004FH4fCAG | ✅ Succeeded | 2026-02-20 |
+| D | Crea_Report_Visita Flow | 0Afg5000004FD7WCAW | ✅ Succeeded | 2026-02-20 |
+| E | Invia_Followup_Visita Flow | 0Afg5000004FHMPCA4 | ✅ Succeeded | 2026-02-20 |
+| F | 3 Quick Actions | 0Afg5000004FHPdCAO, 0Afg5000004FHRFCA4, 0Afg5000004FHUTCA4 | ✅ Succeeded | 2026-02-20 |
+| G | Visit_Operator (EmailSingle) | 0Afg5000004FIQXCA4 | ✅ Succeeded | 2026-02-20 |
+
+### Smoketest ✅ PASS
+- **Script**: `scripts/apex/p4_smoketest_followup.apex`
+- **Status**: **PASSED** ✓
+- **Records Created**:
+  - Account: 001g500000CCKIbAAP (Test ACME Corp)
+  - Visit_Report__c: a02g5000005alS9AAI (Subject: Test Follow-up Flow, Visit_Type: Visita)
+  - Contact: 2 test contacts (test1@example.com, test2@example.com)
+  - Visit_Attendee__c: 2 attendees linked to visit report
+- **Validation**: All P4 objects created successfully with correct relationships
+- **E2E**: Complete data model verified (Account → Visit_Report → Visit_Attendee → Contact)
+
+### Artifacts & Logs
+- `raw/p4/org_display.json` - Org info
+- `raw/p4/deploy_followup_invocable.log` - Apex Invocable deployment
+- `raw/p4/deploy_flow_techspec.log` - TechSpec flow deployment
+- `raw/p4/deploy_flow_visit_create.log` - Visit creation flow deployment
+- `raw/p4/deploy_flow_followup.log` - Follow-up flow deployment
+- `raw/p4/deploy_qa_techspec.log` - TechSpec action deployment
+- `raw/p4/deploy_qa_visit_create.log` - Visit creation action deployment
+- `raw/p4/deploy_qa_followup.log` - Follow-up action deployment
+- `raw/p4/deploy_permset_visit_op.log` - Permission set update
+- `raw/p4/smoketest_followup.log` - Smoketest execution log
+
+### Key Design Decisions
+
+1. **Email Security**: VisitFollowupEmailInvocable implementa preview destinatari con counts separati (recipientsTotal, recipientsWithEmail, skipped) per trasparenza pre-invio.
+
+2. **Simplified TechSpec Flow**: Gestisci_Specifiche_Tecniche offre solo Create/List actions (no Edit/Deactivate) per ridurre complessità UI e focus su operazioni core.
+
+3. **Attendee Post-Creation**: Crea_Report_Visita non include selezione attendee nel flow; gli attendee vengono aggiunti via Related List dopo creazione report per UX più pulita.
+
+4. **Italian Templates**: Default email subject/body in italiano con formulas che includono visit data (Summary, Next_Steps) per professionalità email.
+
+5. **Permission Dependency**: EmailSingle richiede EditTask come prerequisito Salesforce; entrambi aggiunti a Visit_Operator per supportare email send.
+
+### Next Steps (User Actions Required)
+
+1. **Add Quick Actions to Page Layouts**:
+   - Account page layout: Add "Gestisci Specifiche Tecniche" e "Crea Report Visita" quick actions
+   - Visit_Report__c page layout: Add "Invia Follow-up" quick action
+
+2. **Configure Email Templates** (optional):
+   - Customize default email subject/body formulas in Invia_Followup_Visita flow se necessario
+   - Add company logo/footer to email templates
+
+3. **Test Complete Flow via UI**:
+   - Navigate to Account → Click "Crea Report Visita" → Complete flow
+   - Add attendees to Visit Report via Related List
+   - Click "Invia Follow-up" on Visit_Report → Preview and send
+
+4. **Training**: Train users on Visit Report creation and follow-up email workflow
+
+### Known Limitations
+
+- **Simplified TechSpec UI**: Edit e Deactivate actions omessi dal flow per ridurre complessità; users possono editare via standard edit page
+- **Attendee Selection**: Non in flow; requires manual add via Related List post-report creation
+- **Email Templates**: Basic text-only templates; HTML rich text non supportato in current implementation
+
+---

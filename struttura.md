@@ -265,3 +265,115 @@ Raw evidenze: `elco-salesforce/raw/`
 - Permission Sets: CRIF_Operator (NO raw JSON), CRIF_Admin (FULL access incluso raw JSON)
 
 ---
+
+## P4 - TechSpec + Visite + Follow-up (2026-02-20)
+
+### Componenti deployati
+
+#### 1. Apex Classes (2 + 2 test)
+- **VisitFollowupEmailInvocable** (`force-app/main/default/classes/VisitFollowupEmailInvocable.cls`)
+  - **Deploy ID**: `0Afg5000004FGi5CAG` (Status: Succeeded)
+  - **Flow Action**: "Visite - Invia Follow-up Email"
+  - **Input**: `visitReportId` (Id), `subject` (String), `bodyText` (String)
+  - **Output**: `recipientsTotal`, `recipientsWithEmail`, `sentCount`, `skippedNoEmailCount`, `errorMessage`
+  - **Features**:
+    - Preview destinatari con counts dettagliati pre-invio
+    - Invio solo a Contact con Email valorizzata
+    - Tracking automatico su Visit_Report__c (`FollowUp_Sent__c`, `FollowUp_Sent_On__c`)
+    - Tracking automatico su Visit_Attendee__c (`Email_Sent__c`)
+    - Error handling completo con messages
+  - **Test class**: `VisitFollowupEmailInvocableTest.cls` (100% coverage, 2 test methods)
+
+#### 2. Screen Flows (3)
+
+**Gestisci Specifiche Tecniche**:
+- `Gestisci_Specifiche_Tecniche.flow-meta.xml`
+- **Deploy ID**: `0Afg5000004FH4fCAG` (Active)
+- **Quick Action**: Account.Gestisci_Specifiche_Tecniche
+- **UI Flow**:
+  1. Screen Choose Action: Radio buttons (Crea nuova specifica | Mostra elenco specifiche attive)
+  2. Branch Action:
+     - CREATE path: Screen input (Category, Value, Notes) → Create Account_Tech_Spec__c (Is_Active=true) → Success
+     - LIST path: Info screen con link a Related List
+- **Simplified**: Solo Create/List (no Edit/Deactivate per ridurre complessità)
+
+**Crea Report Visita**:
+- `Crea_Report_Visita.flow-meta.xml`
+- **Deploy ID**: `0Afg5000004FD7WCAW` (Active)
+- **Quick Action**: Account.Crea_Report_Visita
+- **UI Flow**:
+  1. Screen Visit Data: Input (Subject, Visit_DateTime, Visit_Type, Summary, Next_Steps)
+  2. Create Visit_Report__c linked to Account
+  3. Success screen con newVisitReportId
+- **Visit_Type picklist**: Visita | Teams | Attività | Altro
+- **Note**: Attendee selection via Related List post-creazione
+
+**Invia Follow-up Visita**:
+- `Invia_Followup_Visita.flow-meta.xml`
+- **Deploy ID**: `0Afg5000004FHMPCA4` (Active)
+- **Quick Action**: Visit_Report__c.Invia_Followup
+- **UI Flow**:
+  1. Get Visit_Report__c (query visit data)
+  2. Get Visit_Attendee__c (query attendees)
+  3. Screen Preview: Input editable (Subject, Body) con default formulas + checkbox conferma
+  4. Action Call: VisitFollowupEmailInvocable
+  5. Check Error decision:
+     - Success path: Screen mostra sentCount, skippedNoEmailCount
+     - Error path: Screen mostra errorMessage
+- **Default formulas**:
+  - Subject: "Follow-up visita - " + TEXT({!Get_Visit_Report.Visit_DateTime__c})
+  - Body: Template italiano multiline con "Buongiorno", Summary, Next_Steps, "Cordiali saluti"
+
+#### 3. Quick Actions (3)
+- **Account.Gestisci_Specifiche_Tecniche** (0Afg5000004FHPdCAO) → Gestisci_Specifiche_Tecniche flow
+- **Account.Crea_Report_Visita** (0Afg5000004FHRFCA4) → Crea_Report_Visita flow
+- **Visit_Report__c.Invia_Followup** (0Afg5000004FHUTCA4) → Invia_Followup_Visita flow
+
+#### 4. Permission Set Update
+- **Visit_Operator** (`Visit_Operator.permissionset-meta.xml`)
+  - **Deploy ID**: `0Afg5000004FIQXCA4` (Changed from P1 baseline)
+  - **Added user permissions**:
+    - `EditTask` (dependency for EmailSingle)
+    - `EmailSingle` (send individual emails from Apex)
+  - **Note**: EmailSingle requires EditTask as prerequisite (Salesforce constraint)
+
+### Smoketest
+- **Script**: `scripts/apex/p4_smoketest_followup.apex`
+- **Status**: ✅ **PASSED**
+- **Records Created**:
+  - Account: 001g500000CCKIbAAP ("Test ACME Corp")
+  - Visit_Report__c: a02g5000005alS9AAI (Visit_Type=Visita, Subject="Test Follow-up Flow")
+  - Contact (2): test1@example.com, test2@example.com
+  - Visit_Attendee__c (2): linked to Visit_Report + Contacts
+- **Validation**: Complete P4 data model E2E (Account → Visit_Report → Visit_Attendee → Contact)
+
+### Artefatti
+- `raw/p4/org_display.json` - Org info
+- `raw/p4/deploy_followup_invocable.log` - Apex deployment
+- `raw/p4/deploy_flow_techspec.log` - TechSpec flow deployment
+- `raw/p4/deploy_flow_visit_create.log` - Visit creation flow deployment
+- `raw/p4/deploy_flow_followup.log` - Follow-up flow deployment
+- `raw/p4/deploy_qa_techspec.log` - TechSpec action deployment
+- `raw/p4/deploy_qa_visit_create.log` - Visit creation action deployment
+- `raw/p4/deploy_qa_followup.log` - Follow-up action deployment
+- `raw/p4/deploy_permset_visit_op.log` - Permission set update
+- `raw/p4/smoketest_followup.log` - Smoketest execution
+
+### Design Decisions
+
+1. **Email Preview UX**: Flow screen mostra preview destinatari prima dell'invio (recipientsTotal, recipientsWithEmail displayed in action call result)
+
+2. **Simplified TechSpec Management**: Solo Create/List actions nel flow. Edit/Deactivate via standard edit page per ridurre flow complexity.
+
+3. **Attendee Post-Creation**: Crea_Report_Visita non include multi-select attendees; users add via Related List post-creation per UX più semplice.
+
+4. **Italian Email Templates**: Default formulas in italiano per subject/body con visit data embedded (Summary, Next_Steps).
+
+5. **Permission Dependency Chain**: EmailSingle requires EditTask → entrambi aggiunti a Visit_Operator per abilitare email send capability.
+
+### Next Steps (User Actions)
+1. Add Quick Actions to Page Layouts (Account + Visit_Report__c)
+2. Test flows via UI (Create Visit Report → Add Attendees → Send Follow-up)
+3. Optional: Customize email templates in Invia_Followup_Visita flow formulas
+
+---

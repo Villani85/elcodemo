@@ -1,0 +1,6 @@
+OK Account.CRIF_Aggiorna_Dati
+OK Account.CRIF_Storico
+OK Account.Storico_Offerte
+OK Account.Gestisci_Specifiche_Tecniche
+OK Account.Crea_Report_Visita
+OK Opportunity.Crea_Offerta
