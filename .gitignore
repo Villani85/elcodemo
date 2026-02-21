@@ -30,3 +30,5 @@ Thumbs.db
 
 # Node
 node_modules/
+**/org_display.json
+**/.sf/orgs.json
