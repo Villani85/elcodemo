@@ -1,4 +1,39 @@
-﻿# Struttura progetto
+﻿# Elco Salesforce - Struttura Progetto
+
+**Last Updated**: 2026-02-21 10:09 CET (P0 Configuration Baseline Verification)
+
+---
+
+## P0 - Configuration Baseline ✅ COMPLETE (2026-02-21 10:09 CET)
+
+### Status
+✅ All base configuration verified and in place
+
+### What Was Verified/Deployed
+- ✅ **QuoteSettings**: enableQuote=true (Deploy ID: 0Afg5000004GGT8CAO)
+- ✅ **Custom Objects** (4): Account, Account_Tech_Spec__c, Visit_Attendee__c, Visit_Report__c
+- ✅ **Custom Fields** (78 total): CRIF fields, Quote fields, QuoteLineItem fields
+- ✅ **Products & Pricing**: Standard PB (active), PCB Custom product, PBE (UnitPrice=0)
+
+### FUORI PERIMETRO - STOP QUI (32 components NOT deployed)
+
+**The following metadata exists in repository but was NOT deployed per P0 requirement:**
+
+#### 🚫 Flows (10) - NOT DEPLOYED
+CRIF, Quote, Visit, TechSpec automation flows from P1-P6 phases
+
+#### 🚫 Quick Actions (11) - NOT DEPLOYED
+UI action buttons for Account/Opportunity/Quote/Visit objects
+
+#### 🚫 FlexiPages (2) - NOT DEPLOYED
+Account_360, New_Account_CRIF pages
+
+#### 🚫 Apex Classes (9) - NOT DEPLOYED
+CRIF API client, test classes, email invocables
+
+**Why frozen**: P0 is configuration-only baseline. All process automation from P1-P6 phases exists in repo for reference but is NOT deployed. See org_state.md for full P1-P6 documentation.
+
+---
 
 ## Audit org (2026-02-20 15:07:40 +01:00)
 - Report completo: `sf-audit/audit/org_state.md`
