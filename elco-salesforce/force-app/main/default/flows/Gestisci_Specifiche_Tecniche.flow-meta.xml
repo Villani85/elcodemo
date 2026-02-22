@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <description>Flow for managing Account Technical Specifications</description>
+    <interviewLabel>Gestisci Specifiche Tecniche {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Gestisci Specifiche Tecniche</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Screen_Choose_Action</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+
+    <!-- CHOICES GROUPED -->
+    <choices>
+        <name>Choice_Create</name>
+        <choiceText>Crea nuova specifica</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>CREATE</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice_List</name>
+        <choiceText>Mostra elenco specifiche attive</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>LIST</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Cat_Materiali</name>
+        <choiceText>Materiali</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Materiali</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Cat_Dimensioni</name>
+        <choiceText>Dimensioni &amp; Tolleranze</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Dimensioni &amp; Tolleranze</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Cat_Confezionamento</name>
+        <choiceText>Confezionamento / Imballo</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Confezionamento / Imballo</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Cat_Etichettatura</name>
+        <choiceText>Etichettatura</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Etichettatura</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Cat_Documentazione</name>
+        <choiceText>Documentazione</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Documentazione</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Cat_Qualita</name>
+        <choiceText>Qualità &amp; Certificazioni</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Qualità &amp; Certificazioni</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Cat_NoteCommerciali</name>
+        <choiceText>Note Commerciali / Preferenze</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Note Commerciali / Preferenze</stringValue>
+        </value>
+    </choices>
+
+    <!-- DECISIONS GROUPED -->
+    <decisions>
+        <name>Branch_Action</name>
+        <label>Branch Action</label>
+        <locationX>176</locationX>
+        <locationY>350</locationY>
+        <defaultConnector>
+            <targetReference>Screen_Create_Input</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Create</defaultConnectorLabel>
+        <rules>
+            <name>Action_List</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Input_Action</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>LIST</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_List</targetReference>
+            </connector>
+            <label>List</label>
+        </rules>
+    </decisions>
+
+    <!-- RECORD CREATES GROUPED -->
+    <recordCreates>
+        <name>Create_TechSpec</name>
+        <label>Create TechSpec</label>
+        <locationX>176</locationX>
+        <locationY>566</locationY>
+        <assignRecordIdToReference>newTechSpecId</assignRecordIdToReference>
+        <connector>
+            <targetReference>Screen_Success</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Account__c</field>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Category__c</field>
+            <value>
+                <elementReference>Input_Category</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Value__c</field>
+            <value>
+                <elementReference>Input_Value</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Notes__c</field>
+            <value>
+                <elementReference>Input_Notes</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Is_Active__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <object>Account_Tech_Spec__c</object>
+    </recordCreates>
+
+    <!-- RECORD LOOKUPS GROUPED -->
+    <recordLookups>
+        <name>Get_Active_Specs</name>
+        <label>Get Active Specs</label>
+        <locationX>176</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Branch_Action</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Account__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Is_Active__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Account_Tech_Spec__c</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>Category__c</queriedFields>
+        <queriedFields>Parameter__c</queriedFields>
+        <queriedFields>Value__c</queriedFields>
+        <queriedFields>UoM__c</queriedFields>
+        <queriedFields>Source__c</queriedFields>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+
+    <!-- SCREENS GROUPED -->
+    <screens>
+        <name>Screen_Choose_Action</name>
+        <label>Cosa vuoi fare?</label>
+        <locationX>176</locationX>
+        <locationY>134</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Get_Active_Specs</targetReference>
+        </connector>
+        <fields>
+            <name>Display_Header</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Gestione Specifiche Tecniche&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Seleziona l&apos;operazione da eseguire:&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Input_Action</name>
+            <choiceReferences>Choice_Create</choiceReferences>
+            <choiceReferences>Choice_List</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Azione</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+
+    <screens>
+        <name>Screen_List</name>
+        <label>Specifiche Attive</label>
+        <locationX>300</locationX>
+        <locationY>458</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Display_List_Header</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Specifiche Tecniche Attive&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Display_List_Content</name>
+            <fieldText>&lt;p&gt;Le specifiche attive per questo Account sono accessibili tramite la Related List &quot;Technical Specifications&quot; sulla pagina Account.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+
+    <screens>
+        <name>Screen_Create_Input</name>
+        <label>Crea Nuova Specifica</label>
+        <locationX>176</locationX>
+        <locationY>458</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Create_TechSpec</targetReference>
+        </connector>
+        <fields>
+            <name>Display_Create_Header</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Nuova Specifica Tecnica&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Input_Category</name>
+            <choiceReferences>Cat_Materiali</choiceReferences>
+            <choiceReferences>Cat_Dimensioni</choiceReferences>
+            <choiceReferences>Cat_Confezionamento</choiceReferences>
+            <choiceReferences>Cat_Etichettatura</choiceReferences>
+            <choiceReferences>Cat_Documentazione</choiceReferences>
+            <choiceReferences>Cat_Qualita</choiceReferences>
+            <choiceReferences>Cat_NoteCommerciali</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Categoria</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Input_Value</name>
+            <dataType>String</dataType>
+            <fieldText>Value</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Input_Notes</name>
+            <fieldText>Notes</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+
+    <screens>
+        <name>Screen_Success</name>
+        <label>Success</label>
+        <locationX>176</locationX>
+        <locationY>674</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Display_Success</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px; color: rgb(0, 128, 0);&quot;&gt;✓ Specifica Tecnica Creata&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;ID: {!newTechSpecId}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+
+    <!-- VARIABLES GROUPED -->
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+
+    <variables>
+        <name>newTechSpecId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

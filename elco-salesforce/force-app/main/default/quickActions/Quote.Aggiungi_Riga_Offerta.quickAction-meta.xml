@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Add QuoteLineItems to a Quote with multi-row loop</description>
+    <flowDefinition>Quote_Aggiungi_Riga_Offerta</flowDefinition>
+    <label>Aggiungi Riga Offerta</label>
+    <optionsCreateFeedItem>false</optionsCreateFeedItem>
+    <type>Flow</type>
+</QuickAction>

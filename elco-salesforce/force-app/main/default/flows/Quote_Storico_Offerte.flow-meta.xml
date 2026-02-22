@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <description>Search Quotes by Purchase Order or Customer Code</description>
+    <interviewLabel>Quote - Storico Offerte {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Quote - Storico Offerte</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Screen_Search_Criteria</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+
+    <!-- INPUT VARIABLE (optional - for Account context) -->
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+
+    <!-- SEARCH RESULTS COLLECTION -->
+    <variables>
+        <name>searchResults</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Quote</objectType>
+    </variables>
+
+    <!-- CHOICES FOR SEARCH TYPE -->
+    <choices>
+        <name>Choice_Search_PO</name>
+        <choiceText>Purchase Order</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>PO</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice_Search_Customer_Code</name>
+        <choiceText>Customer Code</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>CUSTOMER_CODE</stringValue>
+        </value>
+    </choices>
+
+    <!-- DECISIONS GROUPED -->
+    <decisions>
+        <name>Determine_Search_Type</name>
+        <label>Determine Search Type</label>
+        <locationX>176</locationX>
+        <locationY>242</locationY>
+        <defaultConnector>
+            <targetReference>Screen_No_Results</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Invalid</defaultConnectorLabel>
+        <rules>
+            <name>Search_By_PO</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Input_Search_Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>PO</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Search_Quotes_By_PO</targetReference>
+            </connector>
+            <label>Search By PO</label>
+        </rules>
+        <rules>
+            <name>Search_By_Customer_Code</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Input_Search_Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>CUSTOMER_CODE</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Search_Quotes_By_Customer_Code</targetReference>
+            </connector>
+            <label>Search By Customer Code</label>
+        </rules>
+    </decisions>
+
+    <decisions>
+        <name>Check_Results</name>
+        <label>Check Results</label>
+        <locationX>176</locationX>
+        <locationY>458</locationY>
+        <defaultConnector>
+            <targetReference>Screen_No_Results</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Results</defaultConnectorLabel>
+        <rules>
+            <name>Has_Results</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>searchResults</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_Results</targetReference>
+            </connector>
+            <label>Has Results</label>
+        </rules>
+    </decisions>
+
+    <!-- RECORD LOOKUPS GROUPED -->
+    <recordLookups>
+        <name>Search_Quotes_By_PO</name>
+        <label>Search Quotes By PO</label>
+        <locationX>176</locationX>
+        <locationY>350</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_Results</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Purchase_Order__c</field>
+            <operator>Contains</operator>
+            <value>
+                <elementReference>Input_Search_Value</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Quote</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>QuoteNumber</queriedFields>
+        <queriedFields>CreatedDate</queriedFields>
+        <queriedFields>Purchase_Order__c</queriedFields>
+        <queriedFields>Customer_Code_Snapshot__c</queriedFields>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+
+    <recordLookups>
+        <name>Search_Quotes_By_Customer_Code</name>
+        <label>Search Quotes By Customer Code</label>
+        <locationX>300</locationX>
+        <locationY>350</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_Results</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Customer_Code_Snapshot__c</field>
+            <operator>Contains</operator>
+            <value>
+                <elementReference>Input_Search_Value</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Quote</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>QuoteNumber</queriedFields>
+        <queriedFields>CreatedDate</queriedFields>
+        <queriedFields>Purchase_Order__c</queriedFields>
+        <queriedFields>Customer_Code_Snapshot__c</queriedFields>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+
+    <!-- SCREENS GROUPED -->
+    <screens>
+        <name>Screen_Search_Criteria</name>
+        <label>Storico Offerte - Ricerca</label>
+        <locationX>176</locationX>
+        <locationY>134</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Determine_Search_Type</targetReference>
+        </connector>
+        <fields>
+            <name>Display_Header</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Ricerca Offerte&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Cerca offerte per Purchase Order o Customer Code.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Input_Search_Type</name>
+            <choiceReferences>Choice_Search_PO</choiceReferences>
+            <choiceReferences>Choice_Search_Customer_Code</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Tipo di Ricerca</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Input_Search_Value</name>
+            <dataType>String</dataType>
+            <fieldText>Valore da cercare</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+
+    <screens>
+        <name>Screen_Results</name>
+        <label>Risultati Ricerca</label>
+        <locationX>176</locationX>
+        <locationY>566</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Display_Results_Header</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px; color: rgb(0, 128, 0);&quot;&gt;✓ Risultati Trovati&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Le offerte trovate sono elencate di seguito. Puoi visualizzare i dettagli accedendo alla tab Offerte correlate.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+
+    <screens>
+        <name>Screen_No_Results</name>
+        <label>Nessun Risultato</label>
+        <locationX>176</locationX>
+        <locationY>674</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Display_No_Results</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px; color: rgb(255, 140, 0);&quot;&gt;⚠ Nessun risultato trovato&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Nessuna offerta corrisponde ai criteri di ricerca.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+</Flow>

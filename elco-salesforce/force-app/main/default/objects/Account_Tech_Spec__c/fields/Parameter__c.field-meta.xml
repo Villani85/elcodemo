@@ -3,7 +3,7 @@
   <fullName>Parameter__c</fullName>
   <label>Parametro</label>
   <type>Picklist</type>
-  <required>true</required>
+  <required>false</required>
   <valueSet>
     <controllingField>Category__c</controllingField>
     <restricted>true</restricted>

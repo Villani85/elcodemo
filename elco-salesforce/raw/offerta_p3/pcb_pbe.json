@@ -1,0 +1,22 @@
+{
+  "status": 0,
+  "result": {
+    "records": [
+      {
+        "attributes": {
+          "type": "PricebookEntry",
+          "url": "/services/data/v65.0/sobjects/PricebookEntry/01ug5000000mmbpAAA"
+        },
+        "Id": "01ug5000000mmbpAAA",
+        "Pricebook2Id": "01sg50000028RoIAAU",
+        "Product2Id": "01tg50000031n1lAAA",
+        "IsActive": true,
+        "UnitPrice": 0,
+        "UseStandardPrice": false
+      }
+    ],
+    "totalSize": 1,
+    "done": true
+  },
+  "warnings": []
+}

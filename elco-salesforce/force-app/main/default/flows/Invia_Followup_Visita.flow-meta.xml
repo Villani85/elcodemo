@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <description>Flow for sending follow-up emails after visit</description>
+    <interviewLabel>Invia Follow-up Visita {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Invia Follow-up Visita</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Visit_Report</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+
+    <!-- ACTION CALLS GROUPED -->
+    <actionCalls>
+        <name>Send_Followup_Email</name>
+        <label>Send Followup Email</label>
+        <locationX>176</locationX>
+        <locationY>458</locationY>
+        <actionName>VisitFollowupEmailInvocable</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Check_Error</targetReference>
+        </connector>
+        <inputParameters>
+            <name>visitReportId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>subject</name>
+            <value>
+                <elementReference>Input_Subject</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>bodyText</name>
+            <value>
+                <elementReference>Input_Body</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+
+    <!-- DECISIONS GROUPED -->
+    <decisions>
+        <name>Check_Error</name>
+        <label>Check Error</label>
+        <locationX>176</locationX>
+        <locationY>566</locationY>
+        <defaultConnector>
+            <targetReference>Screen_Success</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Error</defaultConnectorLabel>
+        <rules>
+            <name>Has_Error</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Send_Followup_Email.errorMessage</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_Error</targetReference>
+            </connector>
+            <label>Has Error</label>
+        </rules>
+    </decisions>
+
+    <!-- FORMULAS GROUPED -->
+    <formulas>
+        <name>Default_Subject</name>
+        <dataType>String</dataType>
+        <expression>"Follow-up visita - " &amp; TEXT({!Get_Visit_Report.Visit_DateTime__c})</expression>
+    </formulas>
+
+    <formulas>
+        <name>Default_Body</name>
+        <dataType>String</dataType>
+        <expression>"Buongiorno," &amp; BR() &amp; BR() &amp;
+"Grazie per il tempo dedicato durante la visita." &amp; BR() &amp; BR() &amp;
+"Riepilogo:" &amp; BR() &amp;
+{!Get_Visit_Report.Summary__c} &amp; BR() &amp; BR() &amp;
+"Prossimi passi:" &amp; BR() &amp;
+{!Get_Visit_Report.Next_Steps__c} &amp; BR() &amp; BR() &amp;
+"Cordiali saluti"</expression>
+    </formulas>
+
+    <!-- RECORD LOOKUPS GROUPED -->
+    <recordLookups>
+        <name>Get_Visit_Report</name>
+        <label>Get Visit Report</label>
+        <locationX>176</locationX>
+        <locationY>134</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Attendees</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Visit_Report__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+
+    <recordLookups>
+        <name>Get_Attendees</name>
+        <label>Get Attendees</label>
+        <locationX>176</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Screen_Preview</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Visit_Report__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Visit_Attendee__c</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Contact__c</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+
+    <!-- SCREENS GROUPED -->
+    <screens>
+        <name>Screen_Preview</name>
+        <label>Anteprima Destinatari</label>
+        <locationX>176</locationX>
+        <locationY>350</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Send_Followup_Email</targetReference>
+        </connector>
+        <fields>
+            <name>Display_Preview_Header</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Anteprima Follow-up Email&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Le email saranno inviate ai contatti associati ai partecipanti che hanno un indirizzo email valorizzato.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Input_Subject</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>Default_Subject</elementReference>
+            </defaultValue>
+            <fieldText>Subject</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Input_Body</name>
+            <defaultValue>
+                <elementReference>Default_Body</elementReference>
+            </defaultValue>
+            <fieldText>Body</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Input_Confirm</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <booleanValue>false</booleanValue>
+            </defaultValue>
+            <fieldText>Confermo invio follow-up</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+
+    <screens>
+        <name>Screen_Success</name>
+        <label>Success</label>
+        <locationX>176</locationX>
+        <locationY>674</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Display_Success</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px; color: rgb(0, 128, 0);&quot;&gt;✓ Follow-up Inviato&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Inviate: {!Send_Followup_Email.sentCount}&lt;/p&gt;&lt;p&gt;Saltate (no email): {!Send_Followup_Email.skippedNoEmailCount}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+
+    <screens>
+        <name>Screen_Error</name>
+        <label>Error</label>
+        <locationX>300</locationX>
+        <locationY>674</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Display_Error</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px; color: rgb(255, 0, 0);&quot;&gt;✗ Errore&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!Send_Followup_Email.errorMessage}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+
+    <!-- VARIABLES GROUPED -->
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

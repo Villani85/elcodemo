@@ -14,7 +14,10 @@ elco-salesforce/
 │   └── main/
 │       └── default/
 │           ├── flexipages/               # Lightning Record Pages
-│           │   └── Account_360.flexipage-meta.xml  # Account 360 page (manual setup required)
+│           │   ├── Account_360.flexipage-meta.xml  # Account 360 page (manual setup required)
+│           │   └── New_Account_CRIF.flexipage-meta.xml  # New Account Flow page (template - manual setup required)
+│           ├── flows/                    # Screen Flows
+│           │   └── CRIF_NEW_da_PIVA.flow-meta.xml  # New Account from P.IVA with CRIF (deployed)
 │           ├── layouts/                  # Page Layouts
 │           │   ├── Account-Account Layout.layout-meta.xml
 │           │   ├── Opportunity-Opportunity Layout.layout-meta.xml
@@ -23,6 +26,9 @@ elco-salesforce/
 │           │   └── Visit_Report__c-Report Visita Layout.layout-meta.xml
 │           ├── objects/                  # Custom Objects & Fields
 │           ├── quickActions/             # Quick Actions (defined separately)
+│           │   └── CRIF_New_Account_da_PIVA.quickAction-meta.xml  # Global Action for CRIF flow (deployed)
+│           ├── tabs/                     # Custom Tabs
+│           │   └── New_Account_CRIF.tab-meta.xml  # Tab for New Account flow page (template - manual setup required)
 │           └── [other metadata types]
 ├── scripts/
 │   ├── apex/
@@ -54,10 +60,17 @@ elco-salesforce/
 │   │   ├── deploy_two_layouts_v2.log    # Deployment output (SUCCEEDED)
 │   │   ├── deploy_errors.txt            # Initial deployment errors
 │   │   └── verify_actions_present.txt   # Post-deploy verification (all OK)
-│   └── p6/                              # P6 Demo Pack Artifacts
-│       ├── demo_seed.log                # Demo seed script execution log
-│       ├── DEMO_RUNBOOK.md              # Demo walkthrough guide
-│       └── P6_DOC_UPDATE.md             # Documentation update summary
+│   ├── p6/                              # P6 Demo Pack Artifacts
+│   │   ├── demo_seed.log                # Demo seed script execution log
+│   │   ├── DEMO_RUNBOOK.md              # Demo walkthrough guide
+│   │   └── P6_DOC_UPDATE.md             # Documentation update summary
+│   └── new_account_flow_only/           # New Account Flow Entry Points
+│       ├── deploy_flow.log              # Flow deployment log
+│       ├── deploy_quickaction.log       # QuickAction deployment log
+│       ├── GPL_UI_STEPS.md              # Manual Global Publisher Layout steps
+│       ├── APP_PAGE_UI_STEPS.md         # Manual Lightning App Page steps
+│       ├── TAB_UI_STEPS.md              # Manual Custom Tab steps
+│       └── verify_summary.md            # Deployment verification summary
 ├── org_state.md                         # Org state documentation
 ├── struttura.md                         # This file - project structure
 ├── sfdx-project.json                    # SFDX project configuration
@@ -257,6 +270,46 @@ elco-salesforce/
 - ✅ Documentation updates (org_state.md, struttura.md)
 
 **Artifacts**: See `raw/p6/` directory
+
+---
+
+### New Account Flow - Creazione Account da P.IVA (Flow-only)
+**Date**: 2026-02-20
+**Status**: ⚠️ Partially Complete (2/5 deployed via API, 3/5 require manual UI)
+
+**Objective**: Create alternative entry points for Account creation using Flow-based approach (no code, metadata only)
+
+**Completed**:
+- ✅ Flow CRIF_NEW_da_PIVA created and deployed (Active placeholder)
+- ✅ Global QuickAction CRIF_New_Account_da_PIVA deployed
+- ✅ FlexiPage metadata template created (New_Account_CRIF)
+- ✅ CustomTab metadata template created (New_Account_CRIF)
+- ✅ Manual UI step documentation created (3 guides)
+
+**Manual UI Steps Required**:
+- ⚠️ Add Global QuickAction to Global Publisher Layout (5-10 min) - `raw/new_account_flow_only/GPL_UI_STEPS.md`
+- ⚠️ Create Lightning App Page with Flow component (10-15 min) - `raw/new_account_flow_only/APP_PAGE_UI_STEPS.md`
+- ⚠️ Create Custom Tab for App Page (5-10 min) - `raw/new_account_flow_only/TAB_UI_STEPS.md`
+
+**Total Setup Time**: 20-35 minutes (manual UI)
+
+**Entry Points Created**:
+1. **Global Action** (via Publisher Layout): "Nuovo Account da P.IVA (CRIF)" in global "+" button
+2. **Custom Tab**: "Nuovo Account (CRIF)" tab with embedded flow
+
+**Important Notes**:
+- Flow is currently a placeholder with P.IVA input screen only
+- CRIF API callout logic needs to be implemented in the flow
+- Does NOT replace standard "New" button on Account object
+- Provides alternative, CRIF-powered Account creation workflow
+
+**Metadata Created**:
+- `force-app/main/default/flows/CRIF_NEW_da_PIVA.flow-meta.xml` ✅
+- `force-app/main/default/quickActions/CRIF_New_Account_da_PIVA.quickAction-meta.xml` ✅
+- `force-app/main/default/flexipages/New_Account_CRIF.flexipage-meta.xml` (template)
+- `force-app/main/default/tabs/New_Account_CRIF.tab-meta.xml` (template)
+
+**Artifacts**: See `raw/new_account_flow_only/` directory
 
 ---
 

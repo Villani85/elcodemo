@@ -1,0 +1,20 @@
+{
+  "status": 0,
+  "result": {
+    "records": [
+      {
+        "attributes": {
+          "type": "Product2",
+          "url": "/services/data/v65.0/sobjects/Product2/01tg50000031n1lAAA"
+        },
+        "Id": "01tg50000031n1lAAA",
+        "Name": "PCB Custom",
+        "IsActive": true,
+        "ProductCode": "PCB_CUSTOM"
+      }
+    ],
+    "totalSize": 1,
+    "done": true
+  },
+  "warnings": []
+}

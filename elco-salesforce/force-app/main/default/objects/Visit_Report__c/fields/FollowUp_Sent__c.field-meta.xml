@@ -1,7 +1,8 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-  <fullName>FollowUp_Sent__c</fullName>
-  <label>Follow Up Inviato</label>
-  <type>Checkbox</type>
-  <defaultValue>false</defaultValue>
+    <fullName>FollowUp_Sent__c</fullName>
+    <defaultValue>false</defaultValue>
+    <label>Follow Up Inviato</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
 </CustomField>

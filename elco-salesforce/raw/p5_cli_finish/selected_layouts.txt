@@ -1,0 +1,2 @@
+Quote=Quote-Quote Layout
+Visit_Report__c=Visit_Report__c-Report Visita Layout

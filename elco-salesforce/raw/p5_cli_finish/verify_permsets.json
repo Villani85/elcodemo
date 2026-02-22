@@ -1,0 +1,75 @@
+{
+  "status": 0,
+  "result": {
+    "records": [
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v65.0/sobjects/PermissionSetAssignment/0Pag5000004sMJ2CAM"
+        },
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v65.0/sobjects/PermissionSet/0PSg5000003jiw2GAA"
+          },
+          "Name": "CRIF_Operator"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v65.0/sobjects/PermissionSetAssignment/0Pag5000004qlLaCAI"
+        },
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v65.0/sobjects/PermissionSet/0PSg5000003jVkHGAU"
+          },
+          "Name": "Elco_Run_Flows"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v65.0/sobjects/PermissionSetAssignment/0Pag5000004qjV4CAI"
+        },
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v65.0/sobjects/PermissionSet/0PSg5000003jSuTGAU"
+          },
+          "Name": "Quote_Operator"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v65.0/sobjects/PermissionSetAssignment/0Pag5000004qpx3CAA"
+        },
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v65.0/sobjects/PermissionSet/0PSg5000003jSuVGAU"
+          },
+          "Name": "TechSpec_Operator"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v65.0/sobjects/PermissionSetAssignment/0Pag5000004qydiCAA"
+        },
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v65.0/sobjects/PermissionSet/0PSg5000003jSuWGAU"
+          },
+          "Name": "Visit_Operator"
+        }
+      }
+    ],
+    "totalSize": 5,
+    "done": true
+  },
+  "warnings": []
+}

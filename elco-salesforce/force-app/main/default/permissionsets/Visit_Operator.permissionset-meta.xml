@@ -3,6 +3,16 @@
   <label>Visit Operator</label>
   <hasActivationRequired>false</hasActivationRequired>
 
+  <userPermissions>
+    <enabled>true</enabled>
+    <name>EditTask</name>
+  </userPermissions>
+
+  <userPermissions>
+    <enabled>true</enabled>
+    <name>EmailSingle</name>
+  </userPermissions>
+
   <objectPermissions>
     <object>Visit_Report__c</object>
     <allowRead>true</allowRead>

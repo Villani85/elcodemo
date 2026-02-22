@@ -12,7 +12,17 @@
       "Bash(sf apex run:*)",
       "Bash(python:*)",
       "Bash(tee:*)",
-      "Bash(sf project retrieve start:*)"
+      "Bash(sf project retrieve start:*)",
+      "Bash(test:*)",
+      "Bash(git add:*)",
+      "Bash(echo:*)",
+      "Bash(ORG_ALIAS=\"elco-dev\")",
+      "Bash(git push:*)",
+      "Bash(find:*)",
+      "Bash(sf apex log list:*)",
+      "Bash(grep:*)",
+      "Bash(unzip:*)",
+      "Bash(git commit:*)"
     ]
   }
 }

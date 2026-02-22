@@ -1,138 +1,222 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>65.0</apiVersion>
-    <description>CRIF P2 - Global action screen flow to create new Account from P.IVA</description>
-    <label>CRIF - Crea Account da P.IVA</label>
-    <interviewLabel>CRIF - Crea Account da P.IVA {!$Flow.CurrentDateTime}</interviewLabel>
+    <description>Crea nuovo Account da Partita IVA con integrazione CRIF</description>
+    <label>Nuovo Account da P.IVA (CRIF)</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
 
-    <!-- ACTION CALLS -->
+    <!-- Action Calls -->
     <actionCalls>
-        <name>Call_Core_Refresh</name>
-        <label>Call Core Refresh</label>
+        <name>Action_CRIF_Search</name>
+        <label>Ricerca CRIF</label>
         <locationX>176</locationX>
-        <locationY>458</locationY>
-        <actionName>CrifCoreRefreshInvocable</actionName>
+        <locationY>278</locationY>
+        <actionName>CRIFSearchInvocable</actionName>
         <actionType>apex</actionType>
-        <connector>
-            <targetReference>Check_Refresh_Success</targetReference>
-        </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
-            <name>accountId</name>
+            <name>partitaIVA</name>
             <value>
-                <elementReference>varNewAccountId</elementReference>
+                <elementReference>Input_PIVA</elementReference>
             </value>
         </inputParameters>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <outputParameters>
+            <assignToReference>varCRIF_Success</assignToReference>
+            <name>success</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>varCRIF_Error</assignToReference>
+            <name>errorMessage</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>varCRIF_TotalResults</assignToReference>
+            <name>totalResults</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>varCRIF_RagioneSociale</assignToReference>
+            <name>ragioneSociale</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>varCRIF_CodiceFiscale</assignToReference>
+            <name>codiceFiscale</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>varCRIF_Indirizzo</assignToReference>
+            <name>indirizzo</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>varCRIF_Citta</assignToReference>
+            <name>citta</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>varCRIF_CAP</assignToReference>
+            <name>cap</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>varCRIF_Provincia</assignToReference>
+            <name>provincia</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>varCRIF_Telefono</assignToReference>
+            <name>telefono</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>varCRIF_Email</assignToReference>
+            <name>email</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>varCRIF_PEC</assignToReference>
+            <name>pec</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>varCRIF_Website</assignToReference>
+            <name>website</name>
+        </outputParameters>
+        <connector>
+            <targetReference>Decision_CRIF_Success</targetReference>
+        </connector>
     </actionCalls>
 
-    <!-- DECISIONS -->
+    <!-- Decisions -->
     <decisions>
-        <name>Check_Refresh_Success</name>
-        <label>Check Refresh Success</label>
+        <name>Decision_CRIF_Success</name>
+        <label>Verifica Esito CRIF</label>
         <locationX>176</locationX>
-        <locationY>566</locationY>
+        <locationY>398</locationY>
         <defaultConnector>
             <targetReference>Screen_Error</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>Failed</defaultConnectorLabel>
+        <defaultConnectorLabel>Errore</defaultConnectorLabel>
         <rules>
-            <name>Success</name>
+            <name>Outcome_Success</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Call_Core_Refresh.success</leftValueReference>
+                <leftValueReference>varCRIF_Success</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Screen_Success</targetReference>
+                <targetReference>Record_Create_Account</targetReference>
             </connector>
-            <label>Success</label>
+            <label>Successo</label>
         </rules>
     </decisions>
 
-    <!-- RECORD CREATES -->
+    <!-- Record Creates -->
     <recordCreates>
-        <name>Create_Account</name>
-        <label>Create Account</label>
-        <locationX>176</locationX>
-        <locationY>350</locationY>
-        <assignRecordIdToReference>varNewAccountId</assignRecordIdToReference>
+        <name>Record_Create_Account</name>
+        <label>Crea Account</label>
+        <locationX>50</locationX>
+        <locationY>518</locationY>
+        <assignRecordIdToReference>varAccountId</assignRecordIdToReference>
         <connector>
-            <targetReference>Call_Core_Refresh</targetReference>
+            <targetReference>Screen_Success</targetReference>
         </connector>
         <inputAssignments>
             <field>Name</field>
             <value>
-                <elementReference>varAccountName</elementReference>
+                <elementReference>varCRIF_RagioneSociale</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>Partita_IVA__c</field>
             <value>
-                <elementReference>varPIVA</elementReference>
+                <elementReference>Input_PIVA</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>BillingStreet</field>
+            <value>
+                <elementReference>varCRIF_Indirizzo</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>BillingCity</field>
+            <value>
+                <elementReference>varCRIF_Citta</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>BillingPostalCode</field>
+            <value>
+                <elementReference>varCRIF_CAP</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>BillingCountry</field>
+            <value>
+                <stringValue>Italy</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Phone</field>
+            <value>
+                <elementReference>varCRIF_Telefono</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Website</field>
+            <value>
+                <elementReference>varCRIF_Website</elementReference>
             </value>
         </inputAssignments>
         <object>Account</object>
     </recordCreates>
 
-    <!-- SCREENS -->
+    <!-- Screens (ALL grouped together) -->
     <screens>
-        <name>Screen_Input</name>
-        <label>Screen Input</label>
+        <name>Screen_Input_PIVA</name>
+        <label>Inserisci Partita IVA</label>
         <locationX>176</locationX>
-        <locationY>242</locationY>
+        <locationY>158</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
-        <connector>
-            <targetReference>Create_Account</targetReference>
-        </connector>
-        <fields>
-            <name>Header_Text</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Crea nuovo Account da Partita IVA&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Inserisci la Partita IVA e il nome dell&apos;Account. I dati CRIF verranno recuperati automaticamente.&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
         <fields>
             <name>Input_PIVA</name>
             <dataType>String</dataType>
             <fieldText>Partita IVA</fieldText>
             <fieldType>InputField</fieldType>
-            <isRequired>true</isRequired>
-            <validationRule>
-                <errorMessage>Inserisci una Partita IVA valida (11 cifre o formato IT01234567890)</errorMessage>
-                <formulaExpression>OR(
-  LEN({!Input_PIVA}) = 11,
-  AND(
-    LEN({!Input_PIVA}) = 13,
-    LEFT({!Input_PIVA}, 2) = &quot;IT&quot;
-  )
-)</formulaExpression>
-            </validationRule>
-        </fields>
-        <fields>
-            <name>Input_Account_Name</name>
-            <dataType>String</dataType>
-            <fieldText>Nome Account</fieldText>
-            <fieldType>InputField</fieldType>
+            <helpText>Inserisci Partita IVA italiana (11 cifre, con o senza IT)</helpText>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
+        <connector>
+            <targetReference>Action_CRIF_Search</targetReference>
+        </connector>
     </screens>
     <screens>
         <name>Screen_Success</name>
-        <label>Screen Success</label>
+        <label>Account Creato</label>
         <locationX>50</locationX>
-        <locationY>674</locationY>
+        <locationY>638</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
-            <name>Success_Message</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px; color: rgb(11, 122, 11);&quot;&gt;✓ Account creato con successo&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;L&apos;Account &lt;b&gt;{!varAccountName}&lt;/b&gt; è stato creato e i dati CRIF sono stati caricati.&lt;/p&gt;</fieldText>
+            <name>Display_Success</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px; color: rgb(0, 128, 0);&quot;&gt;✓ Account creato con successo!&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Ragione Sociale:&lt;/b&gt; {!varCRIF_RagioneSociale}&lt;/p&gt;&lt;p&gt;&lt;b&gt;P.IVA:&lt;/b&gt; {!Input_PIVA}&lt;/p&gt;&lt;p&gt;&lt;b&gt;Indirizzo:&lt;/b&gt; {!varCRIF_Indirizzo}, {!varCRIF_CAP} {!varCRIF_Citta} ({!varCRIF_Provincia})&lt;/p&gt;&lt;p&gt;&lt;b&gt;Telefono:&lt;/b&gt; {!varCRIF_Telefono}&lt;/p&gt;&lt;p&gt;&lt;b&gt;Email:&lt;/b&gt; {!varCRIF_Email}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Trova l&apos;Account appena creato nella lista Account o cerca per nome: {!varCRIF_RagioneSociale}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -140,89 +224,128 @@
     </screens>
     <screens>
         <name>Screen_Error</name>
-        <label>Screen Error</label>
-        <locationX>308</locationX>
-        <locationY>674</locationY>
-        <allowBack>false</allowBack>
+        <label>Errore CRIF</label>
+        <locationX>302</locationX>
+        <locationY>518</locationY>
+        <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
-            <name>Error_Message</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px; color: rgb(194, 30, 30);&quot;&gt;✗ Errore durante la creazione&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!Call_Core_Refresh.errorMessage}&lt;/p&gt;</fieldText>
+            <name>Display_Error</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px; color: rgb(255, 0, 0);&quot;&gt;✗ Errore nella ricerca CRIF&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!varCRIF_Error}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Risultati trovati:&lt;/b&gt; {!varCRIF_TotalResults}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
 
-    <!-- ASSIGNMENTS -->
-    <assignments>
-        <name>Set_Variables</name>
-        <label>Set Variables</label>
-        <locationX>176</locationX>
-        <locationY>134</locationY>
-        <assignmentItems>
-            <assignToReference>varPIVA</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Input_PIVA</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varAccountName</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Input_Account_Name</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Screen_Input</targetReference>
-        </connector>
-    </assignments>
-
-    <!-- START -->
+    <!-- Start -->
     <start>
         <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Set_Variables</targetReference>
+            <targetReference>Screen_Input_PIVA</targetReference>
         </connector>
     </start>
 
-    <!-- STATUS -->
+    <!-- Status -->
     <status>Active</status>
 
-    <!-- VARIABLES -->
+    <!-- Variables (ALL grouped together) -->
     <variables>
-        <name>varPIVA</name>
+        <name>varAccountId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>varAccountName</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>varNewAccountId</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>varSuccess</name>
+        <name>varCRIF_Success</name>
         <dataType>Boolean</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>varErrorMessage</name>
+        <name>varCRIF_Error</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varCRIF_TotalResults</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <name>varCRIF_RagioneSociale</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varCRIF_CodiceFiscale</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varCRIF_Indirizzo</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varCRIF_Citta</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varCRIF_CAP</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varCRIF_Provincia</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varCRIF_Telefono</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varCRIF_Email</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varCRIF_PEC</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varCRIF_Website</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>

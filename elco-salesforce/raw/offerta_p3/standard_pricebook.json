@@ -1,0 +1,19 @@
+{
+  "status": 0,
+  "result": {
+    "records": [
+      {
+        "attributes": {
+          "type": "Pricebook2",
+          "url": "/services/data/v65.0/sobjects/Pricebook2/01sg50000028RoIAAU"
+        },
+        "Id": "01sg50000028RoIAAU",
+        "IsActive": true,
+        "IsStandard": true
+      }
+    ],
+    "totalSize": 1,
+    "done": true
+  },
+  "warnings": []
+}

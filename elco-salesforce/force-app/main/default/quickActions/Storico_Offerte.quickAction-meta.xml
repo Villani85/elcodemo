@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Search Quotes by Purchase Order or Customer Code (Global)</description>
+    <flowDefinition>Quote_Storico_Offerte</flowDefinition>
+    <label>Storico Offerte</label>
+    <optionsCreateFeedItem>false</optionsCreateFeedItem>
+    <type>Flow</type>
+</QuickAction>

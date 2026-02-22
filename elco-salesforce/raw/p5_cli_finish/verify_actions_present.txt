@@ -1,0 +1,2 @@
+OK Quote.Aggiungi_Riga_Offerta in Quote-Quote Layout.layout-meta.xml
+OK Visit_Report__c.Invia_Followup in Visit_Report__c-Report Visita Layout.layout-meta.xml

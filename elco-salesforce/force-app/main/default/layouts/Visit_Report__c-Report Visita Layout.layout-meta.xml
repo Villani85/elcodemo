@@ -74,4 +74,4 @@
     <showInteractionLogPanel>false</showInteractionLogPanel>
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
-<platformActionList><actionListContext>Record</actionListContext><platformActionListItems><actionName>Visit_Report__c.Invia_Followup</actionName><actionType>QuickAction</actionType><sortOrder>0</sortOrder></platformActionListItems></platformActionList></Layout>
+<platformActionList><actionListContext>Record</actionListContext><platformActionListItems><actionName>Visit_Report__c.Invia_Followup</actionName><actionType>QuickAction</actionType><sortOrder>1</sortOrder></platformActionListItems></platformActionList></Layout>

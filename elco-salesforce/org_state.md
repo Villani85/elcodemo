@@ -4,7 +4,7 @@
 **Username**: giuseppe.villani101020.b5bd075bbc5f@agentforce.com
 **Instance**: orgfarm-ebbb80388b-dev-ed.develop.my.salesforce.com
 **API Version**: 65.0
-**Last Updated**: 2026-02-20
+**Last Updated**: 2026-02-22
 
 ---
 
@@ -15,6 +15,87 @@ This document tracks the current state of the Elco Salesforce org, including dep
 ---
 
 ## Deployment History
+
+### CRIF Integration - Complete Implementation (2026-02-22)
+
+**Status**: ✅ Complete and Tested
+
+#### Componenti Deployati
+| Component | Type | Deploy ID | Status |
+|-----------|------|-----------|--------|
+| CRIF_Mock | RemoteSiteSetting | 0Afg5000004Hzj7CAC | ✅ Created |
+| CRIFSearchInvocable | ApexClass | 0Afg5000004I2AjCAK | ✅ Deployed (v4 - fix nested objects) |
+| CRIFSearchInvocableTest | ApexClass | 0Afg5000004HzWDCA0 | ✅ Created (100% pass rate) |
+| CRIF_NEW_da_PIVA | Flow | 0Afg5000004I2AjCAK | ✅ Deployed (v5 - fix address validation) |
+
+#### Implementazione
+**Flow**: Nuovo Account da P.IVA (CRIF)
+- Screen input P.IVA con normalizzazione automatica (aggiunge IT + padding a 11 cifre)
+- Chiamata Apex Invocable per integrazione CRIF API
+- OAuth2 token retrieval (password grant flow)
+- Search API call con bearer token
+- Parsing risposta JSON con gestione oggetti nested
+- Creazione Account con mappatura campi:
+  - `Name` ← `companyDetails.businessName`
+  - `Partita_IVA__c` ← input utente
+  - `BillingStreet` ← `registeredOffice.address.streetName`
+  - `BillingCity` ← `registeredOffice.address.town`
+  - `BillingPostalCode` ← `registeredOffice.address.zipCode`
+  - `BillingCountry` ← 'Italy' (hardcoded per validazione Salesforce)
+  - `Phone` ← `contacts.phone` (se presente)
+  - `Website` ← `contacts.website` (se presente)
+- Success/Error screens con dettagli operazione
+
+**API Mock**: https://crif-mock-137745841582.europe-west8.run.app
+- Endpoint OAuth2: `/oauth2/token`
+- Endpoint Search: `/margo/v1/prospecting/search`
+- Credentials: `test-user` / `test-pass` (hardcoded in Apex - TODO: spostare in Custom Settings)
+
+#### Fix Implementati
+1. **Struttura API Response** (v2-v4):
+   - Fix parsing campi nested: `companyDetails`, `registeredOffice`, `contacts`
+   - Gestione varianti nome campi (businessName/name/companyName)
+   - Estrazione stringhe da oggetti nested (email.email, address.streetName, etc.)
+
+2. **Validazione Address** (v5):
+   - Rimosso `BillingState` (richiedeva BillingCountry)
+   - Aggiunto `BillingCountry='Italy'` per validazione Salesforce
+
+#### Test
+- P.IVA test: `IT01234567890` o `01234567890`
+- Risultato atteso: "ACME S.p.A.", Via Roma 1, 00100 Roma, info@acme.it, acme@pec.it
+- Status: ✅ Funzionante
+
+---
+
+### Flow Gestisci Specifiche Tecniche - Fix Category Picklist (2026-02-22)
+
+**Status**: ✅ Fixed
+
+#### Problema
+Flow creava Account_Tech_Spec__c con campo `Category__c` (picklist ristretta) usando textbox libero, causando errore:
+```
+INVALID_OR_NULL_FOR_RESTRICTED_PICKLIST: bad value for restricted picklist field
+```
+
+#### Fix Implementato
+| Component | Change | Deploy ID |
+|-----------|--------|-----------|
+| Gestisci_Specifiche_Tecniche | Cambiato Input_Category da InputField (textbox) a DropdownBox con choices | 0Afg5000004I3htCAC |
+
+**Choices Aggiunte**:
+- Materiali
+- Dimensioni & Tolleranze
+- Confezionamento / Imballo
+- Etichettatura
+- Documentazione
+- Qualità & Certificazioni
+- Note Commerciali / Preferenze
+
+#### Test
+- Status: ✅ Ora l'utente può selezionare solo valori validi dalla picklist
+
+---
 
 ### P5 - UX/Account 360 + Layouts + Action Placement (2026-02-20)
 
@@ -137,6 +218,65 @@ This document tracks the current state of the Elco Salesforce org, including dep
 - Demo seed log: `raw/p6/demo_seed.log`
 - Demo runbook: `raw/p6/DEMO_RUNBOOK.md`
 - Documentation update: `raw/p6/P6_DOC_UPDATE.md`
+
+---
+
+### New Account Flow - Creazione Account da P.IVA (Flow-only) (2026-02-20)
+
+**Status**: ⚠️ Partially Complete (2/5 components deployed, 3/5 require manual UI)
+
+#### Flow Created
+**Flow Name**: CRIF_NEW_da_PIVA
+- **Status**: ✅ Deployed and Active
+- **Type**: Screen Flow
+- **Purpose**: Create new Account from Partita IVA with CRIF integration
+- **File**: `force-app/main/default/flows/CRIF_NEW_da_PIVA.flow-meta.xml`
+- **Structure**: Placeholder with single screen for P.IVA input
+- **Note**: Ready for full implementation (CRIF callout logic to be added)
+
+#### Global QuickAction Created
+**Action Name**: CRIF_New_Account_da_PIVA
+- **Status**: ✅ Deployed
+- **Type**: Global QuickAction (Flow type)
+- **Label**: "Nuovo Account da P.IVA (CRIF)"
+- **File**: `force-app/main/default/quickActions/CRIF_New_Account_da_PIVA.quickAction-meta.xml`
+- **Flow Reference**: CRIF_NEW_da_PIVA
+
+#### Entry Points Available
+
+**Via Global Publisher Layout** (⚠️ Manual UI required):
+- Add CRIF_New_Account_da_PIVA to Global Publisher Layout
+- Accessible via global "+" button in Salesforce UI
+- **Setup Guide**: `raw/new_account_flow_only/GPL_UI_STEPS.md` (5-10 min)
+
+**Via Custom Tab** (⚠️ Manual UI required):
+- Lightning App Page with Flow component → Custom Tab "Nuovo Account (CRIF)"
+- **App Page Guide**: `raw/new_account_flow_only/APP_PAGE_UI_STEPS.md` (10-15 min)
+- **Tab Guide**: `raw/new_account_flow_only/TAB_UI_STEPS.md` (5-10 min)
+
+**Important Note**: This flow-based entry point does NOT replace the standard "New" button on Account object. It provides an alternative entry point specifically for CRIF-powered Account creation.
+
+#### Deployment Summary
+| Component | Status | Deployment Method | Notes |
+|-----------|--------|-------------------|-------|
+| CRIF_NEW_da_PIVA Flow | ✅ Deployed | Metadata API | Active placeholder |
+| CRIF_New_Account_da_PIVA QuickAction | ✅ Deployed | Metadata API | Global action |
+| Global Publisher Layout | ⚠️ Manual UI | UI-only | 5-10 min setup |
+| New_Account_CRIF FlexiPage | ⚠️ Manual UI | UI-only | 10-15 min setup |
+| New_Account_CRIF Tab | ⚠️ Manual UI | UI-only | 5-10 min setup |
+
+**Total Setup Time**: 20-35 minutes (manual UI steps)
+
+#### Artifacts
+- Flow metadata: `force-app/main/default/flows/CRIF_NEW_da_PIVA.flow-meta.xml`
+- QuickAction metadata: `force-app/main/default/quickActions/CRIF_New_Account_da_PIVA.quickAction-meta.xml`
+- FlexiPage metadata (template): `force-app/main/default/flexipages/New_Account_CRIF.flexipage-meta.xml`
+- Tab metadata (template): `force-app/main/default/tabs/New_Account_CRIF.tab-meta.xml`
+- Publisher Layout UI steps: `raw/new_account_flow_only/GPL_UI_STEPS.md`
+- App Page UI steps: `raw/new_account_flow_only/APP_PAGE_UI_STEPS.md`
+- Tab UI steps: `raw/new_account_flow_only/TAB_UI_STEPS.md`
+- Deployment logs: `raw/new_account_flow_only/deploy_flow.log`, `deploy_quickaction.log`
+- Verification summary: `raw/new_account_flow_only/verify_summary.md`
 
 ---
 

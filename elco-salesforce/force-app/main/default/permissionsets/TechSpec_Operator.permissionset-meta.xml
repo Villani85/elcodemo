@@ -23,8 +23,8 @@
     <modifyAllRecords>false</modifyAllRecords>
   </objectPermissions>
 
-  <fieldPermissions><field>Account_Tech_Spec__c.UoM__c</field><readable>true</readable><editable>true</editable></fieldPermissions>
-  <fieldPermissions><field>Account_Tech_Spec__c.Source__c</field><readable>true</readable><editable>true</editable></fieldPermissions>
-  <fieldPermissions><field>Account_Tech_Spec__c.Notes__c</field><readable>true</readable><editable>true</editable></fieldPermissions>
   <fieldPermissions><field>Account_Tech_Spec__c.Is_Active__c</field><readable>true</readable><editable>true</editable></fieldPermissions>
+  <fieldPermissions><field>Account_Tech_Spec__c.Notes__c</field><readable>true</readable><editable>true</editable></fieldPermissions>
+  <fieldPermissions><field>Account_Tech_Spec__c.Source__c</field><readable>true</readable><editable>true</editable></fieldPermissions>
+  <fieldPermissions><field>Account_Tech_Spec__c.UoM__c</field><readable>true</readable><editable>true</editable></fieldPermissions>
 </PermissionSet>

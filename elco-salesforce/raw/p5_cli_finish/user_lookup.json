@@ -1,0 +1,18 @@
+{
+  "status": 0,
+  "result": {
+    "records": [
+      {
+        "attributes": {
+          "type": "User",
+          "url": "/services/data/v65.0/sobjects/User/005g5000003yeP3AAI"
+        },
+        "Id": "005g5000003yeP3AAI",
+        "Username": "giuseppe.villani101020.b5bd075bbc5f@agentforce.com"
+      }
+    ],
+    "totalSize": 1,
+    "done": true
+  },
+  "warnings": []
+}

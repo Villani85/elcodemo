@@ -1,88 +1,54 @@
 #!/usr/bin/env python3
 """
-Select layouts deterministically for P5 deployment.
+Select Quote and Visit_Report__c layouts deterministically from org metadata.
 """
 import json
-import sys
+import os
 
-def select_layout_for_object(layouts, obj_name, preferred_names):
-    """
-    Select layout for an object using deterministic rules.
+# Load layout list
+with open("raw/p5_cli_finish/layout_list.json", "r") as f:
+    data = json.load(f)
 
-    Args:
-        layouts: List of layout metadata items
-        obj_name: Object name (e.g., "Account")
-        preferred_names: List of preferred layout names in order
+layouts = data.get("result", [])
 
-    Returns:
-        Selected layout fullName or None
-    """
-    obj_layouts = [l for l in layouts if l.get('fullName', '').startswith(f"{obj_name}-")]
+# Find Quote layout
+quote_layout = None
+quote_candidates = [l for l in layouts if l["fullName"].startswith("Quote-")]
 
-    if not obj_layouts:
-        return None
+# Prefer "Quote-Quote Layout"
+for l in quote_candidates:
+    if l["fullName"] == "Quote-Quote Layout":
+        quote_layout = l["fullName"]
+        break
 
-    # Try preferred names first
-    for pref in preferred_names:
-        for layout in obj_layouts:
-            if layout.get('fullName') == pref:
-                return pref
+# Fallback to first Quote layout
+if not quote_layout and quote_candidates:
+    quote_layout = quote_candidates[0]["fullName"]
 
-    # Filter out PersonAccount layouts for Account
-    if obj_name == "Account":
-        obj_layouts = [l for l in obj_layouts if "PersonAccount" not in l.get('fullName', '')]
+# Find Visit_Report__c layout
+visit_layout = None
+visit_candidates = [l for l in layouts if l["fullName"].startswith("Visit_Report__c-")]
 
-    # Return first remaining
-    return obj_layouts[0].get('fullName') if obj_layouts else None
+if visit_candidates:
+    visit_layout = visit_candidates[0]["fullName"]
 
-def main():
-    # Read layout list
-    with open('raw/p5/layout_list.json', 'r', encoding='utf-8') as f:
-        data = json.load(f)
+# Write selected layouts
+output_lines = []
+if quote_layout:
+    output_lines.append(f"Quote={quote_layout}")
+    print(f"[OK] Selected Quote layout: {quote_layout}")
+else:
+    print("[ERROR] No Quote layout found")
+    exit(1)
 
-    # Extract layouts from result
-    layouts = data.get('result', [])
+if visit_layout:
+    output_lines.append(f"Visit_Report__c={visit_layout}")
+    print(f"[OK] Selected Visit_Report__c layout: {visit_layout}")
+else:
+    print("[ERROR] No Visit_Report__c layout found")
+    exit(1)
 
-    # Selection rules
-    selections = {
-        'Account': select_layout_for_object(
-            layouts,
-            'Account',
-            ['Account-Account Layout']
-        ),
-        'Opportunity': select_layout_for_object(
-            layouts,
-            'Opportunity',
-            ['Opportunity-Opportunity Layout']
-        ),
-        'Quote': select_layout_for_object(
-            layouts,
-            'Quote',
-            ['Quote-Quote Layout']
-        ),
-        'QuoteLineItem': select_layout_for_object(
-            layouts,
-            'QuoteLineItem',
-            ['QuoteLineItem-Quote Line Item Layout']
-        ),
-        'Visit_Report__c': select_layout_for_object(
-            layouts,
-            'Visit_Report__c',
-            []  # Just take first
-        ),
-    }
+with open("raw/p5_cli_finish/selected_layouts.txt", "w") as f:
+    f.write("\n".join(output_lines) + "\n")
 
-    # Write selections
-    with open('raw/p5/selected_layouts.txt', 'w', encoding='utf-8') as f:
-        for obj, layout in selections.items():
-            if layout:
-                f.write(f"{obj}={layout}\n")
-                print(f"[OK] {obj}: {layout}")
-            else:
-                print(f"[ERROR] {obj}: No layout found!", file=sys.stderr)
-                sys.exit(1)
-
-    print(f"\n[OK] Selected {len(selections)} layouts")
-
-if __name__ == '__main__':
-    main()
+print(f"[OK] Selected layouts saved to raw/p5_cli_finish/selected_layouts.txt")
