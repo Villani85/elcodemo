@@ -1,0 +1,9 @@
+<aura:component access="global"
+    implements="flexipage:availableForAllPageTypes,force:lightningQuickActionWithoutHeader">
+
+    <!-- avvio all'apertura -->
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+
+    <!-- opzionale: chiusura quick action quando flow finisce -->
+    <lightning:flow aura:id="flow" onstatuschange="{!c.onStatusChange}"/>
+</aura:component>

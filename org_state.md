@@ -4,17 +4,126 @@
 **Username**: giuseppe.villani101020.b5bd075bbc5f@agentforce.com
 **Instance**: orgfarm-ebbb80388b-dev-ed.develop.my.salesforce.com
 **API Version**: 65.0
-**Last Updated**: 2026-02-22 10:40 CET (FlexiPages + CustomTab + Activations Verification)
+**Last Updated**: 2026-02-22 12:15 CET (Global Publisher Layout - Aura Workaround ✅ 100% CLI)
+
+---
+
+## ✅ GLOBAL PUBLISHER LAYOUT - AURA WORKAROUND (2026-02-22 12:15 CET)
+
+**Status**: ✅ 100% CLI SUCCESS - ZERO Manual UI Steps Required
+
+### Problem Statement
+
+Flow-type Quick Actions are NOT supported in Global Publisher Layout via Metadata API:
+- Error: `You can't add QuickActionType Flow to a QuickActionList`
+- Salesforce limitation: Only `LightningComponent` type Quick Actions can be deployed to Global Publisher
+
+### Solution: Aura Component Wrapper
+
+**Strategy**: Wrap Flow execution inside an Aura component, deploy as LightningComponent-type Quick Action
+
+**Components Deployed**:
+
+1. **Aura Bundle: CRIF_GlobalFlowAction** (3 files)
+   - `CRIF_GlobalFlowAction.cmp` - Implements `force:lightningQuickActionWithoutHeader`
+   - `CRIF_GlobalFlowActionController.js` - Starts Flow via `flow.startFlow("CRIF_NEW_da_PIVA")`
+   - `CRIF_GlobalFlowActionHelper.js` - Empty helper
+   - **Deploy ID**: 0Afg5000004IQmXCAW (Created)
+
+2. **QuickAction: CRIF_New_Account_da_PIVA_GA**
+   - Type: `LightningComponent` (not Flow)
+   - Component: `CRIF_GlobalFlowAction`
+   - Height/Width: 600px
+   - **Deploy ID**: 0Afg5000004IQmXCAW (Created)
+
+3. **Layout: Global-Global Layout**
+   - Patched via script `scripts/patch_global_layout.py`
+   - Removed old `CRIF_New_Account_da_PIVA` (Flow type)
+   - Added `CRIF_New_Account_da_PIVA_GA` (LightningComponent type) at sortOrder 0
+   - Cleaned `quickActionList` (Classic publisher) from CRIF actions
+   - **Deploy ID**: 0Afg5000004IQmXCAW (Changed)
+
+### Deployment Result
+
+```
+Status: Succeeded
+Deploy ID: 0Afg5000004IQmXCAW
+Target Org: giuseppe.villani101020.b5bd075bbc5f@agentforce.com
+Elapsed Time: 4.21s
+
+Deployed Source:
+- Created: CRIF_GlobalFlowAction (AuraDefinitionBundle) - 3 files
+- Created: CRIF_New_Account_da_PIVA_GA (QuickAction)
+- Changed: Global-Global Layout (Layout)
+```
+
+### CLI Verification
+
+**Layout Retrieve + Grep**:
+```bash
+sf project retrieve start -o elco-dev \
+  --metadata "Layout:Global-Global Layout" \
+  --target-metadata-dir /tmp/verify_global_action
+
+grep "CRIF_New_Account_da_PIVA" /tmp/verify_global_action/.../Global-Global\ Layout.layout
+# Output:
+#   <actionName>CRIF_New_Account_da_PIVA_GA</actionName>
+#   <actionType>QuickAction</actionType>
+#   <sortOrder>0</sortOrder>
+```
+
+**Tooling API Queries**:
+```bash
+# QuickAction verification
+sf data query -o elco-dev --use-tooling-api \
+  -q "SELECT Id, MasterLabel FROM QuickActionDefinition WHERE MasterLabel = 'Nuovo Account da P.IVA (CRIF)'"
+# Result: 2 records found
+#   - 09Dg5000002u3A9EAI (old Flow type)
+#   - 09Dg5000002vE61EAE (new LightningComponent type)
+
+# AuraDefinitionBundle verification
+sf data query -o elco-dev --use-tooling-api \
+  -q "SELECT Id, DeveloperName, ApiVersion FROM AuraDefinitionBundle WHERE DeveloperName = 'CRIF_GlobalFlowAction'"
+# Result: 1 record
+#   - Id: 0Abg5000000JHQACA4
+#   - DeveloperName: CRIF_GlobalFlowAction
+#   - ApiVersion: 66
+```
+
+### Files Created/Modified
+
+**New Files** (7 total):
+- `force-app/main/default/aura/CRIF_GlobalFlowAction/CRIF_GlobalFlowAction.cmp`
+- `force-app/main/default/aura/CRIF_GlobalFlowAction/CRIF_GlobalFlowAction.auradoc`
+- `force-app/main/default/aura/CRIF_GlobalFlowAction/CRIF_GlobalFlowActionController.js`
+- `force-app/main/default/aura/CRIF_GlobalFlowAction/CRIF_GlobalFlowActionHelper.js`
+- `force-app/main/default/quickActions/CRIF_New_Account_da_PIVA_GA.quickAction-meta.xml`
+- `scripts/patch_global_layout.py` (Python patching script)
+
+**Modified Files** (1):
+- `force-app/main/default/layouts/Global-Global Layout.layout-meta.xml`
+
+### Key Technical Notes
+
+1. **Aura vs LWC**: Used Aura (not LWC) because `force:lightningQuickActionWithoutHeader` interface is Aura-only
+2. **Height/Width Required**: LightningComponent-type Quick Actions require both `<height>` and `<width>` fields (600px used)
+3. **Namespace Handling**: Python script uses ElementTree with namespace prefix `m:` for all XPath queries
+4. **Flow Execution**: `lightning:flow` component's `startFlow()` method executes Flow programmatically
+5. **Auto-Close**: Controller listens to `onstatuschange` event and fires `force:closeQuickAction` on FINISHED
+
+### Result
+
+✅ **100% CLI Automation Achieved** - ZERO manual UI steps required for Global Publisher Layout deployment
 
 ---
 
 ## CLI FIX - FlexiPages + CustomTab Deployment (2026-02-22 10:40 CET)
 
-**Status**: ✅ 75% CLI Success (3/4 components deployed) + Activations Verified
+**Status**: ✅ 100% CLI Success (4/4 components deployed - Global Layout solved via Aura workaround)
 
 ### Deployment Results
 
-**✅ DEPLOYED SUCCESSFULLY via CLI** (3 components):
+**✅ DEPLOYED SUCCESSFULLY via CLI** (4 components):
 
 1. **FlexiPage: New_Account_CRIF**
    - **Deploy ID**: 0Afg5000004IFkfCAG
@@ -32,14 +141,12 @@
    - **Status**: Succeeded (**Changed** - aggiornato nell'org)
    - **Note**: XML non conteneva `<mobileReady>` property (già pulito)
 
-**❌ FAILED - Metadata API Limitation** (1 component):
-
-4. **Layout: Global-Global Layout** (Global Publisher)
-   - **Deploy ID**: 0Afg5000004IGGvCAO
-   - **Status**: Failed
-   - **Error**: `You can't add QuickActionType Flow to a QuickActionList.`
-   - **Root Cause**: Salesforce Metadata API v65.0 NON supporta aggiunta di Quick Actions di tipo Flow al Global Publisher Layout
-   - **Workaround**: Setup UI obbligatorio (5-10 min) - vedi `raw/new_account_flow_only/GPL_UI_STEPS.md`
+4. **Layout: Global-Global Layout** (Global Publisher) - ✅ SOLVED
+   - **Deploy ID**: 0Afg5000004IQmXCAW (Aura workaround)
+   - **Status**: Succeeded (**Changed** - CRIF action added via LightningComponent wrapper)
+   - **Initial Failure**: 0Afg5000004IGGvCAO - Flow-type Quick Action not supported
+   - **Solution**: Aura component wrapper (see section above for details)
+   - **Note**: 100% CLI deployment achieved with zero manual UI steps
 
 ### FlexiPage Activations Verification
 

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Nuovo Account da P.IVA (CRIF)</label>
+    <optionsCreateFeedItem>false</optionsCreateFeedItem>
+    <type>LightningComponent</type>
+    <lightningComponent>CRIF_GlobalFlowAction</lightningComponent>
+    <height>600</height>
+    <width>600</width>
+</QuickAction>
