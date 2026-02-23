@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>65.0</apiVersion>
-    <description>Flow for managing Account Technical Specifications with dependent picklist support</description>
+    <description>Flow for managing Account Technical Specifications - Error-proof multi-screen approach with proper assignments</description>
     <interviewLabel>Gestisci Specifiche Tecniche {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Gestisci Specifiche Tecniche</label>
     <processMetadataValues>
@@ -21,28 +21,53 @@
         <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Screen_Choose_Action</targetReference>
+            <targetReference>Screen_Select_Category</targetReference>
         </connector>
     </start>
     <status>Active</status>
 
-    <!-- ACTION CHOICES -->
-    <choices>
-        <name>Choice_Create</name>
-        <choiceText>Crea nuova specifica</choiceText>
+    <!-- INPUT VARIABLES -->
+    <variables>
+        <name>recordId</name>
         <dataType>String</dataType>
-        <value>
-            <stringValue>CREATE</stringValue>
-        </value>
-    </choices>
-    <choices>
-        <name>Choice_List</name>
-        <choiceText>Mostra elenco specifiche attive</choiceText>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+
+    <!-- CATEGORY VARIABLE -->
+    <variables>
+        <name>varCategory</name>
         <dataType>String</dataType>
-        <value>
-            <stringValue>LIST</stringValue>
-        </value>
-    </choices>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+
+    <!-- PARAMETER VARIABLE -->
+    <variables>
+        <name>varParameter</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+
+    <!-- VALUE AND NOTES VARIABLES -->
+    <variables>
+        <name>varValue</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varNotes</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
 
     <!-- CATEGORY CHOICES -->
     <choices>
@@ -102,9 +127,9 @@
         </value>
     </choices>
 
-    <!-- PARAMETER CHOICES - MATERIALI -->
+    <!-- PARAMETER CHOICES - MATERIALI (5) -->
     <choices>
-        <name>Param_MatPrincipale</name>
+        <name>Param_Mat_Principale</name>
         <choiceText>Materiale principale</choiceText>
         <dataType>String</dataType>
         <value>
@@ -112,7 +137,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_MatAlternativo</name>
+        <name>Param_Mat_Alternativo</name>
         <choiceText>Materiale alternativo</choiceText>
         <dataType>String</dataType>
         <value>
@@ -120,7 +145,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_TgRichiesto</name>
+        <name>Param_Mat_Tg</name>
         <choiceText>Tg richiesto</choiceText>
         <dataType>String</dataType>
         <value>
@@ -128,7 +153,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_HalogenFree</name>
+        <name>Param_Mat_Halogen</name>
         <choiceText>Halogen free</choiceText>
         <dataType>String</dataType>
         <value>
@@ -136,7 +161,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_UL</name>
+        <name>Param_Mat_UL</name>
         <choiceText>UL requirement</choiceText>
         <dataType>String</dataType>
         <value>
@@ -144,9 +169,9 @@
         </value>
     </choices>
 
-    <!-- PARAMETER CHOICES - DIMENSIONI -->
+    <!-- PARAMETER CHOICES - DIMENSIONI (6) -->
     <choices>
-        <name>Param_DimMax</name>
+        <name>Param_Dim_Max</name>
         <choiceText>Dimensione max (mm)</choiceText>
         <dataType>String</dataType>
         <value>
@@ -154,7 +179,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_DimMin</name>
+        <name>Param_Dim_Min</name>
         <choiceText>Dimensione min (mm)</choiceText>
         <dataType>String</dataType>
         <value>
@@ -162,7 +187,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_TolDim</name>
+        <name>Param_Dim_TollDim</name>
         <choiceText>Tolleranza dimensionale</choiceText>
         <dataType>String</dataType>
         <value>
@@ -170,7 +195,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_SpessoreTarget</name>
+        <name>Param_Dim_Spessore</name>
         <choiceText>Spessore target</choiceText>
         <dataType>String</dataType>
         <value>
@@ -178,7 +203,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_TolSpessore</name>
+        <name>Param_Dim_TollSpess</name>
         <choiceText>Tolleranza spessore</choiceText>
         <dataType>String</dataType>
         <value>
@@ -186,7 +211,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_PesoMax</name>
+        <name>Param_Dim_Peso</name>
         <choiceText>Peso max</choiceText>
         <dataType>String</dataType>
         <value>
@@ -194,9 +219,9 @@
         </value>
     </choices>
 
-    <!-- PARAMETER CHOICES - CONFEZIONAMENTO -->
+    <!-- PARAMETER CHOICES - CONFEZIONAMENTO (10) -->
     <choices>
-        <name>Param_ConfPrimaria</name>
+        <name>Param_Conf_Primaria</name>
         <choiceText>Confezione primaria</choiceText>
         <dataType>String</dataType>
         <value>
@@ -204,7 +229,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_ConfSecondaria</name>
+        <name>Param_Conf_Secondaria</name>
         <choiceText>Confezione secondaria</choiceText>
         <dataType>String</dataType>
         <value>
@@ -212,7 +237,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_MatBusta</name>
+        <name>Param_Conf_MatBusta</name>
         <choiceText>Materiale busta</choiceText>
         <dataType>String</dataType>
         <value>
@@ -220,7 +245,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_MatScatola</name>
+        <name>Param_Conf_MatScatola</name>
         <choiceText>Materiale scatola</choiceText>
         <dataType>String</dataType>
         <value>
@@ -228,7 +253,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_NumBusta</name>
+        <name>Param_Conf_NumBusta</name>
         <choiceText>Numero pezzi per busta</choiceText>
         <dataType>String</dataType>
         <value>
@@ -236,7 +261,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_NumScatola</name>
+        <name>Param_Conf_NumScatola</name>
         <choiceText>Numero pezzi per scatola</choiceText>
         <dataType>String</dataType>
         <value>
@@ -244,7 +269,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_Riempitivo</name>
+        <name>Param_Conf_Riempitivo</name>
         <choiceText>Riempitivo</choiceText>
         <dataType>String</dataType>
         <value>
@@ -252,7 +277,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_Separazione</name>
+        <name>Param_Conf_Separazione</name>
         <choiceText>Separazione pezzi</choiceText>
         <dataType>String</dataType>
         <value>
@@ -260,7 +285,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_Palletizzazione</name>
+        <name>Param_Conf_Pallet</name>
         <choiceText>Palletizzazione</choiceText>
         <dataType>String</dataType>
         <value>
@@ -268,7 +293,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_Filmatura</name>
+        <name>Param_Conf_Filmatura</name>
         <choiceText>Filmatura</choiceText>
         <dataType>String</dataType>
         <value>
@@ -276,9 +301,9 @@
         </value>
     </choices>
 
-    <!-- PARAMETER CHOICES - ETICHETTATURA -->
+    <!-- PARAMETER CHOICES - ETICHETTATURA (5) -->
     <choices>
-        <name>Param_EtichettaInterna</name>
+        <name>Param_Etic_Interna</name>
         <choiceText>Etichetta interna</choiceText>
         <dataType>String</dataType>
         <value>
@@ -286,7 +311,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_EtichettaEsterna</name>
+        <name>Param_Etic_Esterna</name>
         <choiceText>Etichetta esterna</choiceText>
         <dataType>String</dataType>
         <value>
@@ -294,7 +319,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_Barcode</name>
+        <name>Param_Etic_Barcode</name>
         <choiceText>Barcode</choiceText>
         <dataType>String</dataType>
         <value>
@@ -302,7 +327,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_QRCode</name>
+        <name>Param_Etic_QR</name>
         <choiceText>QR code</choiceText>
         <dataType>String</dataType>
         <value>
@@ -310,7 +335,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_EtichettaCliente</name>
+        <name>Param_Etic_Cliente</name>
         <choiceText>Etichetta cliente</choiceText>
         <dataType>String</dataType>
         <value>
@@ -318,9 +343,9 @@
         </value>
     </choices>
 
-    <!-- PARAMETER CHOICES - DOCUMENTAZIONE -->
+    <!-- PARAMETER CHOICES - DOCUMENTAZIONE (5) -->
     <choices>
-        <name>Param_PackingList</name>
+        <name>Param_Doc_Packing</name>
         <choiceText>Packing list</choiceText>
         <dataType>String</dataType>
         <value>
@@ -328,7 +353,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_CertConf</name>
+        <name>Param_Doc_CertConf</name>
         <choiceText>Certificato conformità</choiceText>
         <dataType>String</dataType>
         <value>
@@ -336,7 +361,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_CertMat</name>
+        <name>Param_Doc_CertMat</name>
         <choiceText>Certificato materiali</choiceText>
         <dataType>String</dataType>
         <value>
@@ -344,7 +369,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_ReportTest</name>
+        <name>Param_Doc_Report</name>
         <choiceText>Report test</choiceText>
         <dataType>String</dataType>
         <value>
@@ -352,7 +377,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_AltroDoc</name>
+        <name>Param_Doc_Altro</name>
         <choiceText>Altro documento</choiceText>
         <dataType>String</dataType>
         <value>
@@ -360,9 +385,9 @@
         </value>
     </choices>
 
-    <!-- PARAMETER CHOICES - QUALITÀ -->
+    <!-- PARAMETER CHOICES - QUALITÀ (5) -->
     <choices>
-        <name>Param_ISO</name>
+        <name>Param_Qual_ISO</name>
         <choiceText>ISO richiesto</choiceText>
         <dataType>String</dataType>
         <value>
@@ -370,7 +395,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_RoHS</name>
+        <name>Param_Qual_RoHS</name>
         <choiceText>RoHS</choiceText>
         <dataType>String</dataType>
         <value>
@@ -378,7 +403,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_REACH</name>
+        <name>Param_Qual_REACH</name>
         <choiceText>REACH</choiceText>
         <dataType>String</dataType>
         <value>
@@ -386,7 +411,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_ITAR</name>
+        <name>Param_Qual_ITAR</name>
         <choiceText>ITAR</choiceText>
         <dataType>String</dataType>
         <value>
@@ -394,7 +419,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_AltroQual</name>
+        <name>Param_Qual_Altro</name>
         <choiceText>Altro requisito qualità</choiceText>
         <dataType>String</dataType>
         <value>
@@ -402,9 +427,9 @@
         </value>
     </choices>
 
-    <!-- PARAMETER CHOICES - NOTE COMMERCIALI -->
+    <!-- PARAMETER CHOICES - NOTE COMMERCIALI (5) -->
     <choices>
-        <name>Param_LottoMin</name>
+        <name>Param_Comm_Lotto</name>
         <choiceText>Lotto minimo</choiceText>
         <dataType>String</dataType>
         <value>
@@ -412,7 +437,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_LeadTime</name>
+        <name>Param_Comm_Lead</name>
         <choiceText>Lead time preferito</choiceText>
         <dataType>String</dataType>
         <value>
@@ -420,7 +445,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_Incoterm</name>
+        <name>Param_Comm_Incoterm</name>
         <choiceText>Incoterm</choiceText>
         <dataType>String</dataType>
         <value>
@@ -428,7 +453,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_Trasporto</name>
+        <name>Param_Comm_Trasporto</name>
         <choiceText>Trasporto preferito</choiceText>
         <dataType>String</dataType>
         <value>
@@ -436,7 +461,7 @@
         </value>
     </choices>
     <choices>
-        <name>Param_NoteAgg</name>
+        <name>Param_Comm_Note</name>
         <choiceText>Note aggiuntive</choiceText>
         <dataType>String</dataType>
         <value>
@@ -444,58 +469,295 @@
         </value>
     </choices>
 
-    <!-- DECISIONS -->
-    <decisions>
-        <name>Branch_Action</name>
-        <label>Branch Action</label>
-        <locationX>176</locationX>
-        <locationY>350</locationY>
-        <defaultConnector>
-            <targetReference>Screen_Create_Input</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Create</defaultConnectorLabel>
-        <rules>
-            <name>Action_List</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Input_Action</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>LIST</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Screen_List</targetReference>
-            </connector>
-            <label>List</label>
-        </rules>
-    </decisions>
-
-    <!-- ASSIGNMENTS -->
+    <!-- ASSIGNMENT 1: Assign Category after Screen 1 -->
     <assignments>
-        <name>Assign_Parameter</name>
-        <label>Assign Parameter Value</label>
+        <name>Assign_Category</name>
+        <label>Assign Category</label>
         <locationX>176</locationX>
-        <locationY>566</locationY>
+        <locationY>158</locationY>
         <assignmentItems>
-            <assignToReference>Final_Parameter</assignToReference>
+            <assignToReference>varCategory</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Input_Parameter</elementReference>
+                <elementReference>Field_Category</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Create_TechSpec</targetReference>
+            <targetReference>Decision_Branch_Category</targetReference>
         </connector>
     </assignments>
 
-    <!-- RECORD CREATES -->
+    <!-- ASSIGNMENT 2a: Assign Parameter - Materiali -->
+    <assignments>
+        <name>Assign_Param_Mat</name>
+        <label>Assign Parameter - Materiali</label>
+        <locationX>50</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>varParameter</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Field_Param_Mat</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Screen_Value_Notes</targetReference>
+        </connector>
+    </assignments>
+
+    <!-- ASSIGNMENT 2b: Assign Parameter - Dimensioni -->
+    <assignments>
+        <name>Assign_Param_Dim</name>
+        <label>Assign Parameter - Dimensioni</label>
+        <locationX>182</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>varParameter</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Field_Param_Dim</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Screen_Value_Notes</targetReference>
+        </connector>
+    </assignments>
+
+    <!-- ASSIGNMENT 2c: Assign Parameter - Confezionamento -->
+    <assignments>
+        <name>Assign_Param_Conf</name>
+        <label>Assign Parameter - Confezionamento</label>
+        <locationX>314</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>varParameter</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Field_Param_Conf</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Screen_Value_Notes</targetReference>
+        </connector>
+    </assignments>
+
+    <!-- ASSIGNMENT 2d: Assign Parameter - Etichettatura -->
+    <assignments>
+        <name>Assign_Param_Etic</name>
+        <label>Assign Parameter - Etichettatura</label>
+        <locationX>446</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>varParameter</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Field_Param_Etic</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Screen_Value_Notes</targetReference>
+        </connector>
+    </assignments>
+
+    <!-- ASSIGNMENT 2e: Assign Parameter - Documentazione -->
+    <assignments>
+        <name>Assign_Param_Doc</name>
+        <label>Assign Parameter - Documentazione</label>
+        <locationX>578</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>varParameter</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Field_Param_Doc</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Screen_Value_Notes</targetReference>
+        </connector>
+    </assignments>
+
+    <!-- ASSIGNMENT 2f: Assign Parameter - Qualità -->
+    <assignments>
+        <name>Assign_Param_Qual</name>
+        <label>Assign Parameter - Qualità</label>
+        <locationX>710</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>varParameter</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Field_Param_Qual</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Screen_Value_Notes</targetReference>
+        </connector>
+    </assignments>
+
+    <!-- ASSIGNMENT 2g: Assign Parameter - Note Commerciali -->
+    <assignments>
+        <name>Assign_Param_Comm</name>
+        <label>Assign Parameter - Note Commerciali</label>
+        <locationX>842</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>varParameter</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Field_Param_Comm</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Screen_Value_Notes</targetReference>
+        </connector>
+    </assignments>
+
+    <!-- ASSIGNMENT 3: Assign Value and Notes -->
+    <assignments>
+        <name>Assign_Value_Notes</name>
+        <label>Assign Value and Notes</label>
+        <locationX>176</locationX>
+        <locationY>890</locationY>
+        <assignmentItems>
+            <assignToReference>varValue</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Field_Value</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varNotes</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Field_Notes</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Screen_Confirm</targetReference>
+        </connector>
+    </assignments>
+
+    <!-- DECISION: Branch by Category -->
+    <decisions>
+        <name>Decision_Branch_Category</name>
+        <label>Branch by Category</label>
+        <locationX>176</locationX>
+        <locationY>266</locationY>
+        <defaultConnectorLabel>Default</defaultConnectorLabel>
+        <rules>
+            <name>Route_Materiali</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varCategory</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Materiali</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_Params_Materiali</targetReference>
+            </connector>
+            <label>Materiali</label>
+        </rules>
+        <rules>
+            <name>Route_Dimensioni</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varCategory</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Dimensioni &amp; Tolleranze</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_Params_Dimensioni</targetReference>
+            </connector>
+            <label>Dimensioni</label>
+        </rules>
+        <rules>
+            <name>Route_Confezionamento</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varCategory</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Confezionamento / Imballo</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_Params_Confezionamento</targetReference>
+            </connector>
+            <label>Confezionamento</label>
+        </rules>
+        <rules>
+            <name>Route_Etichettatura</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varCategory</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Etichettatura</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_Params_Etichettatura</targetReference>
+            </connector>
+            <label>Etichettatura</label>
+        </rules>
+        <rules>
+            <name>Route_Documentazione</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varCategory</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Documentazione</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_Params_Documentazione</targetReference>
+            </connector>
+            <label>Documentazione</label>
+        </rules>
+        <rules>
+            <name>Route_Qualita</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varCategory</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Qualità &amp; Certificazioni</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_Params_Qualita</targetReference>
+            </connector>
+            <label>Qualità</label>
+        </rules>
+        <rules>
+            <name>Route_NoteCommerciali</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varCategory</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Note Commerciali / Preferenze</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_Params_NoteCommerciali</targetReference>
+            </connector>
+            <label>Note Commerciali</label>
+        </rules>
+    </decisions>
+
+    <!-- RECORD CREATE -->
     <recordCreates>
         <name>Create_TechSpec</name>
-        <label>Create TechSpec</label>
+        <label>Create Tech Spec</label>
         <locationX>176</locationX>
-        <locationY>674</locationY>
-        <assignRecordIdToReference>newTechSpecId</assignRecordIdToReference>
+        <locationY>1134</locationY>
         <connector>
             <targetReference>Screen_Success</targetReference>
         </connector>
@@ -508,25 +770,25 @@
         <inputAssignments>
             <field>Category__c</field>
             <value>
-                <elementReference>Input_Category</elementReference>
+                <elementReference>varCategory</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>Parameter__c</field>
             <value>
-                <elementReference>Final_Parameter</elementReference>
+                <elementReference>varParameter</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>Value__c</field>
             <value>
-                <elementReference>Input_Value</elementReference>
+                <elementReference>varValue</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>Notes__c</field>
             <value>
-                <elementReference>Input_Notes</elementReference>
+                <elementReference>varNotes</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -538,115 +800,25 @@
         <object>Account_Tech_Spec__c</object>
     </recordCreates>
 
-    <!-- RECORD LOOKUPS -->
-    <recordLookups>
-        <name>Get_Active_Specs</name>
-        <label>Get Active Specs</label>
-        <locationX>176</locationX>
-        <locationY>242</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Branch_Action</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Account__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>recordId</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>Is_Active__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>Account_Tech_Spec__c</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>Name</queriedFields>
-        <queriedFields>Category__c</queriedFields>
-        <queriedFields>Parameter__c</queriedFields>
-        <queriedFields>Value__c</queriedFields>
-        <queriedFields>UoM__c</queriedFields>
-        <queriedFields>Source__c</queriedFields>
-        <sortField>CreatedDate</sortField>
-        <sortOrder>Desc</sortOrder>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-
-    <!-- SCREENS -->
+    <!-- SCREEN 1: Select Category -->
     <screens>
-        <name>Screen_Choose_Action</name>
-        <label>Cosa vuoi fare?</label>
+        <name>Screen_Select_Category</name>
+        <label>Seleziona Categoria</label>
         <locationX>176</locationX>
-        <locationY>134</locationY>
+        <locationY>50</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Get_Active_Specs</targetReference>
+            <targetReference>Assign_Category</targetReference>
         </connector>
         <fields>
-            <name>Display_Header</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Gestione Specifiche Tecniche&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Seleziona l&apos;operazione da eseguire:&lt;/p&gt;</fieldText>
+            <name>Display_Header_Cat</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Nuova Specifica Tecnica&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Seleziona la categoria della specifica tecnica che vuoi aggiungere.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>Input_Action</name>
-            <choiceReferences>Choice_Create</choiceReferences>
-            <choiceReferences>Choice_List</choiceReferences>
-            <dataType>String</dataType>
-            <fieldText>Azione</fieldText>
-            <fieldType>RadioButtons</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-
-    <screens>
-        <name>Screen_List</name>
-        <label>Specifiche Attive</label>
-        <locationX>300</locationX>
-        <locationY>458</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>false</allowPause>
-        <fields>
-            <name>Display_List_Header</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Specifiche Tecniche Attive&lt;/b&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>Display_List_Content</name>
-            <fieldText>&lt;p&gt;Le specifiche attive per questo Account sono accessibili tramite la Related List &quot;Specifiche Tecniche&quot; sulla pagina Account.&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-
-    <screens>
-        <name>Screen_Create_Input</name>
-        <label>Crea Nuova Specifica</label>
-        <locationX>176</locationX>
-        <locationY>458</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>false</allowPause>
-        <connector>
-            <targetReference>Assign_Parameter</targetReference>
-        </connector>
-        <fields>
-            <name>Display_Create_Header</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Nuova Specifica Tecnica&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Seleziona la categoria e il parametro desiderato. La lista parametri si aggiorna automaticamente in base alla categoria scelta.&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>Input_Category</name>
+            <name>Field_Category</name>
             <choiceReferences>Cat_Materiali</choiceReferences>
             <choiceReferences>Cat_Dimensioni</choiceReferences>
             <choiceReferences>Cat_Confezionamento</choiceReferences>
@@ -659,113 +831,320 @@
             <fieldType>DropdownBox</fieldType>
             <isRequired>true</isRequired>
         </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+
+    <!-- SCREEN 2a: Parameters for MATERIALI -->
+    <screens>
+        <name>Screen_Params_Materiali</name>
+        <label>Parametri Materiali</label>
+        <locationX>50</locationX>
+        <locationY>374</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Assign_Param_Mat</targetReference>
+        </connector>
         <fields>
-            <name>Input_Parameter</name>
-            <choiceReferences>Param_MatPrincipale</choiceReferences>
-            <choiceReferences>Param_MatAlternativo</choiceReferences>
-            <choiceReferences>Param_TgRichiesto</choiceReferences>
-            <choiceReferences>Param_HalogenFree</choiceReferences>
-            <choiceReferences>Param_UL</choiceReferences>
-            <choiceReferences>Param_DimMax</choiceReferences>
-            <choiceReferences>Param_DimMin</choiceReferences>
-            <choiceReferences>Param_TolDim</choiceReferences>
-            <choiceReferences>Param_SpessoreTarget</choiceReferences>
-            <choiceReferences>Param_TolSpessore</choiceReferences>
-            <choiceReferences>Param_PesoMax</choiceReferences>
-            <choiceReferences>Param_ConfPrimaria</choiceReferences>
-            <choiceReferences>Param_ConfSecondaria</choiceReferences>
-            <choiceReferences>Param_MatBusta</choiceReferences>
-            <choiceReferences>Param_MatScatola</choiceReferences>
-            <choiceReferences>Param_NumBusta</choiceReferences>
-            <choiceReferences>Param_NumScatola</choiceReferences>
-            <choiceReferences>Param_Riempitivo</choiceReferences>
-            <choiceReferences>Param_Separazione</choiceReferences>
-            <choiceReferences>Param_Palletizzazione</choiceReferences>
-            <choiceReferences>Param_Filmatura</choiceReferences>
-            <choiceReferences>Param_EtichettaInterna</choiceReferences>
-            <choiceReferences>Param_EtichettaEsterna</choiceReferences>
-            <choiceReferences>Param_Barcode</choiceReferences>
-            <choiceReferences>Param_QRCode</choiceReferences>
-            <choiceReferences>Param_EtichettaCliente</choiceReferences>
-            <choiceReferences>Param_PackingList</choiceReferences>
-            <choiceReferences>Param_CertConf</choiceReferences>
-            <choiceReferences>Param_CertMat</choiceReferences>
-            <choiceReferences>Param_ReportTest</choiceReferences>
-            <choiceReferences>Param_AltroDoc</choiceReferences>
-            <choiceReferences>Param_ISO</choiceReferences>
-            <choiceReferences>Param_RoHS</choiceReferences>
-            <choiceReferences>Param_REACH</choiceReferences>
-            <choiceReferences>Param_ITAR</choiceReferences>
-            <choiceReferences>Param_AltroQual</choiceReferences>
-            <choiceReferences>Param_LottoMin</choiceReferences>
-            <choiceReferences>Param_LeadTime</choiceReferences>
-            <choiceReferences>Param_Incoterm</choiceReferences>
-            <choiceReferences>Param_Trasporto</choiceReferences>
-            <choiceReferences>Param_NoteAgg</choiceReferences>
+            <name>Display_Materiali</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Materiali&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Seleziona il parametro specifico per i materiali.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Field_Param_Mat</name>
+            <choiceReferences>Param_Mat_Principale</choiceReferences>
+            <choiceReferences>Param_Mat_Alternativo</choiceReferences>
+            <choiceReferences>Param_Mat_Tg</choiceReferences>
+            <choiceReferences>Param_Mat_Halogen</choiceReferences>
+            <choiceReferences>Param_Mat_UL</choiceReferences>
             <dataType>String</dataType>
             <fieldText>Parametro</fieldText>
             <fieldType>DropdownBox</fieldType>
-            <helpText>Scegli il parametro specifico. Tutti i parametri sono disponibili - l&apos;operatore deve selezionare quello corretto per la categoria scelta.</helpText>
             <isRequired>true</isRequired>
         </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+
+    <!-- SCREEN 2b: Parameters for DIMENSIONI -->
+    <screens>
+        <name>Screen_Params_Dimensioni</name>
+        <label>Parametri Dimensioni</label>
+        <locationX>182</locationX>
+        <locationY>374</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Assign_Param_Dim</targetReference>
+        </connector>
         <fields>
-            <name>Input_Value</name>
+            <name>Display_Dimensioni</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Dimensioni &amp;amp; Tolleranze&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Seleziona il parametro specifico per dimensioni e tolleranze.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Field_Param_Dim</name>
+            <choiceReferences>Param_Dim_Max</choiceReferences>
+            <choiceReferences>Param_Dim_Min</choiceReferences>
+            <choiceReferences>Param_Dim_TollDim</choiceReferences>
+            <choiceReferences>Param_Dim_Spessore</choiceReferences>
+            <choiceReferences>Param_Dim_TollSpess</choiceReferences>
+            <choiceReferences>Param_Dim_Peso</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Parametro</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+
+    <!-- SCREEN 2c: Parameters for CONFEZIONAMENTO -->
+    <screens>
+        <name>Screen_Params_Confezionamento</name>
+        <label>Parametri Confezionamento</label>
+        <locationX>314</locationX>
+        <locationY>374</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Assign_Param_Conf</targetReference>
+        </connector>
+        <fields>
+            <name>Display_Confezionamento</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Confezionamento / Imballo&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Seleziona il parametro specifico per il confezionamento.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Field_Param_Conf</name>
+            <choiceReferences>Param_Conf_Primaria</choiceReferences>
+            <choiceReferences>Param_Conf_Secondaria</choiceReferences>
+            <choiceReferences>Param_Conf_MatBusta</choiceReferences>
+            <choiceReferences>Param_Conf_MatScatola</choiceReferences>
+            <choiceReferences>Param_Conf_NumBusta</choiceReferences>
+            <choiceReferences>Param_Conf_NumScatola</choiceReferences>
+            <choiceReferences>Param_Conf_Riempitivo</choiceReferences>
+            <choiceReferences>Param_Conf_Separazione</choiceReferences>
+            <choiceReferences>Param_Conf_Pallet</choiceReferences>
+            <choiceReferences>Param_Conf_Filmatura</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Parametro</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+
+    <!-- SCREEN 2d: Parameters for ETICHETTATURA -->
+    <screens>
+        <name>Screen_Params_Etichettatura</name>
+        <label>Parametri Etichettatura</label>
+        <locationX>446</locationX>
+        <locationY>374</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Assign_Param_Etic</targetReference>
+        </connector>
+        <fields>
+            <name>Display_Etichettatura</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Etichettatura&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Seleziona il parametro specifico per l&apos;etichettatura.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Field_Param_Etic</name>
+            <choiceReferences>Param_Etic_Interna</choiceReferences>
+            <choiceReferences>Param_Etic_Esterna</choiceReferences>
+            <choiceReferences>Param_Etic_Barcode</choiceReferences>
+            <choiceReferences>Param_Etic_QR</choiceReferences>
+            <choiceReferences>Param_Etic_Cliente</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Parametro</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+
+    <!-- SCREEN 2e: Parameters for DOCUMENTAZIONE -->
+    <screens>
+        <name>Screen_Params_Documentazione</name>
+        <label>Parametri Documentazione</label>
+        <locationX>578</locationX>
+        <locationY>374</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Assign_Param_Doc</targetReference>
+        </connector>
+        <fields>
+            <name>Display_Documentazione</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Documentazione&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Seleziona il parametro specifico per la documentazione.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Field_Param_Doc</name>
+            <choiceReferences>Param_Doc_Packing</choiceReferences>
+            <choiceReferences>Param_Doc_CertConf</choiceReferences>
+            <choiceReferences>Param_Doc_CertMat</choiceReferences>
+            <choiceReferences>Param_Doc_Report</choiceReferences>
+            <choiceReferences>Param_Doc_Altro</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Parametro</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+
+    <!-- SCREEN 2f: Parameters for QUALITÀ -->
+    <screens>
+        <name>Screen_Params_Qualita</name>
+        <label>Parametri Qualità</label>
+        <locationX>710</locationX>
+        <locationY>374</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Assign_Param_Qual</targetReference>
+        </connector>
+        <fields>
+            <name>Display_Qualita</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Qualità &amp;amp; Certificazioni&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Seleziona il parametro specifico per qualità e certificazioni.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Field_Param_Qual</name>
+            <choiceReferences>Param_Qual_ISO</choiceReferences>
+            <choiceReferences>Param_Qual_RoHS</choiceReferences>
+            <choiceReferences>Param_Qual_REACH</choiceReferences>
+            <choiceReferences>Param_Qual_ITAR</choiceReferences>
+            <choiceReferences>Param_Qual_Altro</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Parametro</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+
+    <!-- SCREEN 2g: Parameters for NOTE COMMERCIALI -->
+    <screens>
+        <name>Screen_Params_NoteCommerciali</name>
+        <label>Parametri Note Commerciali</label>
+        <locationX>842</locationX>
+        <locationY>374</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Assign_Param_Comm</targetReference>
+        </connector>
+        <fields>
+            <name>Display_NoteCommerciali</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Note Commerciali / Preferenze&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Seleziona il parametro specifico per note commerciali.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Field_Param_Comm</name>
+            <choiceReferences>Param_Comm_Lotto</choiceReferences>
+            <choiceReferences>Param_Comm_Lead</choiceReferences>
+            <choiceReferences>Param_Comm_Incoterm</choiceReferences>
+            <choiceReferences>Param_Comm_Trasporto</choiceReferences>
+            <choiceReferences>Param_Comm_Note</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Parametro</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+
+    <!-- SCREEN 3: Value and Notes -->
+    <screens>
+        <name>Screen_Value_Notes</name>
+        <label>Valore e Note</label>
+        <locationX>176</locationX>
+        <locationY>782</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Assign_Value_Notes</targetReference>
+        </connector>
+        <fields>
+            <name>Display_ValueNotes</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Inserisci Valore&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Inserisci il valore specifico per il parametro selezionato ed eventuali note aggiuntive.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Field_Value</name>
             <dataType>String</dataType>
             <fieldText>Valore</fieldText>
             <fieldType>InputField</fieldType>
-            <helpText>Inserisci il valore specifico per questo parametro (es. FR-4 Standard, ±0.1mm, RoHS compliant, ecc.)</helpText>
+            <helpText>Esempio: FR4, 1.6mm, Si, No, ecc.</helpText>
             <isRequired>true</isRequired>
         </fields>
         <fields>
-            <name>Input_Notes</name>
+            <name>Field_Notes</name>
+            <dataType>String</dataType>
             <fieldText>Note</fieldText>
             <fieldType>LargeTextArea</fieldType>
-            <helpText>Note aggiuntive o dettagli implementativi</helpText>
+            <helpText>Note aggiuntive opzionali</helpText>
             <isRequired>false</isRequired>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
 
+    <!-- SCREEN 4: Confirmation -->
+    <screens>
+        <name>Screen_Confirm</name>
+        <label>Conferma</label>
+        <locationX>176</locationX>
+        <locationY>1026</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Create_TechSpec</targetReference>
+        </connector>
+        <fields>
+            <name>Display_Confirm</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Conferma Specifica Tecnica&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Verifica i dati prima di procedere:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Categoria:&lt;/b&gt; {!varCategory}&lt;/p&gt;&lt;p&gt;&lt;b&gt;Parametro:&lt;/b&gt; {!varParameter}&lt;/p&gt;&lt;p&gt;&lt;b&gt;Valore:&lt;/b&gt; {!varValue}&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; {!varNotes}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+
+    <!-- SCREEN 5: Success -->
     <screens>
         <name>Screen_Success</name>
-        <label>Success</label>
+        <label>Successo</label>
         <locationX>176</locationX>
-        <locationY>782</locationY>
+        <locationY>1242</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
             <name>Display_Success</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px; color: rgb(0, 128, 0);&quot;&gt;✓ Specifica Tecnica Creata&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Categoria: {!Input_Category}&lt;/p&gt;&lt;p&gt;Parametro: {!Final_Parameter}&lt;/p&gt;&lt;p&gt;Valore: {!Input_Value}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;La specifica è ora visibile nella Related List &quot;Specifiche Tecniche&quot; sulla pagina Account.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px; color: rgb(0, 138, 0);&quot;&gt;✓ Specifica Tecnica Creata!&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;La specifica tecnica è stata aggiunta con successo all&apos;Account.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
-
-    <!-- VARIABLES -->
-    <variables>
-        <name>recordId</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-
-    <variables>
-        <name>newTechSpecId</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-
-    <variables>
-        <name>Final_Parameter</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
 </Flow>
