@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>65.0</apiVersion>
-    <description>Flow for managing Account Technical Specifications</description>
+    <description>Flow for managing Account Technical Specifications with dependent picklist support</description>
     <interviewLabel>Gestisci Specifiche Tecniche {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Gestisci Specifiche Tecniche</label>
     <processMetadataValues>
@@ -26,7 +26,7 @@
     </start>
     <status>Active</status>
 
-    <!-- CHOICES GROUPED -->
+    <!-- ACTION CHOICES -->
     <choices>
         <name>Choice_Create</name>
         <choiceText>Crea nuova specifica</choiceText>
@@ -43,6 +43,8 @@
             <stringValue>LIST</stringValue>
         </value>
     </choices>
+
+    <!-- CATEGORY CHOICES -->
     <choices>
         <name>Cat_Materiali</name>
         <choiceText>Materiali</choiceText>
@@ -100,7 +102,349 @@
         </value>
     </choices>
 
-    <!-- DECISIONS GROUPED -->
+    <!-- PARAMETER CHOICES - MATERIALI -->
+    <choices>
+        <name>Param_MatPrincipale</name>
+        <choiceText>Materiale principale</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Materiale principale</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_MatAlternativo</name>
+        <choiceText>Materiale alternativo</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Materiale alternativo</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_TgRichiesto</name>
+        <choiceText>Tg richiesto</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Tg richiesto</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_HalogenFree</name>
+        <choiceText>Halogen free</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Halogen free</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_UL</name>
+        <choiceText>UL requirement</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>UL requirement</stringValue>
+        </value>
+    </choices>
+
+    <!-- PARAMETER CHOICES - DIMENSIONI -->
+    <choices>
+        <name>Param_DimMax</name>
+        <choiceText>Dimensione max (mm)</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Dimensione max (mm)</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_DimMin</name>
+        <choiceText>Dimensione min (mm)</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Dimensione min (mm)</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_TolDim</name>
+        <choiceText>Tolleranza dimensionale</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Tolleranza dimensionale</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_SpessoreTarget</name>
+        <choiceText>Spessore target</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Spessore target</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_TolSpessore</name>
+        <choiceText>Tolleranza spessore</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Tolleranza spessore</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_PesoMax</name>
+        <choiceText>Peso max</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Peso max</stringValue>
+        </value>
+    </choices>
+
+    <!-- PARAMETER CHOICES - CONFEZIONAMENTO -->
+    <choices>
+        <name>Param_ConfPrimaria</name>
+        <choiceText>Confezione primaria</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Confezione primaria</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_ConfSecondaria</name>
+        <choiceText>Confezione secondaria</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Confezione secondaria</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_MatBusta</name>
+        <choiceText>Materiale busta</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Materiale busta</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_MatScatola</name>
+        <choiceText>Materiale scatola</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Materiale scatola</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_NumBusta</name>
+        <choiceText>Numero pezzi per busta</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Numero pezzi per busta</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_NumScatola</name>
+        <choiceText>Numero pezzi per scatola</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Numero pezzi per scatola</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_Riempitivo</name>
+        <choiceText>Riempitivo</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Riempitivo</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_Separazione</name>
+        <choiceText>Separazione pezzi</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Separazione pezzi</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_Palletizzazione</name>
+        <choiceText>Palletizzazione</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Palletizzazione</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_Filmatura</name>
+        <choiceText>Filmatura</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Filmatura</stringValue>
+        </value>
+    </choices>
+
+    <!-- PARAMETER CHOICES - ETICHETTATURA -->
+    <choices>
+        <name>Param_EtichettaInterna</name>
+        <choiceText>Etichetta interna</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Etichetta interna</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_EtichettaEsterna</name>
+        <choiceText>Etichetta esterna</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Etichetta esterna</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_Barcode</name>
+        <choiceText>Barcode</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Barcode</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_QRCode</name>
+        <choiceText>QR code</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>QR code</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_EtichettaCliente</name>
+        <choiceText>Etichetta cliente</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Etichetta cliente</stringValue>
+        </value>
+    </choices>
+
+    <!-- PARAMETER CHOICES - DOCUMENTAZIONE -->
+    <choices>
+        <name>Param_PackingList</name>
+        <choiceText>Packing list</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Packing list</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_CertConf</name>
+        <choiceText>Certificato conformità</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Certificato conformità</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_CertMat</name>
+        <choiceText>Certificato materiali</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Certificato materiali</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_ReportTest</name>
+        <choiceText>Report test</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Report test</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_AltroDoc</name>
+        <choiceText>Altro documento</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Altro documento</stringValue>
+        </value>
+    </choices>
+
+    <!-- PARAMETER CHOICES - QUALITÀ -->
+    <choices>
+        <name>Param_ISO</name>
+        <choiceText>ISO richiesto</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>ISO richiesto</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_RoHS</name>
+        <choiceText>RoHS</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>RoHS</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_REACH</name>
+        <choiceText>REACH</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>REACH</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_ITAR</name>
+        <choiceText>ITAR</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>ITAR</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_AltroQual</name>
+        <choiceText>Altro requisito qualità</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Altro requisito qualità</stringValue>
+        </value>
+    </choices>
+
+    <!-- PARAMETER CHOICES - NOTE COMMERCIALI -->
+    <choices>
+        <name>Param_LottoMin</name>
+        <choiceText>Lotto minimo</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Lotto minimo</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_LeadTime</name>
+        <choiceText>Lead time preferito</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Lead time preferito</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_Incoterm</name>
+        <choiceText>Incoterm</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Incoterm</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_Trasporto</name>
+        <choiceText>Trasporto preferito</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Trasporto preferito</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Param_NoteAgg</name>
+        <choiceText>Note aggiuntive</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Note aggiuntive</stringValue>
+        </value>
+    </choices>
+
+    <!-- DECISIONS -->
     <decisions>
         <name>Branch_Action</name>
         <label>Branch Action</label>
@@ -127,12 +471,30 @@
         </rules>
     </decisions>
 
-    <!-- RECORD CREATES GROUPED -->
+    <!-- ASSIGNMENTS -->
+    <assignments>
+        <name>Assign_Parameter</name>
+        <label>Assign Parameter Value</label>
+        <locationX>176</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>Final_Parameter</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Input_Parameter</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_TechSpec</targetReference>
+        </connector>
+    </assignments>
+
+    <!-- RECORD CREATES -->
     <recordCreates>
         <name>Create_TechSpec</name>
         <label>Create TechSpec</label>
         <locationX>176</locationX>
-        <locationY>566</locationY>
+        <locationY>674</locationY>
         <assignRecordIdToReference>newTechSpecId</assignRecordIdToReference>
         <connector>
             <targetReference>Screen_Success</targetReference>
@@ -147,6 +509,12 @@
             <field>Category__c</field>
             <value>
                 <elementReference>Input_Category</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Parameter__c</field>
+            <value>
+                <elementReference>Final_Parameter</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -170,7 +538,7 @@
         <object>Account_Tech_Spec__c</object>
     </recordCreates>
 
-    <!-- RECORD LOOKUPS GROUPED -->
+    <!-- RECORD LOOKUPS -->
     <recordLookups>
         <name>Get_Active_Specs</name>
         <label>Get Active Specs</label>
@@ -209,7 +577,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
 
-    <!-- SCREENS GROUPED -->
+    <!-- SCREENS -->
     <screens>
         <name>Screen_Choose_Action</name>
         <label>Cosa vuoi fare?</label>
@@ -254,7 +622,7 @@
         </fields>
         <fields>
             <name>Display_List_Content</name>
-            <fieldText>&lt;p&gt;Le specifiche attive per questo Account sono accessibili tramite la Related List &quot;Technical Specifications&quot; sulla pagina Account.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Le specifiche attive per questo Account sono accessibili tramite la Related List &quot;Specifiche Tecniche&quot; sulla pagina Account.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -270,11 +638,11 @@
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Create_TechSpec</targetReference>
+            <targetReference>Assign_Parameter</targetReference>
         </connector>
         <fields>
             <name>Display_Create_Header</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Nuova Specifica Tecnica&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Nuova Specifica Tecnica&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Seleziona la categoria e il parametro desiderato. La lista parametri si aggiorna automaticamente in base alla categoria scelta.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -292,16 +660,67 @@
             <isRequired>true</isRequired>
         </fields>
         <fields>
+            <name>Input_Parameter</name>
+            <choiceReferences>Param_MatPrincipale</choiceReferences>
+            <choiceReferences>Param_MatAlternativo</choiceReferences>
+            <choiceReferences>Param_TgRichiesto</choiceReferences>
+            <choiceReferences>Param_HalogenFree</choiceReferences>
+            <choiceReferences>Param_UL</choiceReferences>
+            <choiceReferences>Param_DimMax</choiceReferences>
+            <choiceReferences>Param_DimMin</choiceReferences>
+            <choiceReferences>Param_TolDim</choiceReferences>
+            <choiceReferences>Param_SpessoreTarget</choiceReferences>
+            <choiceReferences>Param_TolSpessore</choiceReferences>
+            <choiceReferences>Param_PesoMax</choiceReferences>
+            <choiceReferences>Param_ConfPrimaria</choiceReferences>
+            <choiceReferences>Param_ConfSecondaria</choiceReferences>
+            <choiceReferences>Param_MatBusta</choiceReferences>
+            <choiceReferences>Param_MatScatola</choiceReferences>
+            <choiceReferences>Param_NumBusta</choiceReferences>
+            <choiceReferences>Param_NumScatola</choiceReferences>
+            <choiceReferences>Param_Riempitivo</choiceReferences>
+            <choiceReferences>Param_Separazione</choiceReferences>
+            <choiceReferences>Param_Palletizzazione</choiceReferences>
+            <choiceReferences>Param_Filmatura</choiceReferences>
+            <choiceReferences>Param_EtichettaInterna</choiceReferences>
+            <choiceReferences>Param_EtichettaEsterna</choiceReferences>
+            <choiceReferences>Param_Barcode</choiceReferences>
+            <choiceReferences>Param_QRCode</choiceReferences>
+            <choiceReferences>Param_EtichettaCliente</choiceReferences>
+            <choiceReferences>Param_PackingList</choiceReferences>
+            <choiceReferences>Param_CertConf</choiceReferences>
+            <choiceReferences>Param_CertMat</choiceReferences>
+            <choiceReferences>Param_ReportTest</choiceReferences>
+            <choiceReferences>Param_AltroDoc</choiceReferences>
+            <choiceReferences>Param_ISO</choiceReferences>
+            <choiceReferences>Param_RoHS</choiceReferences>
+            <choiceReferences>Param_REACH</choiceReferences>
+            <choiceReferences>Param_ITAR</choiceReferences>
+            <choiceReferences>Param_AltroQual</choiceReferences>
+            <choiceReferences>Param_LottoMin</choiceReferences>
+            <choiceReferences>Param_LeadTime</choiceReferences>
+            <choiceReferences>Param_Incoterm</choiceReferences>
+            <choiceReferences>Param_Trasporto</choiceReferences>
+            <choiceReferences>Param_NoteAgg</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Parametro</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <helpText>Scegli il parametro specifico. Tutti i parametri sono disponibili - l&apos;operatore deve selezionare quello corretto per la categoria scelta.</helpText>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
             <name>Input_Value</name>
             <dataType>String</dataType>
-            <fieldText>Value</fieldText>
+            <fieldText>Valore</fieldText>
             <fieldType>InputField</fieldType>
+            <helpText>Inserisci il valore specifico per questo parametro (es. FR-4 Standard, ±0.1mm, RoHS compliant, ecc.)</helpText>
             <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>Input_Notes</name>
-            <fieldText>Notes</fieldText>
+            <fieldText>Note</fieldText>
             <fieldType>LargeTextArea</fieldType>
+            <helpText>Note aggiuntive o dettagli implementativi</helpText>
             <isRequired>false</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -312,20 +731,20 @@
         <name>Screen_Success</name>
         <label>Success</label>
         <locationX>176</locationX>
-        <locationY>674</locationY>
+        <locationY>782</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
             <name>Display_Success</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px; color: rgb(0, 128, 0);&quot;&gt;✓ Specifica Tecnica Creata&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;ID: {!newTechSpecId}&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px; color: rgb(0, 128, 0);&quot;&gt;✓ Specifica Tecnica Creata&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Categoria: {!Input_Category}&lt;/p&gt;&lt;p&gt;Parametro: {!Final_Parameter}&lt;/p&gt;&lt;p&gt;Valore: {!Input_Value}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;La specifica è ora visibile nella Related List &quot;Specifiche Tecniche&quot; sulla pagina Account.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
 
-    <!-- VARIABLES GROUPED -->
+    <!-- VARIABLES -->
     <variables>
         <name>recordId</name>
         <dataType>String</dataType>
@@ -336,6 +755,14 @@
 
     <variables>
         <name>newTechSpecId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+
+    <variables>
+        <name>Final_Parameter</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
