@@ -22,7 +22,8 @@
       "Bash(sf apex log list:*)",
       "Bash(grep:*)",
       "Bash(unzip:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(ls:*)"
     ]
   }
 }
