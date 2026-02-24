@@ -441,27 +441,27 @@
         </connector>
     </assignments>
     <choices>
-        <name>Choice_Tipologia_Standard</name>
-        <choiceText>Standard</choiceText>
+        <name>Choice_Tipologia_Rigido</name>
+        <choiceText>Rigido</choiceText>
         <dataType>String</dataType>
         <value>
-            <stringValue>Standard</stringValue>
+            <stringValue>Rigido</stringValue>
         </value>
     </choices>
     <choices>
-        <name>Choice_Tipologia_Flex</name>
-        <choiceText>Flex</choiceText>
+        <name>Choice_Tipologia_Flessibile</name>
+        <choiceText>Flessibile</choiceText>
         <dataType>String</dataType>
         <value>
-            <stringValue>Flex</stringValue>
+            <stringValue>Flessibile</stringValue>
         </value>
     </choices>
     <choices>
-        <name>Choice_Tipologia_RigidFlex</name>
-        <choiceText>Rigid-Flex</choiceText>
+        <name>Choice_Tipologia_RigidoFlessibile</name>
+        <choiceText>Rigido-Flessibile</choiceText>
         <dataType>String</dataType>
         <value>
-            <stringValue>Rigid-Flex</stringValue>
+            <stringValue>Rigido-Flessibile</stringValue>
         </value>
     </choices>
     <choices>
@@ -888,9 +888,9 @@
             <fieldText>Tipologia Prodotto</fieldText>
             <fieldType>DropdownBox</fieldType>
             <isRequired>true</isRequired>
-            <choiceReferences>Choice_Tipologia_Standard</choiceReferences>
-            <choiceReferences>Choice_Tipologia_Flex</choiceReferences>
-            <choiceReferences>Choice_Tipologia_RigidFlex</choiceReferences>
+            <choiceReferences>Choice_Tipologia_Rigido</choiceReferences>
+            <choiceReferences>Choice_Tipologia_Flessibile</choiceReferences>
+            <choiceReferences>Choice_Tipologia_RigidoFlessibile</choiceReferences>
         </fields>
         <nextOrFinishButtonLabel>Avanti</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
