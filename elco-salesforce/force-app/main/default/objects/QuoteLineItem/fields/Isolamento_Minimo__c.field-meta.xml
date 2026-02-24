@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Isolamento_Minimo__c</fullName>
+    <label>Isolamento Minimo (mm)</label>
+    <description>Isolamento minimo richiesto in millimetri</description>
+    <inlineHelpText>Specificare l'isolamento minimo in millimetri (es. 0.15)</inlineHelpText>
+    <type>Number</type>
+    <precision>10</precision>
+    <scale>3</scale>
+    <required>false</required>
+    <externalId>false</externalId>
+    <unique>false</unique>
+    <trackHistory>false</trackHistory>
+</CustomField>

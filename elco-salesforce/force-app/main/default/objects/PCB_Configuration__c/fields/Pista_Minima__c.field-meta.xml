@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pista_Minima__c</fullName>
+    <label>Pista Minima (mm)</label>
+    <description>Pista minima richiesta in millimetri</description>
+    <inlineHelpText>Specificare la pista minima in millimetri (es. 0.15)</inlineHelpText>
+    <type>Number</type>
+    <precision>10</precision>
+    <scale>3</scale>
+    <required>false</required>
+    <externalId>false</externalId>
+    <unique>false</unique>
+    <trackHistory>false</trackHistory>
+</CustomField>

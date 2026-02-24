@@ -4,7 +4,231 @@
 **Username**: giuseppe.villani101020.b5bd075bbc5f@agentforce.com
 **Instance**: orgfarm-ebbb80388b-dev-ed.develop.my.salesforce.com
 **API Version**: 65.0
-**Last Updated**: 2026-02-23 (PCB Configurator Flow - Complete Implementation with All 4 Profiles)
+**Last Updated**: 2026-02-24 (P8 - Final Operator Experience Alignment)
+
+---
+
+## P8 - Final Operator Experience Alignment ✅ COMPLETE
+
+**Data**: 2026-02-24 16:00 CET
+**Requisito**: Allineamento completo esperienza operatore con 3 entry point (Global CRIF, Account CRIF con check P.IVA, Account PCB)
+**Razionale**: Flow CRIF_Aggiorna_Dati_Account mancava logica per chiedere P.IVA se blank. Richiesto workflow: se P.IVA manca → chiedi → salva → refresh, se presente → refresh diretto.
+
+### Deploy Summary
+
+**Deploy 1 - Flow CRIF_Aggiorna_Dati_Account v4 → v5**
+```bash
+sf project deploy start -o elco-dev --metadata "Flow:CRIF_Aggiorna_Dati_Account"
+```
+- Deploy ID: `0Afg5000004OxmDCAS`
+- Status: ✅ Succeeded
+- Flow: CRIF_Aggiorna_Dati_Account v5 Active (upgraded from v4)
+- Elapsed Time: 4.87s
+
+### Modifiche Flow v5
+
+**Componenti aggiunti**:
+1. **RecordLookup: Get_Account** (locationY=134)
+   - Legge Account da recordId
+   - Estrae Partita_IVA__c per decision
+2. **Decision: Check_PIVA_Exists** (locationY=242)
+   - Rule "PIVA_Present": IsNull(Get_Account.Partita_IVA__c) = false → Screen_Confirm
+   - Default "PIVA_Missing" → Screen_Ask_PIVA
+3. **Screen: Screen_Ask_PIVA** (locationY=350)
+   - Display text: "L'Account non ha una Partita IVA associata..."
+   - Input field: Input_Missing_PIVA (String, required)
+4. **RecordUpdate: Update_Account_PIVA** (locationY=350)
+   - Assegna Partita_IVA__c = Input_Missing_PIVA su Account
+
+**Flow path modificato**:
+- **PRIMA (v4)**: Start → Screen_Confirm → Call_Core_Refresh → Success/Error
+- **DOPO (v5)**: Start → Get_Account → Check_PIVA_Exists
+  - Se PIVA presente → Screen_Confirm → Call_Core_Refresh → Success/Error
+  - Se PIVA manca → Screen_Ask_PIVA → Update_Account_PIVA → Screen_Confirm → Call_Core_Refresh → Success/Error
+
+### Verifiche Post-Deploy
+
+**Flow versione aggiornata**:
+```bash
+sf data query -o elco-dev --use-tooling-api -q "SELECT DeveloperName, ActiveVersion.VersionNumber FROM FlowDefinition WHERE DeveloperName = 'CRIF_Aggiorna_Dati_Account'"
+```
+Risultato: CRIF_Aggiorna_Dati_Account v5 Active ✅
+
+**Componenti verificati esistenti (non modificati)**:
+- Global Action: CRIF_New_Account_da_PIVA_GA (LightningComponent) ✅
+- Flow: CRIF_NEW_da_PIVA v6 Active ✅
+- Flow: PCB_Configuratore v1 Active ✅
+- Quick Actions su Account: 6 (CRIF_Aggiorna_Dati, CRIF_Storico, Nuova_Configurazione_PCB, etc.) ✅
+- Custom Object: PCB_Configuration__c con 18 fields, 3 VRs ✅
+- Layouts: Global-Global Layout (CRIF action a sortOrder=0), Account-Account Layout (5 actions) ✅
+- FlexiPage: Account_360 con related list PCB_Configurations__r ✅
+- Permission Sets: Elco_Run_Flows (RunFlow=true), PCB_Configurator_Operator (CRUD+FLS+flowAccess) ✅
+
+### Documentazione Prodotta
+
+**File creati**:
+- `FINAL_ALIGNMENT_REPORT.md`: Report completo con executive summary, inventario componenti, UAT checklist, evidenze query, flow dettagliati
+
+**Sezioni aggiornate**:
+- `org_state.md`: Questa sezione P8
+- `struttura.md`: Sezione "Esperienza Operatore" con click-by-click flows
+
+### UAT Manual Testing Required
+
+**Test da eseguire manualmente**:
+1. 🔲 TEST 1: Global Action "Nuovo Account da P.IVA" (CRIF_NEW_da_PIVA v6)
+2. 🔲 TEST 2: Account Action "CRIF - Aggiorna Dati" con P.IVA mancante (v5 flow path nuovo)
+3. 🔲 TEST 3: Account Action "CRIF - Aggiorna Dati" con P.IVA presente (v5 flow path diretto)
+4. 🔲 TEST 4: Account Action "Nuova Configurazione PCB" (wizard A→G, VRs, dependencies)
+5. 🔲 TEST 5: UI Account_360 related list PCB_Configurations__r visibile
+6. 🔲 TEST 6: Quick Actions visibili su Account highlights panel
+
+### Note Tecniche
+
+**Named Credential CRIF**: Verificata esistente, ma potrebbe richiedere configurazione endpoint/certificati in produzione.
+
+**Permission Sets assignment**: Operatori devono avere `Elco_Run_Flows` (RunFlow=true) per eseguire flow. Aggiungere `PCB_Configurator_Operator` per creare configurazioni PCB, `CRIF_Operator` per azioni CRIF.
+
+**Field Dependencies**: Materiale←Tipologia e Spessore←Tipologia gestite client-side con LWC `dependentPicklistCmp` nel flow PCB_Configuratore.
+
+**Validation Rules**: VR_PCB_01/02/03 bloccano salvataggio se Custom picklist senza _Custom_Value__c compilato.
+
+---
+
+## P7 - Account-based PCB Configuration ✅ COMPLETE
+
+**Data**: 2026-02-24 14:30 CET
+**Requisito**: Configuratore PCB Account-based (entry point Quick Action su Account, output su oggetto dedicato PCB_Configuration__c)
+**Razionale**: Cliente richiede configuratore standalone senza dipendenza da Quote/Opportunity. I flow Quote-centric restano legacy.
+
+### Deploy Summary
+
+**Deploy 1 - CustomObject + Fields + Validation Rules**
+```bash
+sf project deploy start -o elco-dev --source-dir force-app/main/default/objects/PCB_Configuration__c
+```
+- Deploy ID: `0Afg5000004OmndCAC`
+- Status: ✅ Succeeded
+- Componenti: 22 (1 CustomObject + 18 CustomField + 3 ValidationRule)
+- Fix applicato: Account__c lookup richiede `<deleteConstraint>Restrict</deleteConstraint>` (Cascade non supportato per Lookup)
+
+**Deploy 2 - Flow PCB_Configuratore**
+```bash
+sf project deploy start -o elco-dev --source-dir force-app/main/default/flows/PCB_Configuratore.flow-meta.xml
+```
+- Deploy ID: `0Afg5000004OiyVCAS`
+- Status: ✅ Succeeded
+- Flow: PCB_Configuratore v1 Active
+- Note: Flow deployato PRIMA di Permission Set (dipendenza flowAccesses)
+
+**Deploy 3 - Permission Set**
+```bash
+sf project deploy start -o elco-dev --source-dir force-app/main/default/permissionsets/PCB_Configurator_Operator.permissionset-meta.xml
+```
+- Deploy ID: `0Afg5000004OsUnCAK`
+- Status: ✅ Succeeded
+- Fix applicato: rimosso FLS per Account__c (campo required, FLS non permesso)
+
+**Deploy 4 - Quick Action**
+```bash
+sf project deploy start -o elco-dev --source-dir force-app/main/default/quickActions/Account.Nuova_Configurazione_PCB.quickAction-meta.xml
+```
+- Deploy ID: `0Afg5000004OmjgCAC`
+- Status: ✅ Succeeded
+- Quick Action: Account.Nuova_Configurazione_PCB (Flow)
+
+**Deploy 5 - Account Layout**
+```bash
+sf project deploy start -o elco-dev --source-dir "force-app/main/default/layouts/Account-Account Layout.layout-meta.xml"
+```
+- Deploy ID: `0Afg5000004OsGICA0`
+- Status: ✅ Succeeded (Changed)
+- Aggiunto: platformActionListItem sortOrder=32
+
+**Deploy 6 - Account_360 FlexiPage**
+```bash
+sf project deploy start -o elco-dev --source-dir force-app/main/default/flexipages/Account_360.flexipage-meta.xml
+```
+- Deploy ID: `0Afg5000004OsbFCAS`
+- Status: ✅ Succeeded (Changed)
+- Aggiunto: tab "Configurazioni PCB" con related list PCB_Configurations__r
+
+### Verifiche Post-Deploy
+
+**Oggetto creato**:
+```bash
+sf data query -o elco-dev --use-tooling-api -q "SELECT QualifiedApiName, Label FROM EntityDefinition WHERE QualifiedApiName='PCB_Configuration__c'"
+```
+✅ Result: 1 record (PCB_Configuration__c | Configurazione PCB)
+
+**Campi creati**:
+```bash
+sf data query -o elco-dev --use-tooling-api -q "SELECT QualifiedApiName, DataType FROM EntityParticle WHERE EntityDefinition.QualifiedApiName='PCB_Configuration__c' ORDER BY QualifiedApiName"
+```
+✅ Result: 28 campi totali (18 custom + 10 standard)
+
+**Validation rules attive**:
+```bash
+sf data query -o elco-dev --use-tooling-api -q "SELECT ValidationName, Active FROM ValidationRule WHERE EntityDefinition.QualifiedApiName='PCB_Configuration__c'"
+```
+✅ Result: 3 VR attive (VR_PCB_01/02/03_*_Custom)
+
+**Quick Action su Account**:
+```bash
+sf data query -o elco-dev --use-tooling-api -q "SELECT DeveloperName, MasterLabel, SobjectType FROM QuickActionDefinition WHERE DeveloperName='Nuova_Configurazione_PCB'"
+```
+✅ Result: 1 record (Nuova_Configurazione_PCB | Account | Flow)
+
+**Flow attivo**:
+```bash
+sf data query -o elco-dev --use-tooling-api -q "SELECT DeveloperName, ActiveVersion.VersionNumber, ActiveVersion.Status FROM FlowDefinition WHERE DeveloperName='PCB_Configuratore'"
+```
+✅ Result: PCB_Configuratore v1 Active
+
+### Componenti Creati
+
+| Categoria | Nome API | Tipo | Path | Note |
+|-----------|----------|------|------|------|
+| Custom Object | PCB_Configuration__c | CustomObject | objects/PCB_Configuration__c/ | AutoNumber PCB-{00000}, sharingModel=ReadWrite |
+| Lookup Field | Account__c | CustomField | fields/Account__c.field-meta.xml | Required, deleteConstraint=Restrict |
+| PCB Fields (17) | Tipologia/Materiale/Dimensioni/etc. | CustomField | fields/*.field-meta.xml | Duplicati da QuoteLineItem |
+| Field Dependencies | Tipologia→Materiale, Materiale→Spessore | FieldDependency | Embedded in field XML | 13+38 value mappings |
+| Validation Rules | VR_PCB_01/02/03_*_Custom | ValidationRule | validationRules/*.validationRule-meta.xml | Custom values required |
+| Flow | PCB_Configuratore | Flow | flows/PCB_Configuratore.flow-meta.xml | v1 Active, 8 screens A→G + loop |
+| Quick Action | Account.Nuova_Configurazione_PCB | QuickAction | quickActions/Account.Nuova_Configurazione_PCB.quickAction-meta.xml | Entry point Account |
+| Permission Set | PCB_Configurator_Operator | PermissionSet | permissionsets/PCB_Configurator_Operator.permissionset-meta.xml | CRUD + FLS + flowAccesses |
+| Layout | Account-Account Layout | Layout | layouts/Account-Account Layout.layout-meta.xml | +1 platformActionListItem |
+| FlexiPage | Account_360 | FlexiPage | flexipages/Account_360.flexipage-meta.xml | +1 tab + related list |
+
+### Note Architetturali
+
+**Riuso da QuoteLineItem**:
+- Tutti i 17 campi tecnici PCB sono stati duplicati da QuoteLineItem (copy-paste metadata XML)
+- Le 2 field dependencies (Tipologia→Materiale, Materiale→Spessore) sono identiche a QuoteLineItem
+- Le 3 validation rules sono replicate con stessa formula (solo entityName cambiato)
+- LWC `dependentPicklistCmp` è riusato nel flow (cambiato solo objectApiName da QuoteLineItem a PCB_Configuration__c)
+
+**Flow Quote-centric (legacy)**:
+- `Quote_Aggiungi_Riga_Offerta` (v4 active) → LEGACY, non entry point cliente
+- `Quote_Aggiungi_Riga_Offerta_V2` (inactive in org, presente in repo) → BASE per PCB_Configuratore
+- `Quote_Test_Deploy` (v3 active) → LEGACY, usato da Quote.Aggiungi_Riga_Offerta
+- Questi flow restano invariati e funzionanti per backward compatibility
+
+**Differenze AS-IS vs TO-BE**:
+- AS-IS: entry point Quote.Aggiungi_Riga_Offerta → crea QuoteLineItem (richiede Quote/Opportunity/Pricebook)
+- TO-BE: entry point Account.Nuova_Configurazione_PCB → crea PCB_Configuration__c (standalone, NO Quote/Opp/Pricebook)
+
+### Test Funzionali (Manuale)
+
+✅ Smoke test consigliato:
+1. Vai su un Account
+2. Clicca Quick Action "Nuova Configurazione PCB"
+3. Verifica wizard 8 screens (A→G + loop)
+4. Verifica prefill defaults (se Account ha Spessore/Finish/Solder/Silkscreen_Default__c)
+5. Verifica dependent picklist (Tipologia filtra Materiale, Materiale filtra Spessore)
+6. Verifica validation rules (se Materiale=Custom, campo Materiale_Custom_Value__c richiesto)
+7. Salva → crea record PCB_Configuration__c con Account__c popolato
+8. Verifica loop "Creare un'altra configurazione?" riparte da Screen A
 
 ---
 

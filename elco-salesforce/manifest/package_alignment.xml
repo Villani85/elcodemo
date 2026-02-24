@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>CRIF_NEW_da_PIVA</members>
+        <members>CRIF_Aggiorna_Dati_Account</members>
+        <members>PCB_Configuratore</members>
+        <members>CRIF_Storico_Account</members>
+        <name>Flow</name>
+    </types>
+    <types>
+        <members>Account.CRIF_Aggiorna_Dati</members>
+        <members>Account.CRIF_Storico</members>
+        <members>Account.Nuova_Configurazione_PCB</members>
+        <members>Account.Gestisci_Specifiche_Tecniche</members>
+        <members>Account.Crea_Report_Visita</members>
+        <members>CRIF_New_Account_da_PIVA_GA</members>
+        <members>CRIF_New_Account_da_PIVA</members>
+        <members>CRIF_Crea_Account_da_PIVA</members>
+        <name>QuickAction</name>
+    </types>
+    <types>
+        <members>Account-Account Layout</members>
+        <members>Global-Global Layout</members>
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>Account_360</members>
+        <name>FlexiPage</name>
+    </types>
+    <types>
+        <members>PCB_Configuration__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>dependentPicklistCmp</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <types>
+        <members>CRIF_GlobalFlowAction</members>
+        <name>AuraDefinitionBundle</name>
+    </types>
+    <types>
+        <members>Elco_Run_Flows</members>
+        <members>CRIF_Operator</members>
+        <members>CRIF_Admin</members>
+        <members>CRIF_MOCK_Access</members>
+        <members>PCB_Configurator_Operator</members>
+        <members>Quote_Operator</members>
+        <name>PermissionSet</name>
+    </types>
+    <version>66.0</version>
+</Package>

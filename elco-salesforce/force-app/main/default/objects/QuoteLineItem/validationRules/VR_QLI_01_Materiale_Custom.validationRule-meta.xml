@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VR_QLI_01_Materiale_Custom</fullName>
+    <active>true</active>
+    <description>Se Materiale è Custom, il campo Materiale Custom Value deve essere compilato</description>
+    <errorConditionFormula>AND(
+  ISPICKVAL(Materiale__c, "Custom"),
+  ISBLANK(Materiale_Custom_Value__c)
+)</errorConditionFormula>
+    <errorDisplayField>Materiale_Custom_Value__c</errorDisplayField>
+    <errorMessage>Se Materiale = Custom, compilare &quot;Materiale (Custom value)&quot;.</errorMessage>
+</ValidationRule>

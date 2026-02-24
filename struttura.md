@@ -1,6 +1,134 @@
 ﻿# Elco Salesforce - Struttura Progetto
 
-**Last Updated**: 2026-02-21 10:09 CET (P0 Configuration Baseline Verification)
+**Last Updated**: 2026-02-24 (P8 - Final Operator Experience Alignment)
+
+---
+
+## 🎯 Esperienza Operatore Completa (P8 - 2026-02-24)
+
+### Entry Point A: Nuovo Account da P.IVA (Global) ✅
+
+**User Story**: "Da qualsiasi pagina, voglio creare un nuovo Account inserendo solo la Partita IVA e ottenere automaticamente i dati CRIF."
+
+**Click-by-Click**:
+1. Operatore da homepage/qualsiasi pagina → Click "+" (Global Actions)
+2. Seleziona "Nuovo Account da P.IVA (CRIF)"
+3. Flow chiede Partita IVA → Inserisce (es: "12345678901")
+4. Click "Avanti"
+5. Sistema crea Account, popola Partita_IVA__c, chiama servizio CRIF, popola campi CRIF
+6. Screen success con link ad Account creato
+
+**Componenti**:
+- Global Action: `CRIF_New_Account_da_PIVA_GA` (LightningComponent - Aura wrapper)
+- Flow: `CRIF_NEW_da_PIVA` v6 Active
+- Layout: `Global-Global Layout` con action a sortOrder=0 (primo posto)
+- Permission Set: `Elco_Run_Flows` (RunFlow=true)
+
+---
+
+### Entry Point B: CRIF - Aggiorna Dati (Account) ✅ **P8 UPDATED**
+
+**User Story**: "Su un Account esistente, voglio aggiornare i dati CRIF. Se l'Account non ha P.IVA, il sistema me la chiede e la salva prima di fare refresh."
+
+**Click-by-Click (P.IVA mancante)**:
+1. Operatore apre Account senza Partita_IVA__c → Click Quick Action "CRIF - Aggiorna Dati"
+2. Flow **v5 (NEW)** controlla Account.Partita_IVA__c → è blank
+3. Screen "Partita IVA mancante" → Inserisce P.IVA
+4. Click "Avanti" → Sistema salva Partita_IVA__c su Account
+5. Screen conferma → Click "Avanti"
+6. Sistema chiama servizio CRIF, aggiorna campi (CRIF_Last_Check_Date__c, CRIF_Rating__c, etc.)
+7. Screen success "Dati CRIF aggiornati con successo"
+
+**Click-by-Click (P.IVA presente)**:
+1. Operatore apre Account con Partita_IVA__c compilata → Click Quick Action "CRIF - Aggiorna Dati"
+2. Flow v5 controlla → P.IVA presente → **SKIP screen chiedi P.IVA**
+3. Screen conferma → Click "Avanti"
+4. Sistema fa refresh CRIF diretto
+5. Screen success
+
+**Componenti**:
+- Quick Action: `Account.CRIF_Aggiorna_Dati`
+- Flow: `CRIF_Aggiorna_Dati_Account` **v5 Active** (upgraded in P8, was v4)
+- **P8 Modifiche**: Aggiunto Get_Account → Check_PIVA_Exists decision → Screen_Ask_PIVA → Update_Account_PIVA
+- Deploy ID: `0Afg5000004OxmDCAS`
+- Permission Set: `Elco_Run_Flows` + `CRIF_Operator`
+
+---
+
+### Entry Point C: Nuova Configurazione PCB (Account) ✅
+
+**User Story**: "Su un Account, voglio configurare un PCB step-by-step (wizard JLC-style) e salvarlo come record dedicato, senza dover creare Quote/Opportunity."
+
+**Click-by-Click**:
+1. Operatore apre Account → Click Quick Action "Nuova Configurazione PCB"
+2. Flow PCB_Configuratore v1 si apre
+3. **Screen A - Tipologia**: Scelta Rigido/Flex/Rigido-Flex → Seleziona "Rigido"
+4. **Screen B - Materiale**: Dependent picklist (filtrato per Rigido) → Seleziona "FR-4 Standard" (o "Custom" + compila Materiale_Custom_Value__c)
+5. **Screen C - Dimensioni + Spessore**: Inserisce Dimensioni Array, seleziona Spessore dependent (filtrato per Rigido) → "1.6mm" (prefill da Account.Spessore_Default__c se presente)
+6. **Screen D - Rame + Finish**: Seleziona Rame, Finish (prefill da Account.Finish_Default__c)
+7. **Screen E - Solder + Silkscreen**: Inserisce valori specifici (prefill da Account defaults)
+8. **Screen F - Parametri tecnici**: Pista Minima, Foro Minimo, Isolamento Minimo, Aspect Ratio
+9. **Screen G - Codici**: Customer Circuit Code, Internal Circuit Code
+10. Click "Fine" → Sistema crea record `PCB_Configuration__c` con Account__c = AccountId
+11. **Validation Rules check**: Se ha scelto "Custom" senza compilare _Custom_Value__c → Errore VR blocca salvataggio
+12. Screen success "Configurazione creata" + pulsante "Crea Altra Configurazione?" (loop)
+
+**Componenti**:
+- Quick Action: `Account.Nuova_Configurazione_PCB`
+- Flow: `PCB_Configuratore` v1 Active
+- Custom Object: `PCB_Configuration__c` (18 fields: Account__c lookup required + 17 technical)
+- Field Dependencies: 2 (Materiale ← Tipologia, Spessore ← Tipologia)
+- Validation Rules: 3 attive (VR_PCB_01/02/03 - Custom values required)
+- LWC: `dependentPicklistCmp` (gestisce dependency client-side)
+- Permission Set: `Elco_Run_Flows` + `PCB_Configurator_Operator` (CRUD + FLS + flowAccess)
+- UI: Account_360 FlexiPage → Tab "Configurazioni PCB" → Related list PCB_Configurations__r
+
+---
+
+### Entry Point D: Altre Quick Actions su Account ✅
+
+**Quick Actions disponibili su Account** (totale 6):
+1. ✅ CRIF - Aggiorna Dati (v5 con check P.IVA)
+2. ✅ Storico CRIF (mostra log chiamate CRIF)
+3. ✅ Nuova Configurazione PCB (wizard A→G)
+4. ✅ Gestisci Specifiche Tecniche (crea/modifica Account_Tech_Spec__c)
+5. ✅ Crea Report Visita (crea Visit_Report__c + Visit_Attendee__c)
+6. ✅ Storico Offerte (legacy Quote-centric, mantiene compatibilità)
+
+**Visibilità**: Account-Account Layout include platformActionListItems per tutte le azioni.
+
+---
+
+### UI / UX Summary
+
+**Account_360 FlexiPage** (multi-tab layout):
+- **Tab 1**: Dati Finanziari & CRIF (detailPanel)
+- **Tab 2**: Specifiche Tecniche (related list TechSpecs__r)
+- **Tab 3**: Amministrazione & Zucchetti (detailPanel)
+- **Tab 4**: **Configurazioni PCB** ✅ (related list PCB_Configurations__r) - P7/P8
+
+**Global-Global Layout**:
+- Primo elemento (sortOrder=0): CRIF_New_Account_da_PIVA_GA ✅
+
+---
+
+### Security Model
+
+**Permission Sets richiesti per Operatori**:
+
+| PermSet | Scopo | Contiene |
+|---------|-------|----------|
+| `Elco_Run_Flows` | **OBBLIGATORIO** per eseguire flow | PermissionsRunFlow=true |
+| `PCB_Configurator_Operator` | Creare configurazioni PCB | CRUD PCB_Configuration__c + FLS 17 fields + flowAccess PCB_Configuratore |
+| `CRIF_Operator` | Operazioni CRIF | Accesso flow CRIF, Named Credential (se configurato) |
+| `CRIF_Admin` | Admin CRIF | Gestione credenziali, configurazione |
+| `Quote_Operator` | Quote legacy | CRUD Quote/QuoteLineItem (mantiene compatibilità) |
+
+**Assegnazione tipica Operatore Standard**:
+- ✅ Elco_Run_Flows
+- ✅ PCB_Configurator_Operator
+- ✅ CRIF_Operator
+- ❌ CRIF_Admin (solo admin)
 
 ---
 
@@ -298,6 +426,83 @@ Raw evidenze: `elco-salesforce/raw/`
 - Tutti i campi: `required=false` a livello metadata (obbligatorietà gestita da Flow/UX/Validation Rules)
 - Evita problemi FLS deploy e visibilità dinamica
 - Permission Sets: CRIF_Operator (NO raw JSON), CRIF_Admin (FULL access incluso raw JSON)
+
+---
+
+## Configurazione PCB (Account-based)
+
+**Oggetto**: `PCB_Configuration__c`
+**Requisito**: Configuratore tecnico PCB step-by-step (stile JLC) con entry point Account, senza dipendenza da Quote/Opportunity.
+
+### Custom Object
+- `PCB_Configuration__c` (Configurazione PCB)
+  - Label: "Configurazione PCB"
+  - Plural Label: "Configurazioni PCB"
+  - Name Field: AutoNumber "PCB-{00000}"
+  - Sharing Model: ReadWrite
+
+### Campi (18 custom + 10 standard)
+- `Account__c` (Lookup required → Account, deleteConstraint=Restrict, relationshipName=PCB_Configurations)
+- `Tipologia_Prodotto__c` (Picklist: Rigido, Flessibile, Rigido-Flessibile)
+- `Materiale__c` (Picklist dependent da Tipologia, 8 valori)
+- `Materiale_Custom_Value__c` (Text 255)
+- `Dimensioni_Array__c` (Text 255, es: "100x100 mm")
+- `Spessore_Complessivo__c` (Picklist dependent da Materiale, 10 valori)
+- `Spessore_Custom_Value__c` (Text 255)
+- `Spessore_Rame_Esterni__c` (Picklist: 18µm, 35µm, 70µm, Custom)
+- `Rame_Custom_Value__c` (Text 255)
+- `Finish__c` (Picklist: HASL, ENIG, OSP, Immersion Silver, ecc.)
+- `Solder_Specifico__c` (Picklist: Verde, Bianco, Nero, Blu, Rosso, Giallo, No solder)
+- `Silkscreen_Specifico__c` (Picklist: Bianco, Nero, Giallo, No silkscreen)
+- `Pista_Minima__c` (Number 3,1 - min track width mm)
+- `Foro_Minimo__c` (Number 3,2 - min hole diameter mm)
+- `Isolamento_Minimo__c` (Number 3,2 - min isolation mm)
+- `Aspect_Ratio__c` (Number 3,1 - aspect ratio)
+- `Customer_Circuit_Code__c` (Text 255 - codice cliente)
+- `Internal_Circuit_Code__c` (Text 255 - codice interno)
+
+### Field Dependencies (2)
+1. `Tipologia_Prodotto__c` → `Materiale__c` (13 value mappings)
+2. `Materiale__c` → `Spessore_Complessivo__c` (38 value mappings)
+
+### Validation Rules (3)
+1. `VR_PCB_01_Materiale_Custom`: Materiale='Custom' → Materiale_Custom_Value__c required
+2. `VR_PCB_02_Spessore_Custom`: Spessore='Custom' → Spessore_Custom_Value__c required
+3. `VR_PCB_03_Rame_Custom`: Rame='Custom' → Rame_Custom_Value__c required
+
+### Flow
+- `PCB_Configuratore` (Screen Flow, Active v1)
+  - Entry point: Account Quick Action
+  - 8 screens: A→G + loop finale
+  - Input: recordId (AccountId)
+  - Prefill: carica defaults da Account (Spessore/Finish/Solder/Silkscreen_Default__c)
+  - Dependent picklists: usa LWC dependentPicklistCmp (objectApiName=PCB_Configuration__c)
+  - Reset logic: quando Tipologia cambia → reset Materiale; quando Materiale cambia → reset Spessore
+  - Create: record PCB_Configuration__c con lookup Account__c = recordId
+  - Loop: "Creare un'altra configurazione?" Sì/No
+
+### Quick Actions
+- `Account.Nuova_Configurazione_PCB` (Flow action → PCB_Configuratore)
+  - Label: "Nuova Configurazione PCB"
+  - Tipo: Flow
+
+### Permission Set
+- `PCB_Configurator_Operator`
+  - CRUD su PCB_Configuration__c (Create/Read/Edit, NO Delete)
+  - FLS su tutti i 17 campi tecnici (escluso Account__c required)
+  - flowAccesses: PCB_Configuratore enabled
+
+### UI
+- **Account Layout**: aggiunto Quick Action "Nuova Configurazione PCB" (sortOrder=32)
+- **Account_360 FlexiPage**: aggiunto tab "Configurazioni PCB" con related list `PCB_Configurations__r`
+
+### Riuso da QuoteLineItem
+Tutti i campi tecnici, field dependencies e validation rules sono stati duplicati da QuoteLineItem (dizionario completo PCB già esistente).
+
+### Note Implementazione
+- Requisito cliente: configuratore Account-based, NO dipendenza da Quote/Opportunity/Pricebook
+- I flow Quote-centric (Quote_Aggiungi_Riga_Offerta*, Quote_Test_Deploy) restano come **legacy** e non sono l'entry point cliente
+- Lookup Account__c ha deleteConstraint=Restrict (non permette cancellazione Account se ha configurazioni PCB collegate)
 
 ---
 

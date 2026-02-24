@@ -23,7 +23,11 @@
       "Bash(grep:*)",
       "Bash(unzip:*)",
       "Bash(git commit:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(xmllint:*)",
+      "Bash(powershell -Command:*)",
+      "Bash(npm install:*)",
+      "Bash(sf:*)"
     ]
   }
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VR_QLI_02_Spessore_Custom</fullName>
+    <active>true</active>
+    <description>Se Spessore Complessivo è Custom, il campo Spessore Custom Value deve essere compilato</description>
+    <errorConditionFormula>AND(
+  ISPICKVAL(Spessore_Complessivo__c, "Custom"),
+  ISBLANK(Spessore_Custom_Value__c)
+)</errorConditionFormula>
+    <errorDisplayField>Spessore_Custom_Value__c</errorDisplayField>
+    <errorMessage>Se Spessore = Custom, compilare &quot;Spessore (Custom value)&quot;.</errorMessage>
+</ValidationRule>

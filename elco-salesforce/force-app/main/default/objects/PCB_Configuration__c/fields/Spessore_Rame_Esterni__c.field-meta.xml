@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+  <fullName>Spessore_Rame_Esterni__c</fullName>
+  <label>Spessore Rame Esterni</label>
+  <type>Picklist</type>
+  <valueSet>
+    <restricted>true</restricted>
+    <valueSetDefinition>
+      <sorted>false</sorted>
+      <value><fullName>0.5 oz (18 µm)</fullName><default>false</default><label>0.5 oz (18 µm)</label></value>
+      <value><fullName>1 oz (35 µm)</fullName><default>false</default><label>1 oz (35 µm)</label></value>
+      <value><fullName>2 oz (70 µm)</fullName><default>false</default><label>2 oz (70 µm)</label></value>
+      <value><fullName>Custom</fullName><default>false</default><label>Custom</label></value>
+    </valueSetDefinition>
+  </valueSet>
+</CustomField>
+

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Configuratore PCB tecnico step-by-step (A→G) - Account-based</description>
+    <flowDefinition>PCB_Configuratore</flowDefinition>
+    <label>Nuova Configurazione PCB</label>
+    <optionsCreateFeedItem>false</optionsCreateFeedItem>
+    <type>Flow</type>
+</QuickAction>

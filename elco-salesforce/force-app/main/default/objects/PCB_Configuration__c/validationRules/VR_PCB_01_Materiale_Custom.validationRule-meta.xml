@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VR_PCB_01_Materiale_Custom</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+  ISPICKVAL(Materiale__c, &quot;Custom&quot;),
+  ISBLANK(Materiale_Custom_Value__c)
+)</errorConditionFormula>
+    <errorMessage>Specificare il materiale custom quando Materiale = &apos;Custom&apos;</errorMessage>
+    <errorDisplayField>Materiale_Custom_Value__c</errorDisplayField>
+</ValidationRule>

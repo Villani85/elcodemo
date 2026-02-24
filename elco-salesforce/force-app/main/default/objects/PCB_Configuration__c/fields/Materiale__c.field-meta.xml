@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+  <fullName>Materiale__c</fullName>
+  <label>Materiale</label>
+  <type>Picklist</type>
+  <valueSet>
+    <controllingField>Tipologia_Prodotto__c</controllingField>
+    <restricted>true</restricted>
+    <valueSetDefinition>
+      <sorted>false</sorted>
+      <value><fullName>FR-4 Standard</fullName><default>false</default><label>FR-4 Standard</label></value>
+      <value><fullName>FR-4 High Tg</fullName><default>false</default><label>FR-4 High Tg</label></value>
+      <value><fullName>Rogers</fullName><default>false</default><label>Rogers</label></value>
+      <value><fullName>Alluminio (Metal Core)</fullName><default>false</default><label>Alluminio (Metal Core)</label></value>
+      <value><fullName>CEM-1</fullName><default>false</default><label>CEM-1</label></value>
+      <value><fullName>CEM-3</fullName><default>false</default><label>CEM-3</label></value>
+      <value><fullName>Polyimide</fullName><default>false</default><label>Polyimide</label></value>
+      <value><fullName>Custom</fullName><default>false</default><label>Custom</label></value>
+    </valueSetDefinition>
+    <valueSettings><controllingFieldValue>Rigido</controllingFieldValue><valueName>FR-4 Standard</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Rigido</controllingFieldValue><valueName>FR-4 High Tg</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Rigido</controllingFieldValue><valueName>Rogers</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Rigido</controllingFieldValue><valueName>Alluminio (Metal Core)</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Rigido</controllingFieldValue><valueName>CEM-1</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Rigido</controllingFieldValue><valueName>CEM-3</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Rigido</controllingFieldValue><valueName>Custom</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Flessibile</controllingFieldValue><valueName>Polyimide</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Flessibile</controllingFieldValue><valueName>Custom</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Rigido-Flessibile</controllingFieldValue><valueName>FR-4 Standard</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Rigido-Flessibile</controllingFieldValue><valueName>FR-4 High Tg</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Rigido-Flessibile</controllingFieldValue><valueName>Polyimide</valueName></valueSettings>
+    <valueSettings><controllingFieldValue>Rigido-Flessibile</controllingFieldValue><valueName>Custom</valueName></valueSettings>
+  </valueSet>
+</CustomField>

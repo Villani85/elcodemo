@@ -10,7 +10,7 @@
         <name>Call_Core_Refresh</name>
         <label>Call Core Refresh</label>
         <locationX>176</locationX>
-        <locationY>350</locationY>
+        <locationY>566</locationY>
         <actionName>CrifCoreRefreshInvocable</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -26,12 +26,86 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
 
+    <!-- RECORD LOOKUPS -->
+    <recordLookups>
+        <name>Get_Account</name>
+        <label>Get Account</label>
+        <locationX>176</locationX>
+        <locationY>134</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_PIVA_Exists</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Account</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+
+    <!-- RECORD UPDATES -->
+    <recordUpdates>
+        <name>Update_Account_PIVA</name>
+        <label>Update Account PIVA</label>
+        <locationX>308</locationX>
+        <locationY>350</locationY>
+        <connector>
+            <targetReference>Screen_Confirm</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Partita_IVA__c</field>
+            <value>
+                <elementReference>Input_Missing_PIVA</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Account</object>
+    </recordUpdates>
+
     <!-- DECISIONS -->
+    <decisions>
+        <name>Check_PIVA_Exists</name>
+        <label>Check PIVA Exists</label>
+        <locationX>176</locationX>
+        <locationY>242</locationY>
+        <defaultConnector>
+            <targetReference>Screen_Ask_PIVA</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>PIVA Missing</defaultConnectorLabel>
+        <rules>
+            <name>PIVA_Present</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Account.Partita_IVA__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_Confirm</targetReference>
+            </connector>
+            <label>PIVA Present</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>Check_Refresh_Success</name>
         <label>Check Refresh Success</label>
         <locationX>176</locationX>
-        <locationY>458</locationY>
+        <locationY>674</locationY>
         <defaultConnector>
             <targetReference>Screen_Error</targetReference>
         </defaultConnector>
@@ -55,10 +129,36 @@
 
     <!-- SCREENS -->
     <screens>
+        <name>Screen_Ask_PIVA</name>
+        <label>Inserisci Partita IVA</label>
+        <locationX>308</locationX>
+        <locationY>350</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Update_Account_PIVA</targetReference>
+        </connector>
+        <fields>
+            <name>Display_PIVA_Missing</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Partita IVA mancante&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;L&apos;Account non ha una Partita IVA associata. Inseriscila per continuare con l&apos;aggiornamento CRIF.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Input_Missing_PIVA</name>
+            <dataType>String</dataType>
+            <fieldText>Partita IVA</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>Screen_Confirm</name>
         <label>Screen Confirm</label>
         <locationX>176</locationX>
-        <locationY>242</locationY>
+        <locationY>458</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -77,7 +177,7 @@
         <name>Screen_Success</name>
         <label>Screen Success</label>
         <locationX>50</locationX>
-        <locationY>566</locationY>
+        <locationY>782</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -93,7 +193,7 @@
         <name>Screen_Error</name>
         <label>Screen Error</label>
         <locationX>308</locationX>
-        <locationY>566</locationY>
+        <locationY>782</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -111,7 +211,7 @@
         <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Screen_Confirm</targetReference>
+            <targetReference>Get_Account</targetReference>
         </connector>
     </start>
 

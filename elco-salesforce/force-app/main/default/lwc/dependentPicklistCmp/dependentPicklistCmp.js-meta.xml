@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="objectApiName" type="String" label="Object API Name" description="API name of the object (e.g., QuoteLineItem)" required="true"/>
+            <property name="topFieldApiName" type="String" label="Controlling Field API Name" description="API name of the controlling field" required="true"/>
+            <property name="middleFieldApiName" type="String" label="Dependent Field API Name" description="API name of the dependent field" required="true"/>
+            <property name="label" type="String" label="Label" description="Field label" required="true"/>
+            <property name="required" type="Boolean" label="Required" description="Whether the field is required" default="false"/>
+            <property name="topValue" type="String" label="Controlling Field Value" description="Current value of the controlling field" role="inputOnly"/>
+            <property name="value" type="String" label="Value" description="Current value (deprecated, use middleValue)" role="inputOnly"/>
+            <property name="middleValue" type="String" label="Dependent Field Value" description="Selected value of the dependent field" role="outputOnly"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>
