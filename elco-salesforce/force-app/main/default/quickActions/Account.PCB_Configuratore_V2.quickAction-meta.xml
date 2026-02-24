@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
-    <flowDefinition>PCB_Configuratore</flowDefinition>
+    <flowDefinition>PCB_Configuratore_LWC</flowDefinition>
     <label>PCB Configuratore V2</label>
     <optionsCreateFeedItem>false</optionsCreateFeedItem>
     <type>Flow</type>
