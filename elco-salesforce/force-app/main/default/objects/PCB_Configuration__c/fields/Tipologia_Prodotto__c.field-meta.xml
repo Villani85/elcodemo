@@ -4,7 +4,7 @@
   <label>Tipologia Prodotto</label>
   <type>Picklist</type>
   <valueSet>
-    <restricted>true</restricted>
+    <restricted>false</restricted>
     <valueSetDefinition>
       <sorted>false</sorted>
       <value><fullName>Rigido</fullName><default>false</default><label>Rigido</label></value>

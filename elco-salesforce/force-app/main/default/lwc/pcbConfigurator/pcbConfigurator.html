@@ -1,0 +1,304 @@
+<template>
+    <lightning-card title="Configuratore PCB" icon-name="custom:custom63">
+        <!-- Progress Indicator -->
+        <div class="slds-m-around_medium">
+            <lightning-progress-indicator
+                current-step={currentStepValue}
+                type="path"
+                variant="base">
+                <template for:each={steps} for:item="step">
+                    <lightning-progress-step
+                        key={step.value}
+                        label={step.label}
+                        value={step.value}>
+                    </lightning-progress-step>
+                </template>
+            </lightning-progress-indicator>
+        </div>
+
+        <!-- Step 1: Tipologia Prodotto -->
+        <template if:true={isStep1}>
+            <div class="slds-m-around_medium">
+                <h2 class="slds-text-heading_medium slds-m-bottom_medium">Tipologia Prodotto</h2>
+                <lightning-radio-group
+                    name="tipologia"
+                    label="Seleziona la tipologia di PCB"
+                    options={tipologiaOptions}
+                    value={config.tipologia}
+                    onchange={handleTipologiaChange}
+                    required>
+                </lightning-radio-group>
+            </div>
+        </template>
+
+        <!-- Step 2: Materiale -->
+        <template if:true={isStep2}>
+            <div class="slds-m-around_medium">
+                <h2 class="slds-text-heading_medium slds-m-bottom_medium">Materiale</h2>
+                <lightning-combobox
+                    name="materiale"
+                    label="Materiale"
+                    placeholder="Seleziona materiale"
+                    options={materialeOptions}
+                    value={config.materiale}
+                    data-field="materiale"
+                    onchange={handleFieldChange}
+                    required>
+                </lightning-combobox>
+
+                <template if:true={showMaterialeCustom}>
+                    <lightning-input
+                        class="slds-m-top_medium"
+                        name="materialeCustom"
+                        label="Specifica materiale custom"
+                        value={config.materialeCustom}
+                        data-field="materialeCustom"
+                        onchange={handleFieldChange}
+                        required>
+                    </lightning-input>
+                </template>
+            </div>
+        </template>
+
+        <!-- Step 3: Dimensioni e Spessore -->
+        <template if:true={isStep3}>
+            <div class="slds-m-around_medium">
+                <h2 class="slds-text-heading_medium slds-m-bottom_medium">Dimensioni e Spessore</h2>
+
+                <lightning-combobox
+                    name="dimensioni"
+                    label="Dimensioni Array"
+                    placeholder="Seleziona dimensioni"
+                    options={dimensioniOptions}
+                    value={config.dimensioni}
+                    data-field="dimensioni"
+                    onchange={handleFieldChange}>
+                </lightning-combobox>
+
+                <lightning-combobox
+                    class="slds-m-top_medium"
+                    name="spessore"
+                    label="Spessore Complessivo"
+                    placeholder="Seleziona spessore"
+                    options={spessoreOptions}
+                    value={config.spessore}
+                    data-field="spessore"
+                    onchange={handleFieldChange}>
+                </lightning-combobox>
+
+                <template if:true={showSpessoreCustom}>
+                    <lightning-input
+                        class="slds-m-top_medium"
+                        name="spessoreCustom"
+                        label="Specifica spessore custom"
+                        value={config.spessoreCustom}
+                        data-field="spessoreCustom"
+                        onchange={handleFieldChange}>
+                    </lightning-input>
+                </template>
+            </div>
+        </template>
+
+        <!-- Step 4: Rame -->
+        <template if:true={isStep4}>
+            <div class="slds-m-around_medium">
+                <h2 class="slds-text-heading_medium slds-m-bottom_medium">Spessore Rame</h2>
+
+                <lightning-combobox
+                    name="rame"
+                    label="Spessore Rame Esterni"
+                    placeholder="Seleziona spessore rame"
+                    options={rameOptions}
+                    value={config.rame}
+                    data-field="rame"
+                    onchange={handleFieldChange}>
+                </lightning-combobox>
+
+                <template if:true={showRameCustom}>
+                    <lightning-input
+                        class="slds-m-top_medium"
+                        name="rameCustom"
+                        label="Specifica spessore rame custom"
+                        value={config.rameCustom}
+                        data-field="rameCustom"
+                        onchange={handleFieldChange}>
+                    </lightning-input>
+                </template>
+            </div>
+        </template>
+
+        <!-- Step 5: Finiture -->
+        <template if:true={isStep5}>
+            <div class="slds-m-around_medium">
+                <h2 class="slds-text-heading_medium slds-m-bottom_medium">Finiture Superficiali</h2>
+
+                <lightning-combobox
+                    name="finish"
+                    label="Finish"
+                    placeholder="Seleziona finish"
+                    options={finishOptions}
+                    value={config.finish}
+                    data-field="finish"
+                    onchange={handleFieldChange}>
+                </lightning-combobox>
+
+                <lightning-combobox
+                    class="slds-m-top_medium"
+                    name="solderMask"
+                    label="Solder Mask"
+                    placeholder="Seleziona colore solder mask"
+                    options={solderMaskOptions}
+                    value={config.solderMask}
+                    data-field="solderMask"
+                    onchange={handleFieldChange}>
+                </lightning-combobox>
+
+                <lightning-combobox
+                    class="slds-m-top_medium"
+                    name="silkscreen"
+                    label="Silkscreen"
+                    placeholder="Seleziona colore silkscreen"
+                    options={silkscreenOptions}
+                    value={config.silkscreen}
+                    data-field="silkscreen"
+                    onchange={handleFieldChange}>
+                </lightning-combobox>
+            </div>
+        </template>
+
+        <!-- Step 6: Specifiche Tecniche -->
+        <template if:true={isStep6}>
+            <div class="slds-m-around_medium">
+                <h2 class="slds-text-heading_medium slds-m-bottom_medium">Specifiche Tecniche</h2>
+
+                <lightning-input
+                    type="number"
+                    name="pistaMinima"
+                    label="Pista Minima (mm)"
+                    value={config.pistaMinima}
+                    data-field="pistaMinima"
+                    onchange={handleFieldChange}
+                    step="0.01"
+                    formatter="decimal">
+                </lightning-input>
+
+                <lightning-input
+                    class="slds-m-top_medium"
+                    type="number"
+                    name="foroMinimo"
+                    label="Foro Minimo (mm)"
+                    value={config.foroMinimo}
+                    data-field="foroMinimo"
+                    onchange={handleFieldChange}
+                    step="0.01"
+                    formatter="decimal">
+                </lightning-input>
+
+                <lightning-input
+                    class="slds-m-top_medium"
+                    type="number"
+                    name="isolamentoMinimo"
+                    label="Isolamento Minimo (mm)"
+                    value={config.isolamentoMinimo}
+                    data-field="isolamentoMinimo"
+                    onchange={handleFieldChange}
+                    step="0.01"
+                    formatter="decimal">
+                </lightning-input>
+
+                <lightning-input
+                    class="slds-m-top_medium"
+                    type="number"
+                    name="aspectRatio"
+                    label="Aspect Ratio"
+                    value={config.aspectRatio}
+                    data-field="aspectRatio"
+                    onchange={handleFieldChange}
+                    step="0.1"
+                    formatter="decimal">
+                </lightning-input>
+            </div>
+        </template>
+
+        <!-- Step 7: Riepilogo e Codici -->
+        <template if:true={isStep7}>
+            <div class="slds-m-around_medium">
+                <h2 class="slds-text-heading_medium slds-m-bottom_medium">Riepilogo Configurazione</h2>
+
+                <div class="slds-box slds-m-bottom_medium">
+                    <dl class="slds-list_horizontal slds-wrap">
+                        <dt class="slds-item_label slds-text-color_weak slds-truncate">Tipologia:</dt>
+                        <dd class="slds-item_detail slds-truncate">{config.tipologia}</dd>
+
+                        <dt class="slds-item_label slds-text-color_weak slds-truncate">Materiale:</dt>
+                        <dd class="slds-item_detail slds-truncate">{config.materiale}</dd>
+
+                        <dt class="slds-item_label slds-text-color_weak slds-truncate">Dimensioni:</dt>
+                        <dd class="slds-item_detail slds-truncate">{config.dimensioni}</dd>
+
+                        <dt class="slds-item_label slds-text-color_weak slds-truncate">Spessore:</dt>
+                        <dd class="slds-item_detail slds-truncate">{config.spessore}</dd>
+
+                        <dt class="slds-item_label slds-text-color_weak slds-truncate">Rame:</dt>
+                        <dd class="slds-item_detail slds-truncate">{config.rame}</dd>
+
+                        <dt class="slds-item_label slds-text-color_weak slds-truncate">Finish:</dt>
+                        <dd class="slds-item_detail slds-truncate">{config.finish}</dd>
+                    </dl>
+                </div>
+
+                <lightning-input
+                    name="customerCode"
+                    label="Codice Cliente (opzionale)"
+                    value={config.customerCode}
+                    data-field="customerCode"
+                    onchange={handleFieldChange}>
+                </lightning-input>
+
+                <lightning-input
+                    class="slds-m-top_medium"
+                    name="internalCode"
+                    label="Codice Interno (opzionale)"
+                    value={config.internalCode}
+                    data-field="internalCode"
+                    onchange={handleFieldChange}>
+                </lightning-input>
+            </div>
+        </template>
+
+        <!-- Navigation Buttons -->
+        <div slot="footer" class="slds-clearfix">
+            <div class="slds-float_right">
+                <lightning-button
+                    label="Annulla"
+                    onclick={handleCancel}
+                    class="slds-m-right_x-small">
+                </lightning-button>
+
+                <template if:false={isFirstStep}>
+                    <lightning-button
+                        label="Indietro"
+                        onclick={handlePrevious}
+                        class="slds-m-right_x-small">
+                    </lightning-button>
+                </template>
+
+                <template if:false={isLastStep}>
+                    <lightning-button
+                        variant="brand"
+                        label="Avanti"
+                        onclick={handleNext}>
+                    </lightning-button>
+                </template>
+
+                <template if:true={isLastStep}>
+                    <lightning-button
+                        variant="brand"
+                        label="Salva Configurazione"
+                        onclick={handleSave}>
+                    </lightning-button>
+                </template>
+            </div>
+        </div>
+    </lightning-card>
+</template>

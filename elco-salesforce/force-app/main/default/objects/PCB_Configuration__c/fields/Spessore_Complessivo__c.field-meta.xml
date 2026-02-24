@@ -5,7 +5,7 @@
   <type>Picklist</type>
   <valueSet>
     <controllingField>Materiale__c</controllingField>
-    <restricted>true</restricted>
+    <restricted>false</restricted>
     <valueSetDefinition>
       <sorted>false</sorted>
       <value><fullName>0.4 mm</fullName><default>false</default><label>0.4 mm</label></value>

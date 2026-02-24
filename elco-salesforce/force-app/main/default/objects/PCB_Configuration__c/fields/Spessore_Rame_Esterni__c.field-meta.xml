@@ -4,7 +4,7 @@
   <label>Spessore Rame Esterni</label>
   <type>Picklist</type>
   <valueSet>
-    <restricted>true</restricted>
+    <restricted>false</restricted>
     <valueSetDefinition>
       <sorted>false</sorted>
       <value><fullName>0.5 oz (18 µm)</fullName><default>false</default><label>0.5 oz (18 µm)</label></value>

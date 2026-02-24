@@ -5,7 +5,7 @@
   <type>Picklist</type>
   <valueSet>
     <controllingField>Tipologia_Prodotto__c</controllingField>
-    <restricted>true</restricted>
+    <restricted>false</restricted>
     <valueSetDefinition>
       <sorted>false</sorted>
       <value><fullName>FR-4 Standard</fullName><default>false</default><label>FR-4 Standard</label></value>

@@ -1,0 +1,25 @@
+/* Progress Indicator Styling */
+.slds-progress-bar {
+    height: 0.5rem;
+}
+
+/* Step Content Styling */
+.slds-m-around_medium h2 {
+    border-bottom: 2px solid #0176d3;
+    padding-bottom: 0.5rem;
+}
+
+/* Summary Box */
+.slds-box {
+    background-color: #f3f3f3;
+}
+
+.slds-list_horizontal > dt {
+    width: 40%;
+    font-weight: bold;
+}
+
+.slds-list_horizontal > dd {
+    width: 60%;
+    margin-bottom: 0.5rem;
+}
