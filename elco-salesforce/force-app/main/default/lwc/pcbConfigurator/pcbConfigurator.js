@@ -95,18 +95,64 @@ export default class PcbConfigurator extends LightningElement {
     }
 
     get spessoreOptions() {
-        return [
-            { label: '0.4 mm', value: '0.4 mm' },
-            { label: '0.6 mm', value: '0.6 mm' },
-            { label: '0.8 mm', value: '0.8 mm' },
-            { label: '1.0 mm', value: '1.0 mm' },
-            { label: '1.2 mm', value: '1.2 mm' },
-            { label: '1.6 mm', value: '1.6 mm' },
-            { label: '2.0 mm', value: '2.0 mm' },
-            { label: '2.4 mm', value: '2.4 mm' },
-            { label: '3.2 mm', value: '3.2 mm' },
-            { label: 'Custom', value: 'Custom' }
-        ];
+        // Spessore Complessivo dipende da Materiale
+        const allOptions = {
+            'FR-4 Standard': [
+                { label: '0.4 mm', value: '0.4 mm' },
+                { label: '0.6 mm', value: '0.6 mm' },
+                { label: '0.8 mm', value: '0.8 mm' },
+                { label: '1.0 mm', value: '1.0 mm' },
+                { label: '1.2 mm', value: '1.2 mm' },
+                { label: '1.6 mm', value: '1.6 mm' },
+                { label: '2.0 mm', value: '2.0 mm' },
+                { label: '2.4 mm', value: '2.4 mm' },
+                { label: '3.2 mm', value: '3.2 mm' },
+                { label: 'Custom', value: 'Custom' }
+            ],
+            'FR-4 High Tg': [
+                { label: '0.4 mm', value: '0.4 mm' },
+                { label: '0.6 mm', value: '0.6 mm' },
+                { label: '0.8 mm', value: '0.8 mm' },
+                { label: '1.0 mm', value: '1.0 mm' },
+                { label: '1.2 mm', value: '1.2 mm' },
+                { label: '1.6 mm', value: '1.6 mm' },
+                { label: '2.0 mm', value: '2.0 mm' },
+                { label: '2.4 mm', value: '2.4 mm' },
+                { label: '3.2 mm', value: '3.2 mm' },
+                { label: 'Custom', value: 'Custom' }
+            ],
+            'Rogers': [
+                { label: '0.8 mm', value: '0.8 mm' },
+                { label: '1.6 mm', value: '1.6 mm' },
+                { label: 'Custom', value: 'Custom' }
+            ],
+            'Alluminio (Metal Core)': [
+                { label: '1.0 mm', value: '1.0 mm' },
+                { label: '1.6 mm', value: '1.6 mm' },
+                { label: 'Custom', value: 'Custom' }
+            ],
+            'Polyimide': [
+                { label: '0.4 mm', value: '0.4 mm' },
+                { label: '0.6 mm', value: '0.6 mm' },
+                { label: '0.8 mm', value: '0.8 mm' },
+                { label: '1.0 mm', value: '1.0 mm' },
+                { label: 'Custom', value: 'Custom' }
+            ],
+            'CEM-1': [
+                { label: '1.0 mm', value: '1.0 mm' },
+                { label: '1.6 mm', value: '1.6 mm' },
+                { label: 'Custom', value: 'Custom' }
+            ],
+            'CEM-3': [
+                { label: '1.0 mm', value: '1.0 mm' },
+                { label: '1.6 mm', value: '1.6 mm' },
+                { label: 'Custom', value: 'Custom' }
+            ],
+            'Custom': [
+                { label: 'Custom', value: 'Custom' }
+            ]
+        };
+        return allOptions[this.config.materiale] || [];
     }
 
     get rameOptions() {
@@ -195,6 +241,13 @@ export default class PcbConfigurator extends LightningElement {
         // Reset materiale when tipologia changes
         this.config.materiale = '';
         this.config.materialeCustom = '';
+    }
+
+    handleMaterialeChange(event) {
+        this.config.materiale = event.detail.value;
+        // Reset spessore when materiale changes (dependent picklist)
+        this.config.spessore = '';
+        this.config.spessoreCustom = '';
     }
 
     handleFieldChange(event) {
@@ -376,19 +429,36 @@ export default class PcbConfigurator extends LightningElement {
                 }
                 break;
             case 3:
+                // Step 3: Dimensioni e Spessore Complessivo
+                if (!this.config.spessore) {
+                    message = 'Seleziona lo spessore complessivo per continuare';
+                    isValid = false;
+                }
                 if (this.config.spessore === 'Custom' && !this.config.spessoreCustom) {
                     message = 'Hai selezionato spessore "Custom" - specifica il valore';
                     isValid = false;
                 }
                 break;
             case 4:
+                // Step 4: Spessore Rame Esterni
+                if (!this.config.rame) {
+                    message = 'Seleziona lo spessore del rame per continuare';
+                    isValid = false;
+                }
                 if (this.config.rame === 'Custom' && !this.config.rameCustom) {
                     message = 'Hai selezionato spessore rame "Custom" - specifica il valore';
                     isValid = false;
                 }
                 break;
+            case 5:
+                // Step 5: Finitura Superficiale
+                if (!this.config.finish) {
+                    message = 'Seleziona la finitura superficiale per continuare';
+                    isValid = false;
+                }
+                break;
             case 6:
-                // Validate numeric fields if provided
+                // Step 6: Solder Mask e Silkscreen (opzionali, ma validazione formato numerico)
                 if (this.config.pistaMinima && isNaN(this.config.pistaMinima)) {
                     message = 'Pista Minima deve essere un numero valido';
                     isValid = false;
