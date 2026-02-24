@@ -1,0 +1,12 @@
+<aura:component access="global"
+    implements="force:hasRecordId,force:lightningQuickActionWithoutHeader,flexipage:availableForAllPageTypes">
+
+    <!-- recordId viene iniettato automaticamente da force:hasRecordId -->
+    <aura:attribute name="recordId" type="String"/>
+
+    <!-- handler init -->
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+
+    <!-- lightning:flow component -->
+    <lightning:flow aura:id="flowCmp" onstatuschange="{!c.onStatusChange}"/>
+</aura:component>

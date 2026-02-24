@@ -475,6 +475,11 @@
             <actionType>QuickAction</actionType>
             <sortOrder>32</sortOrder>
         </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Account.Configuratore_PCB</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>33</sortOrder>
+        </platformActionListItems>
     </platformActionList>
     <relatedLists>
         <fields>NAME</fields>

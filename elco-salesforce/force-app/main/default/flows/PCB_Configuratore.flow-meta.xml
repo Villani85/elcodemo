@@ -886,15 +886,15 @@
             <name>Input_Tipologia</name>
             <dataType>String</dataType>
             <fieldText>Tipologia Prodotto</fieldText>
-            <fieldType>DropdownBox</fieldType>
-            <isRequired>true</isRequired>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>false</isRequired>
             <choiceReferences>Choice_Tipologia_Rigido</choiceReferences>
             <choiceReferences>Choice_Tipologia_Flessibile</choiceReferences>
             <choiceReferences>Choice_Tipologia_RigidoFlessibile</choiceReferences>
         </fields>
         <nextOrFinishButtonLabel>Avanti</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
+        <showHeader>true</showHeader>
     </screens>
     <screens>
         <name>Screen_B_Materiale</name>
@@ -977,7 +977,7 @@
         </fields>
         <nextOrFinishButtonLabel>Avanti</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
+        <showHeader>true</showHeader>
     </screens>
     <screens>
         <name>Screen_C_Dimensioni_Spessore</name>
@@ -1072,7 +1072,7 @@
         </fields>
         <nextOrFinishButtonLabel>Avanti</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
+        <showHeader>true</showHeader>
     </screens>
     <screens>
         <name>Screen_D_Rame_Finish</name>
@@ -1135,7 +1135,7 @@
         </fields>
         <nextOrFinishButtonLabel>Avanti</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
+        <showHeader>true</showHeader>
     </screens>
     <screens>
         <name>Screen_E_Solder_Silkscreen</name>
@@ -1191,7 +1191,7 @@
         </fields>
         <nextOrFinishButtonLabel>Avanti</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
+        <showHeader>true</showHeader>
     </screens>
     <screens>
         <name>Screen_F_Advanced</name>
@@ -1243,7 +1243,7 @@
         </fields>
         <nextOrFinishButtonLabel>Avanti</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
+        <showHeader>true</showHeader>
     </screens>
     <screens>
         <name>Screen_G_Summary</name>
@@ -1286,7 +1286,7 @@
         </fields>
         <nextOrFinishButtonLabel>Crea Configurazione PCB</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
+        <showHeader>true</showHeader>
     </screens>
     <screens>
         <name>Screen_Error</name>
@@ -1303,7 +1303,7 @@
         </fields>
         <nextOrFinishButtonLabel>Chiudi</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
+        <showHeader>true</showHeader>
     </screens>
     <start>
         <locationX>50</locationX>
