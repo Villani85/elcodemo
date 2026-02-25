@@ -28,10 +28,10 @@
         "confirmationSubtext" : "Ti ricontatteremo al più presto.",
         "confirmationText" : "Richiesta inviata!",
         "guestQuickActionName" : "GuestCommunityCase",
-        "headerSubtitle" : "Dicci come possiamo aiutarti.",
-        "headerTitle" : "Apri una richiesta",
+        "headerSubtitle" : "Indica il servizio e descrivi il problema.",
+        "headerTitle" : "Nuova Richiesta di Intervento",
         "isMicrobatch" : false,
-        "quickActionName" : "NewCommunityCase",
+        "quickActionName" : "NewCommunityCase_RI",
         "requestSummaryText" : "Riepilogo richiesta"
       },
       "componentName" : "forceCommunity:contactSupportForm",

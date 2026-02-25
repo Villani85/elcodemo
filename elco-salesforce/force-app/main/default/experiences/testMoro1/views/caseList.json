@@ -3,7 +3,7 @@
   "componentName" : "siteforce:sldsOneColLayout",
   "dataProviders" : [ ],
   "id" : "9ef64ee4-c844-48b6-b04d-5e24b5fed7af",
-  "label" : "Case List",
+  "label" : "Le mie richieste",
   "regions" : [ {
     "id" : "1d230cf8-03df-4552-958f-04b142e4f5ad",
     "regionName" : "header",
@@ -12,11 +12,11 @@
     "components" : [ {
       "componentAttributes" : {
         "enableInlineEdit" : false,
-        "filterName" : "{!filterId}",
+        "filterName" : "Portal_Richieste_Intervento",
         "layout" : "FULL",
-        "pageSize" : 25,
-        "scope" : "{!objectName}",
-        "showActionBar" : true,
+        "pageSize" : 10,
+        "scope" : "Case",
+        "showActionBar" : false,
         "showChartsPanel" : false,
         "showDisplay" : "showall",
         "showFilterPanel" : false,
