@@ -2,6 +2,7 @@ import { LightningElement, api, track } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { CloseActionScreenEvent } from 'lightning/actions';
 import { createRecord } from 'lightning/uiRecordApi';
+import { RefreshEvent } from 'lightning/refresh';
 import PCB_CONFIG_OBJECT from '@salesforce/schema/PCB_Configuration__c';
 import ACCOUNT_FIELD from '@salesforce/schema/PCB_Configuration__c.Account__c';
 import TIPOLOGIA_FIELD from '@salesforce/schema/PCB_Configuration__c.Tipologia_Prodotto__c';
@@ -362,6 +363,11 @@ export default class PcbConfigurator extends LightningElement {
                     `Configurazione PCB salvata con successo! ID: ${record.id}`,
                     'success'
                 );
+
+                // Refresh the view to update related lists
+                this.dispatchEvent(new RefreshEvent());
+
+                // Close the modal
                 this.dispatchEvent(new CloseActionScreenEvent());
             })
             .catch(error => {
@@ -430,6 +436,10 @@ export default class PcbConfigurator extends LightningElement {
                 break;
             case 3:
                 // Step 3: Dimensioni e Spessore Complessivo
+                if (!this.config.dimensioni) {
+                    message = 'Seleziona le dimensioni dell\'array per continuare';
+                    isValid = false;
+                }
                 if (!this.config.spessore) {
                     message = 'Seleziona lo spessore complessivo per continuare';
                     isValid = false;
@@ -451,14 +461,22 @@ export default class PcbConfigurator extends LightningElement {
                 }
                 break;
             case 5:
-                // Step 5: Finitura Superficiale
+                // Step 5: Finitura Superficiale, Solder Mask, Silkscreen
                 if (!this.config.finish) {
                     message = 'Seleziona la finitura superficiale per continuare';
                     isValid = false;
                 }
+                if (!this.config.solderMask) {
+                    message = 'Seleziona il colore del solder mask per continuare';
+                    isValid = false;
+                }
+                if (!this.config.silkscreen) {
+                    message = 'Seleziona il colore del silkscreen per continuare';
+                    isValid = false;
+                }
                 break;
             case 6:
-                // Step 6: Solder Mask e Silkscreen (opzionali, ma validazione formato numerico)
+                // Step 6: Specifiche Tecniche (opzionali, ma validazione formato numerico)
                 if (this.config.pistaMinima && isNaN(this.config.pistaMinima)) {
                     message = 'Pista Minima deve essere un numero valido';
                     isValid = false;

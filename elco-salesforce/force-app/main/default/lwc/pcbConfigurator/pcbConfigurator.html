@@ -72,7 +72,8 @@
                     options={dimensioniOptions}
                     value={config.dimensioni}
                     data-field="dimensioni"
-                    onchange={handleFieldChange}>
+                    onchange={handleFieldChange}
+                    required>
                 </lightning-combobox>
 
                 <lightning-combobox
@@ -83,7 +84,8 @@
                     options={spessoreOptions}
                     value={config.spessore}
                     data-field="spessore"
-                    onchange={handleFieldChange}>
+                    onchange={handleFieldChange}
+                    required>
                 </lightning-combobox>
 
                 <template if:true={showSpessoreCustom}>
@@ -150,7 +152,8 @@
                     options={solderMaskOptions}
                     value={config.solderMask}
                     data-field="solderMask"
-                    onchange={handleFieldChange}>
+                    onchange={handleFieldChange}
+                    required>
                 </lightning-combobox>
 
                 <lightning-combobox
@@ -161,7 +164,8 @@
                     options={silkscreenOptions}
                     value={config.silkscreen}
                     data-field="silkscreen"
-                    onchange={handleFieldChange}>
+                    onchange={handleFieldChange}
+                    required>
                 </lightning-combobox>
             </div>
         </template>
