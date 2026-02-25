@@ -1,0 +1,94 @@
+{
+  "appPageId" : "7cf9964f-2843-41e2-84e1-0e08a4a1d8d0",
+  "componentName" : "siteforce:sldsTwoCol66Layout",
+  "dataProviders" : [ ],
+  "id" : "4cd46074-ef76-45ac-98bc-8f3199099808",
+  "label" : "Apri una richiesta",
+  "regions" : [ {
+    "id" : "4523aeb0-9359-404b-bc4d-bf26f0a4eb3f",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "allowAttachments" : true,
+        "attachmentLabel" : "Carica file",
+        "buttonAlignment" : "center",
+        "buttonBgColor" : "",
+        "buttonBgHoverColor" : "",
+        "buttonBorderColor" : "",
+        "buttonMaxWidth" : "",
+        "buttonRadius" : 0,
+        "buttonTextColor" : "",
+        "buttonTextHoverColor" : "",
+        "callToAction" : false,
+        "callToActionButtonText" : "",
+        "callToActionText" : "",
+        "callToActionUrl" : "",
+        "confirmationSubtext" : "Ti ricontatteremo al più presto.",
+        "confirmationText" : "Richiesta inviata!",
+        "guestQuickActionName" : "GuestCommunityCase",
+        "headerSubtitle" : "Dicci come possiamo aiutarti.",
+        "headerTitle" : "Apri una richiesta",
+        "isMicrobatch" : false,
+        "quickActionName" : "NewCommunityCase",
+        "requestSummaryText" : "Riepilogo richiesta"
+      },
+      "componentName" : "forceCommunity:contactSupportForm",
+      "id" : "5df29a21-7de7-42b7-a269-16a02be3ac81",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "ecd417b7-e674-4994-9c85-9636d0ffe600",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "askConfirmationQuestion" : true,
+        "confirmationMessageLabel" : "Ok!",
+        "deflectionSubtitle" : "Trova qui quello che ti serve.",
+        "deflectionTitle" : "Hai bisogno di una risposta veloce?",
+        "firstQuestion" : "Questo contenuto ha risolto il tuo problema?",
+        "maxResults" : 6,
+        "measureDeflection" : true,
+        "redirectUrl" : "",
+        "secondQuestion" : "Vuoi interrompere la creazione della richiesta?",
+        "showArticles" : true,
+        "showDiscussions" : false,
+        "topicId" : ""
+      },
+      "componentName" : "forceCommunity:caseDeflection",
+      "id" : "fada7615-24b9-4550-8f6d-022de1b1beb1",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "af4210e8-d709-43af-8dbb-6ddbd462e21a",
+    "regionName" : "sidebar",
+    "type" : "region"
+  }, {
+    "id" : "8a67b653-719a-4698-8213-e51b8c852b21",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Apri una richiesta"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "76d4b8ae-3f6c-43d6-b460-573aea389630",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "2dfb9d28-859f-4fe5-8475-f3b9adbcaaf7",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "contactsupport"
+}

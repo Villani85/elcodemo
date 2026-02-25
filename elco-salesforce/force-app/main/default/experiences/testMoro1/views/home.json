@@ -7,12 +7,12 @@
   "regions" : [ {
     "components" : [ {
       "componentAttributes" : {
-        "bannerText" : "A place where you can easily find solutions and ask questions",
-        "bannerTextWithKnowledge" : "Explore other <a href=\"javascript:void(0)\" class=\"headlineArticles\">articles</a> and <a href=\"javascript:void(0)\" class=\"headlineDiscussions\">discussions</a> on this topic.",
-        "bannerTextWithoutKnowledge" : "Explore other <a href=\"javascript:void(0)\" class=\"headlineDiscussions\">discussions</a> on this topic.",
+        "bannerText" : "Hai bisogno di supporto? Vai su \"Apri una richiesta\" per contattarci.",
+        "bannerTextWithKnowledge" : "Cerca tra gli <a href=\"javascript:void(0)\" class=\"headlineArticles\">articoli</a> o apri una richiesta di supporto.",
+        "bannerTextWithoutKnowledge" : "Apri una richiesta di supporto oppure consulta le <a href=\"javascript:void(0)\" class=\"headlineDiscussions\">discussioni</a>.",
         "pageType" : "",
         "showSubTopics" : true,
-        "title" : "Welcome!",
+        "title" : "Supporto clienti",
         "uniqueNameOrId" : ""
       },
       "componentName" : "forceCommunity:headline",
