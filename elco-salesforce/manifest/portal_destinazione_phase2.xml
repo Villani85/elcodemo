@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>NewCommunityCase_RI</members>
+        <name>QuickAction</name>
+    </types>
+    <types>
+        <members>Case.Portal_Richieste_Intervento</members>
+        <name>ListView</name>
+    </types>
+    <version>65.0</version>
+</Package>

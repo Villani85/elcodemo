@@ -3,7 +3,7 @@
     <fullName>Portal_Richieste_Intervento</fullName>
     <columns>CASES.CASE_NUMBER</columns>
     <columns>CASES.SUBJECT</columns>
-    <columns>ACCOUNT.NAME</columns>
+    <columns>Destinazione__c</columns>
     <columns>CASES.STATUS</columns>
     <columns>CASES.CREATED_DATE</columns>
     <filterScope>Mine</filterScope>

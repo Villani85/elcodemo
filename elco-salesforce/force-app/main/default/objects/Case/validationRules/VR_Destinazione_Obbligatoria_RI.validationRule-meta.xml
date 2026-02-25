@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VR_Destinazione_Obbligatoria_RI</fullName>
+    <active>true</active>
+    <description>Per i Case di tipo Richiesta di Intervento, la Destinazione è obbligatoria</description>
+    <errorConditionFormula>AND(
+    ISBLANK(Destinazione__c),
+    RecordType.DeveloperName = &quot;Richiesta_di_Intervento&quot;
+)</errorConditionFormula>
+    <errorDisplayField>Destinazione__c</errorDisplayField>
+    <errorMessage>Seleziona una destinazione (servizio o struttura comunale).</errorMessage>
+</ValidationRule>
